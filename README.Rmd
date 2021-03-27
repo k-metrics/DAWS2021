@@ -1,0 +1,13 @@
+---
+title: "データ分析勉強会2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+　  
+
+---
+[CC 4.0 BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja), Sampo Suzuki (Update: `r lubridate::now()`)
