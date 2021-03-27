@@ -1,5 +1,5 @@
 ---
-title: "データ分析勉強会2020"
+title: "データ分析勉強会2021"
 output: github_document
 ---
 
@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-　  
+　Now, planning.  
 
 ---
 [CC 4.0 BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja), Sampo Suzuki (Update: `r lubridate::now()`)
