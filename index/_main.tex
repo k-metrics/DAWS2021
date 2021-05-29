@@ -1,0 +1,253 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
+\documentclass[
+  a4paper]{bxjsbook}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex,ifpdf,ifthen}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \setmainfont[]{Times New Roman}
+  \setsansfont[]{Arial}
+  \setmonofont[]{Courier New}
+\fi
+
+% japanese font setting
+% if the preset is specified
+\ifxetex
+  \usepackage[AutoFallBack=true]{zxjatype}
+  \usepackage[ms,]{zxjafont}
+  \usepackage{xeCJKfntef}
+\fi
+\ifluatex
+  \usepackage{luatexja}
+  \usepackage[,ms]{luatexja-preset}
+  %\renewcommand{\kanjifamilydefault}{\gtdefault}
+\fi
+
+  \IfFileExists{pxrubrica.sty}{\usepackage{pxrubrica}}{}
+\ifluatex
+  \ltjsetparameter{%
+    jacharrange={-2,-3},
+    alxspmode={`/,allow},
+    alxspmode={`#,allow},
+    alxspmode={92,allow}
+  }
+\fi
+
+
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\ifpdf
+  \IfFileExists{microtype.sty}{% use microtype if available
+    \usepackage[]{microtype}
+    \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+  }{}
+\fi
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={無題},
+  colorlinks=true,
+  linkcolor=blue,
+  filecolor=Maroon,
+  citecolor=blue,
+  urlcolor=magenta,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+% for compatible with kableExtra package functions.
+\usepackage{longtable,booktabs,dcolumn}
+%\usepackage{longtable,booktabs,dcolumn,array,multirow,wrapfig,float,colortbl,pdflscape,tabu,threeparttable,threeparttablex,makecell}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+
+\ifthenelse{\equal{fancy}{fancy}}{
+  \usepackage{fancyhdr}
+}{}
+\pagestyle{fancy}
+
+% compatible mukti-columns macro
+% by "R Markdown Cookbook" Sec. 5.8
+\newenvironment{cols}[1][]{}{}
+\newenvironment{col}[1]{\begin{minipage}{#1}\ignorespaces}{%
+\end{minipage}
+\ifhmode\unskip\fi
+\aftergroup\useignorespacesandallpars}
+\def\useignorespacesandallpars#1\ignorespaces\fi{%
+#1\fi\ignorespacesandallpars}
+\makeatletter
+\def\ignorespacesandallpars{%
+\@ifnextchar\par
+{\expandafter\ignorespacesandallpars\@gobble}%
+{}%
+}
+\makeatother
+%-------
+
+
+% ---- XeLaTeX 専用のあれ ----
+\ifxetex
+  \usepackage{letltxmacro}
+  \setlength{\XeTeXLinkMargin}{1pt}
+  \LetLtxMacro\SavedIncludeGraphics\includegraphics
+  \def\includegraphics#1#{% #1 catches optional stuff (star/opt. arg.)
+    \IncludeGraphicsAux{#1}%
+  }%
+  \newcommand*{\IncludeGraphicsAux}[2]{%
+    \XeTeXLinkBox{%
+      \SavedIncludeGraphics#1{#2}%
+    }%
+  }%
+\fi
+
+% ---- custom blocks ----
+\makeatletter
+\newenvironment{kframe}{%
+\medskip{}
+\setlength{\fboxsep}{.8em}
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\makeatletter
+\@ifundefined{Shaded}{
+}{\renewenvironment{Shaded}{\begin{kframe}}{\end{kframe}}}
+\makeatother
+
+
+% --- custom blocks ---
+
+% ---- redefine quote format as modern
+\setlength{\fboxsep}{.8em}
+\usepackage{framed}
+\definecolor{quotebarcolor}{rgb}{0.2,0.2,0.2}
+\renewenvironment{quote}{\def\FrameCommand{{\color{quotebarcolor}{\vrule width 3pt}}\hspace{10pt}}\MakeFramed{\advance\hsize-\width\FrameRestore}}{\endMakeFramed}
+% ----
+% ---- kframe blocks
+\newenvironment{infobox}[1]
+  {\begin{itemize}
+  \renewcommand{\labelitemi}{
+    \raisebox{-.7\height}[0pt][0pt]{
+      {\setkeys{Gin}{width=3em,keepaspectratio}\includegraphics{_latex/_img/#1}}
+    }
+  }
+  \setlength{\fboxsep}{1em}\begin{kframe}\item}{\end{kframe}\end{itemize}
+}
+% -----
+
+% for block/block2 engine
+\newenvironment{memo}{\begin{infobox}{memo}}{\end{infobox}}
+\newenvironment{caution}{\begin{infobox}{caution}}{\end{infobox}}
+\newenvironment{important}{\begin{infobox}{important}}{\end{infobox}}
+\newenvironment{tip}{\begin{infobox}{tip}}{\end{infobox}}
+\newenvironment{warning}{\begin{infobox}{warning}}{\end{infobox}}
+% ---- custom block over ----
+
+% --- for soft wrapping in code block
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines,breakanywhere}
+% ----
+
+% ---- user-defined preamble here ----
+% ---- user-defined preamble over ----
+
+\usepackage[style=jauthoryear,natbib=true]{biblatex}
+
+
+\title{無題}
+\date{2021-04-19}
+\usepackage{bxtexlogo}
+\colorlet{shadecolor}{gray!20}
+
+\usepackage{fmtcount}
+\ifdefined\theFancyVerbLine\renewcommand{\theFancyVerbLine}{\small \padzeroes[2]{\decimal{FancyVerbLine}}}\fi % adjust row number position
+\IfFileExists{bxcoloremoji.sty}{\usepackage{bxcoloremoji}}{}
+
+
+
+
+\begin{document}
+\maketitle
+
+\makeatletter
+\def\emptypage@emptypage{%
+    \hbox{}%
+    \thispagestyle{headings}%
+    \newpage%    
+}%
+\def\cleardoublepage{%
+        \clearpage%
+        \if@twoside%
+            \ifodd\c@page%
+                % do nothing
+            \else%
+                \emptypage@emptypage%
+            \fi%
+        \fi%
+    }%
+\makeatother
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{rmdja-ux30d1ux30c3ux30b1ux30fcux30b8ux30c6ux30f3ux30d7ux30ecux30fcux30c8ux306eux4f7fux3044ux65b9}{%
+\chapter{\texorpdfstring{\texttt{rmdja}
+パッケージテンプレートの使い方}{rmdja パッケージテンプレートの使い方}}\label{rmdja-ux30d1ux30c3ux30b1ux30fcux30b8ux30c6ux30f3ux30d7ux30ecux30fcux30c8ux306eux4f7fux3044ux65b9}}
+
+\texttt{bookdown} の機能をフルに使うには, 以下の点に注意してください.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ``Knit'' ボタンではなく Build ペーンから文書をビルドする
+\item
+  最初に読み込むファイルは必ず \texttt{index.Rmd} という名前にする
+\end{enumerate}
+
+
+\end{document}

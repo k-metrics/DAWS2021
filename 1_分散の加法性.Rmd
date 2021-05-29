@@ -1,0 +1,104 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 分散の加法性
+```{r}
+x <- rnorm(10000, mean=10, sd=10)
+hist(x)
+mean(x)
+var(x)
+sd(x)
+```
+
+```{r}
+y <- rnorm(10000, mean=30, sd=10)
+hist(y)
+mean(y)
+var(y)
+sd(y)
+```
+
+```{r}
+z <- c(sample(x, 1000, replace = TRUE) + sample(y, 1000, replace = TRUE))
+hist(z)
+```
+
+
+```{r}
+mean(x) + mean(y)
+mean(z)
+```
+
+```{r}
+var(x) + var(y)
+var(z)
+```
+
+これが分散の加法性
+
+
+両方が同じ分布であるとすれば分散の加法性より
+```{r}
+a <- rnorm(10000, mean=10, sd=10)
+c <- c(sample(a, 1000, replace = TRUE) + sample(a, 1000, replace = TRUE))
+```
+
+```{r}
+mean(a)
+var(a)
+sd(a)
+```
+
+```{r}
+mean(c)
+var(c)
+sd(c)
+```
+
+の正規分布になる。
+
+```{r}
+hist(c)
+```
+
+上記の分布は同じ分布のデータを加法したものであるから、このデータを全て半分にした正規分布を考えれば
+```{r}
+hist(c / 2)
+```
+
+その要約統計量は
+```{r}
+mean(c / 2)      # 平均
+var(c / 2)       # 分散
+sd(c / 2)        # 標準偏差
+```
+
+
+すなわち母集団の平均値$\mu$、分散$\sigma^2$から以下のように求められるものとほぼ同値であることがわかる。
+```{r}
+mean(a) / 2
+var(a) / 2
+sqrt(var(a) / 2)
+sd(a) / sqrt(2)
+```
+
+
+「二つの標本の平均値の平均値」とは、母集団$\alpha$から、ランダムサンプリングで二つの標本を取り、その平均値を取る。
+取った値を元の母集団$\alpha$へ戻し（`replace = TRUE``）、ランダムサンプリングを繰り返して標本を作成する。
+```{r}
+d <- c((sample(a, 1000, replace = TRUE) + sample(a, 1000, replace = TRUE)) / 2)
+```
+
+この時の標本の平均値、分散、標準偏差は以下となり、上記と同じことがわかる。
+```{r}
+mean(d)
+var(d)
+sd(d)
+```
+

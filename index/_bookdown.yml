@@ -1,0 +1,31 @@
+book_filename: _main.Rmd                # マージして作ったファイルの名前.
+output_dir: "_book"                     # ビルドしたファイルの出力先.
+delete_merged_file: true                # 中間生成された Rmd をビルド後に消すかどうか
+clean: null                             # ビルド後に削除するファイル. ビルド中に作られたほとんどの中間ファイルは自動で消されるため, 気になった場合のみ使う.
+before_chapter_scrip: null              # 章の開始ごとに挿入する処理, .R ファイル
+after_chapter_script: null              # 章の終了ごとに挿入する処理, .R ファイル
+new_session: false                      # "knit and merge," 各 Rmd で個別に knit してから連結. false なら 連結してから knit.
+rmd_subdir: null  # Rmd を探索するディレクトリ. デフォルトではカレントディレクトリしか見ない. true にすると全体を再帰的に探索.
+# 読み込むファイルを列挙したい場合は `rmd_files:` を使う
+# ---- 用語の変更 ----
+language:                 
+  label:
+    fig: '図 '
+    tab: '表 '
+    eq: '式 '
+    thm: '定理 '
+    lem: '補題 '
+    cor: '系 '
+    prp: '命題 '
+    cnj: '予想 '
+    def: '定義 '
+    exm: '例 '
+    exr: '練習 '
+    proof: '証明. '
+    remark: '用例. '
+    solution: '解答. '
+  ui:
+    edit: "Edit"
+    chapter_name: ''  # 接頭語なので日本語には向いていない
+    section_name: "SS "
+    appendix_name: '補遺'
