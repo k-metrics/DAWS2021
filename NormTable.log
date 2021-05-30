@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2021.5.28)  31 MAY 2021 00:31
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2021.5.28)  30 MAY 2021 13:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**AdditivityOfVariance.tex
-(./AdditivityOfVariance.tex
+**NormTable.tex
+(./NormTable.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-05-27> (/home/sampo/.TinyTeX/texmf-dist/tex/latex/tu
 fte-latex/tufte-handout.cls
@@ -357,7 +357,8 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count292
 ) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/natbib/bibentry.sty
 Package: bibentry 2007/10/30 1.5 (PWD)
-) (./AdditivityOfVariance.bbl)
+)
+No file NormTable.bbl.
 \c@@tufte@num@bibkeys=\count293
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/sauerj/optparams.sty
 Package: optparams 2004/08/14 v0.9 multiple optional parameters in macros
@@ -560,40 +561,40 @@ Package: fancyvrb 2021/01/20 v3.7 verbatim text (tvz,hv)
 \c@FancyVerbLine=\count321
 \FV@StepNumber=\count322
 \FV@OutFile=\write3
-) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
-Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
-\LTleft=\skip99
-\LTright=\skip100
-\LTpre=\skip101
-\LTpost=\skip102
-\LTchunksize=\count323
-\LTcapwidth=\dimen196
-\LT@head=\box106
-\LT@firsthead=\box107
-\LT@foot=\box108
-\LT@lastfoot=\box109
-\LT@cols=\count324
-\LT@rows=\count325
-\c@LT@tables=\count326
-\c@LT@chunks=\count327
-\LT@p@ftn=\toks28
 ) (/home/sampo/.TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box110
-\UL@hyphenbox=\box111
-\UL@skip=\skip103
-\UL@hook=\toks29
-\UL@height=\dimen197
-\UL@pe=\count328
-\UL@pixel=\dimen198
-\ULC@box=\box112
+\UL@box=\box106
+\UL@hyphenbox=\box107
+\UL@skip=\skip99
+\UL@hook=\toks28
+\UL@height=\dimen196
+\UL@pe=\count323
+\UL@pixel=\dimen197
+\ULC@box=\box108
 Package: ulem 2019/11/18
-\ULdepth=\dimen199
+\ULdepth=\dimen198
 ) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/morefloats/morefloats.sty
 Package: morefloats 2015/07/22 v1.0h Raise limit of unprocessed floats (HMM)
 Package morefloats Info: Maximum number of possible floats asked for: 36
 (morefloats)             (i.e. 18 more floats).
 (morefloats)             LaTeX might run out of memory before this
 (morefloats)             (in which case it will notify you).
+) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip100
+\LTright=\skip101
+\LTpre=\skip102
+\LTpost=\skip103
+\LTchunksize=\count324
+\LTcapwidth=\dimen199
+\LT@head=\box109
+\LT@firsthead=\box110
+\LT@foot=\box111
+\LT@lastfoot=\box112
+\LT@cols=\count325
+\LT@rows=\count326
+\c@LT@tables=\count327
+\c@LT@chunks=\count328
+\LT@p@ftn=\toks29
 ) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/tools/array.sty
 Package: array 2020/10/01 v2.5c Tabular extension package (FMi)
 \col@sep=\dimen256
@@ -937,94 +938,94 @@ phenChar=None,PunctuationSpace=WordSpace].
 (fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
 (fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
 
-(./AdditivityOfVariance.aux)
-\openout1 = `AdditivityOfVariance.aux'.
+(./NormTable.aux)
+\openout1 = `NormTable.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 183.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 182.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
-83.
+82.
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 183.
-LaTeX Font Info:    ... okay on input line 183.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 182.
+LaTeX Font Info:    ... okay on input line 182.
 
 Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
 (fontspec)             this).
 
 \symlegacymaths=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 183.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 183.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 183.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 183.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 183.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 183.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 183.
-LaTeX Font Info:    Redeclaring math accent \check on input line 183.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 183.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 183.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 183.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 183.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 183.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 182.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 182.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 182.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 182.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 182.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 182.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 182.
+LaTeX Font Info:    Redeclaring math accent \check on input line 182.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 182.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 182.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 182.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 182.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 183.
+(Font)              `operators' in the math version `normal' on input line 182.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 183.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 182.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 183.
+(Font)              `operators' in the math version `bold' on input line 182.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 183.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 182.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 183.
+(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 183.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 183.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 183.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
 (Font)                  OT1/cmtt/m/n --> TU/SourceHanCodeJP(0)/m/n on input lin
-e 183.
+e 182.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 183.
+(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 183.
+(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 183.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 182.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> TU/SourceHanCodeJP(0)/b/n on input lin
-e 183.
-Package hyperref Info: Link coloring OFF on input line 183.
+e 182.
+Package hyperref Info: Link coloring OFF on input line 182.
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
@@ -1035,15 +1036,15 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count362
 )
-LaTeX Info: Redefining \ref on input line 183.
-LaTeX Info: Redefining \pageref on input line 183.
-LaTeX Info: Redefining \nameref on input line 183.
-(./AdditivityOfVariance.out) (./AdditivityOfVariance.out)
+LaTeX Info: Redefining \ref on input line 182.
+LaTeX Info: Redefining \pageref on input line 182.
+LaTeX Info: Redefining \nameref on input line 182.
+(./NormTable.out) (./NormTable.out)
 \@outlinefile=\write4
-\openout4 = `AdditivityOfVariance.out'.
+\openout4 = `NormTable.out'.
 
 ABD: EverySelectfont initializing macros
-LaTeX Info: Redefining \selectfont on input line 183.
+LaTeX Info: Redefining \selectfont on input line 182.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1085,24 +1086,29 @@ Package caption Info: End \AtBeginDocument code.
 
 LaTeX Font Warning: Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' undefined
 (Font)              using `TU/NotoSerifCJKjp-Regular(0)/m/n' instead on input l
-ine 185.
+ine 184.
 
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 14.4pt on input line 185.
+(Font)              scaled to size 14.4pt on input line 184.
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 193.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 195
+(Font)              scaled to size 10.0pt on input line 192.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 192
 .
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 195
+LaTeX Font Info:    Trying to load font information for U+msb on input line 192
 .
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+File: NormTable_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf
+)
+<use NormTable_files/figure-latex/unnamed-chunk-1-1.pdf>
+LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 201.
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
-(Font)              scaled to size 12.0pt on input line 200.
+(Font)              scaled to size 12.0pt on input line 207.
 
 Package fontspec Info: NotoSansCJKjp-Regular scale = 0.7937346499485756.
 
@@ -1118,7 +1124,7 @@ Package fontspec Info: Could not resolve font "NotoSansCJKjp-Regular/I" (it
 Package fontspec Info: NotoSansCJKjp-Bold scale = 0.7937346499485756.
 
 LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/n' will be
-(Font)              scaled to size 7.98141pt on input line 202.
+(Font)              scaled to size 7.98141pt on input line 209.
 
 Package fontspec Info: NotoSansCJKjp-Black scale = 0.7937346499485756.
 
@@ -1162,386 +1168,47 @@ flt;-palt;-kern;mapping=tex-text;"
 e=dflt;-palt;-kern;mapping=tex-text;"
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 203.
-
-LaTeX Warning: Marginpar on page 1 moved.
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-2-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-2-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-3-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-3-1.pdf>
-Missing character: There is no ｂ ("FF42) in font cmmi8!
+LaTeX Font Info:    Font shape `TU/NotoSansCJKjp-Regular(0)/m/n' will be
+(Font)              scaled to size 10.0pt on input line 217.
+File: NormTable_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf
+)
+<use NormTable_files/figure-latex/unnamed-chunk-3-1.pdf>
+File: NormTable_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf
+)
+<use NormTable_files/figure-latex/unnamed-chunk-4-1.pdf>
 
 LaTeX Warning: Marginpar on page 1 moved.
 
 [1
 
 ]
-LaTeX Font Info:    Font shape `TU/NotoSansCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 273.
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1] 46.1163151 20.3791277 53.3515673 21.896
-3015 61.1246494 51.2528823[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7] 31.6871108 39.2162349 17.5558542 20.712
-8908 59.3459501 14.2180864[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13] -0.2665056 25.7861722 36.7150493 57.657
-4579 44.5347530 27.7907453[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [19] 41.6449701 45.0677697 29.9428047 27.702
-6317 20.0414525 47.8090035[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [25] 27.3501016 23.2370535 55.4529451 56.280
-4943 39.5785953 45.5288645[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [31] 40.5379614 25.2187384  7.5660458 28.649
-7265 32.3198940 54.7287173[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [37] 34.1525732 28.1064348 31.9661833 51.178
-1650 40.7792296 41.0413417[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43] 60.3036364 34.8352682 51.7803487 12.940
-6436 37.7692407 43.7219224[] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-5-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-5-1.pdf>
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 316.
-
-[2]
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
-(Font)              scaled to size 10.95pt on input line 319.
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]  10.4718478   4.9849636  24.4768738   5
-.9558301   7.7480742  27.4413166[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7]  21.1164196   9.3571719  17.2357327  12
-.3316145  26.9292925   7.1489398[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13]   3.7063110  23.2323883  -8.4626318   5
-.5915979  -9.7637977  21.3708252[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [19]   5.3004719  18.2108842  17.0170253  16
-.5061865  25.3001358  15.1217001[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [25]   4.4774172   6.0094778   8.5488500  13
-.9068968  34.5300485   2.7411102[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [31]   3.2848838   9.3957845  24.7347964   0
-.3809330   5.7002271  16.1209396[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [37]  14.4848248  24.6707233  -0.1087532  11
-.4830700   7.1821467   1.8100113[] 
- []
-
-
-Overfull \hbox (108.56476pt too wide) in paragraph at lines 346--346
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43]  13.7401719 -11.3177720  27.2871844  21
-.5304871  12.7569856  10.1043822[] 
- []
-
-
-Overfull \hbox (76.62315pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]   8.994299  34.512526   8.023292   1.85
-3060  11.134472  13.456867[] 
- []
-
-
-Overfull \hbox (76.62312pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7]  -1.236911  43.042327   9.688241  26.20
-3479  32.099955  10.895178[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13]  28.656876  21.727965  25.561257  18.99
-9813  17.953008  27.535234[] 
- []
-
-
-Overfull \hbox (76.62312pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [19]  23.392168  24.511423  63.000654  20.29
-3859  18.665178   3.437621[] 
- []
-
-
-Overfull \hbox (76.62314pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [25]  37.886192   2.147762  22.421276  14.12
-1936   8.985141  16.292188[] 
- []
-
-
-Overfull \hbox (76.62312pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [31]  23.056984  28.247759  37.227212  21.64
-8009  25.883282   5.507856[] 
- []
-
-
-Overfull \hbox (76.62312pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [37]   4.249043  26.259230  26.205216  42.22
-7126  30.747036  13.058043[] 
- []
-
-
-Overfull \hbox (76.62312pt too wide) in paragraph at lines 369--369
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43]  26.658647  28.697299   4.633673  25.37
-1136 -16.056406  22.763227[] 
- []
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 371.
-
-[3]
-Overfull \hbox (2.63855pt too wide) in alignment at lines 384--389
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (2.63855pt too wide) in alignment at lines 389--393
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (2.63855pt too wide) in alignment at lines 393--397
- [] [] [] [] [] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-8-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-8-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-9-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-9-1.pdf>
-
-LaTeX Warning: Marginpar on page 4 moved.
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 437.
-
-[4]
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 442.
-
-Overfull \hbox (97.91759pt too wide) in paragraph at lines 455--455
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]  8.656109  6.365271 10.716425  1.298762
-  9.633547  9.873571  4.596933[] 
- []
-
-
-Overfull \hbox (97.91751pt too wide) in paragraph at lines 455--455
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [8] 11.911069 15.384756 12.053533 11.393067
-  1.115477 12.317064 10.701997[] 
- []
-
-
-Overfull \hbox (44.6815pt too wide) in paragraph at lines 455--455
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [15] 15.624726 19.306380  8.377597  3.342314
-  6.966565 -2.440361[] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-11-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-12-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-12-1.pdf>
-
-LaTeX Warning: Marginpar on page 5 moved.
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 504.
-
-[5]
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 525--525
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]  9.9478545 26.1820143  6.5311987 17.387
-7299  6.2840528  9.3267385[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 525--525
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7] 10.2109100 18.8806762 16.1432096 10.634
-9812 22.8358974  0.1243132[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 525--525
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13] 13.5626614  1.2668669 15.5944764 14.240
-4416 16.5512347 12.2533591[] 
- []
-
-
-Overfull \hbox (16.93457pt too wide) in alignment at lines 527--532
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (16.93457pt too wide) in alignment at lines 532--536
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (16.93457pt too wide) in alignment at lines 536--543
- [] [] [] [] [] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-14-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-14-1.pdf>
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 571.
-
-[6]
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
-(Font)              scaled to size 12.0pt on input line 574.
-LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/b/n' will be
-(Font)              scaled to size 7.98141pt on input line 580.
-LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/it' will be
-(Font)              scaled to size 7.98141pt on input line 581.
-
-LaTeX Font Warning: Font shape `TU/NotoSansCJKjp-Regular(0)/m/it' undefined
-(Font)              using `TU/NotoSansCJKjp-Regular(0)/m/n' instead on input li
-ne 581.
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 651.
-
-[7]
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 691.
-
-[8]
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 715.
-
-[9]
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 793.
-
-[10]
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 853.
-
-[11]
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 874.
-
-[12]
+(Font)              scaled to size 12.0pt on input line 310.
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
-(Font)              scaled to size 10.95pt on input line 903.
-LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/it' will be
-(Font)              scaled to size 8.73964pt on input line 910.
+(Font)              scaled to size 10.95pt on input line 317.
+
+LaTeX Warning: Marginpar on page 2 moved.
+
+No file NormTable.bbl.
 
 Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
 set up.
-This message occurred on input line 915.
+This message occurred on input line 341.
 
-[13]
-Overfull \hbox (12.73987pt too wide) in paragraph at lines 928--928
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## alternative hypothesis: true correlation is 
-not equal to 0[] 
- []
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 930.
-
-[14]
-
-LaTeX Warning: Marginpar on page 15 moved.
-
-(./AdditivityOfVariance.bbl
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
-(Font)              scaled to size 10.0pt on input line 10.
-)
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 953.
-
-[15] (./AdditivityOfVariance.aux)
+[2] (./NormTable.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package rerunfilecheck Info: File `AdditivityOfVariance.out' has not changed.
-(rerunfilecheck)             Checksum: CA0FAF6774CAF1F15A02D8CCB24C04B0;485.
+Package rerunfilecheck Info: File `NormTable.out' has not changed.
+(rerunfilecheck)             Checksum: E98685DA09C3E254D6AA1517B0C1C9EE;414.
  ) 
 Here is how much of TeX's memory you used:
- 22498 strings out of 478682
- 424556 string characters out of 5862726
- 839606 words of memory out of 5000000
- 42106 multiletter control sequences out of 15000+600000
- 409135 words of font info for 104 fonts, out of 8000000 for 9000
+ 22259 strings out of 478682
+ 408598 string characters out of 5862726
+ 821759 words of memory out of 5000000
+ 41883 multiletter control sequences out of 15000+600000
+ 409079 words of font info for 97 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 108i,11n,143p,422b,545s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 108i,12n,143p,381b,457s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on AdditivityOfVariance.pdf (15 pages).
+Output written on NormTable.pdf (2 pages).

@@ -1,0 +1,186 @@
+---
+title: "正規分布表を求める"
+runningheader: "正規分布表を求める" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.1         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+```
+
+# **Introduction**
+　正規分布表は$0$から任意の$Z$スコアまでに含まれる正規分布の面積を求める表です。逆引きすることで、面積から$Z$スコアを求めることもできます。例えば$95\%$の面積になる$Z$スコアは正規分布表から片側面積の$47.5\%$に最も近い値を探すと$Z = 1.96$になることがわかります。  
+本資料では、この正規分布表を**R**で求める方法を説明します。
+
+```{r, fig.margin = TRUE, fig.cap = "正規分布表で求められる面積", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+x <- seq(from = -4, to = 4, len = 101)
+q <- seq(from = qnorm(0.50), to = qnorm(0.975), len = 101)
+
+data.frame(x = x, y = dnorm(x), q = q, r = dnorm(q)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_ribbon(ggplot2::aes(x = q, y = r, ymin = 0, ymax = r), fill = "gray75") +
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+```
+
+　  
+
+# **Rで求める場合**
+　**R**で$Z$スコアから正規分布の面積を求める場合は`pnorm()`関数、面積から$Z$スコアを求めるには`qnorm()`関数がありますが、引数の指定には注意が必要です。例えば面積が$95\%$になる、すなわち約$\pm2\sigma$の範囲になる面積から$Z$スコアを求めようとして、以下のように指定した場合
+
+```{r}
+qnorm(0.95)
+```
+
+求められた$Z$スコアは明らかに約$\pm1\sigma$の面積に相当する$Z$スコアになっています。これは、`qnorm()`関数が下側（`-Inf`）から計算して面積が$95\%$になる$Z$スコア、つまり、正規分布表で面積が$90\%$になる$Z$スコアを求めているためです。
+
+```{r, fig.margin = TRUE, fig.cap = "関数が求めている面積", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+x <- seq(from = -4, to = 4, len = 101)
+q <- seq(from = -4, to = qnorm(0.95), len = 101)
+
+data.frame(x = x, y = dnorm(x), q = q, r = dnorm(q)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_ribbon(ggplot2::aes(x = q, y = r, ymin = 0, ymax = r), fill = "gray75") +
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+```
+
+　  
+
+そこで、`qnorm()`関数で正規分布表と同じ計算を行うためには両側で$95\%$、つまり片側が$\frac{1 - 0.95}{2} = 0.025$が上側（`Inf`）からの面積となる$Z$スコアを求める必要があります。
+
+```{r, fig.margin = TRUE, fig.cap = "上側$2.5\\%$の面積を指定した場合", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+x <- seq(from = -4, to = 4, len = 101)
+q <- seq(from = qnorm(0.025, lower.tail = FALSE), to = 4, len = 101)
+
+data.frame(x = x, y = dnorm(x), q = q, r = dnorm(q)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_ribbon(ggplot2::aes(x = q, y = r, ymin = 0, ymax = r), fill = "gray75") +
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+```
+
+```{r}
+qnorm((1 - 0.95) / 2, lower.tail = FALSE)
+```
+
+同様に$90\%$であれば
+
+```{r}
+qnorm((1 - 0.90) / 2, lower.tail = FALSE)
+```
+
+$68.3\%$であれば
+
+```{r}
+qnorm((1 - 0.683) / 2, lower.tail = FALSE)
+```
+
+となります。
+
+　  
+
+一方、`pnorm()`関数は$Z$スコアから正規分布の面積を求める関数で`qnorm()`と同様の考え方で計算しますので、$Z$スコアが$1.0, 1.65, 1.96$の場合、その上側の片側面積は
+
+```{r}
+pnorm(c(1.00, 1.65, 1.96), lower.tail = FALSE)
+```
+
+となります。両側面積は片側の$50\%$から上記を引いたものを倍にすれば良いことがわかります。
+
+```{r}
+(pnorm(0) - pnorm(c(1.00, 1.65, 1.96), lower.tail = FALSE)) * 2
+```
+
+　  
+
+# まとめ
+　`qnorm()`関数を用いる場合は正規分布表とは逆に上限（`Inf`）側からの値を指定、`pnorm()`関数を用いる場合は求められた値を$0.5$から引いたものを$2$倍することで、正規分布表と同等の値を得ることができます。
+
+　  
+
+## 問題
+　`pnorm()`関数を用いて正規分布表を作成しなさい。
+
+```{r, include=FALSE, eval=FALSE}
+# ベタな方法
+data.frame(
+  `0.00` = pnorm(0) - round(pnorm(seq(from = 0.00, to = 3.00, by = 0.1), lower.tail = FALSE), 4),
+  `0.01` = pnorm(0) - round(pnorm(seq(from = 0.01, to = 3.01, by = 0.1), lower.tail = FALSE), 4),
+  `0.02` = pnorm(0) - round(pnorm(seq(from = 0.02, to = 3.02, by = 0.1), lower.tail = FALSE), 4),
+  `0.03` = pnorm(0) - round(pnorm(seq(from = 0.03, to = 3.03, by = 0.1), lower.tail = FALSE), 4),
+  `0.04` = pnorm(0) - round(pnorm(seq(from = 0.04, to = 3.04, by = 0.1), lower.tail = FALSE), 4),
+  `0.05` = pnorm(0) - round(pnorm(seq(from = 0.05, to = 3.05, by = 0.1), lower.tail = FALSE), 4),
+  `0.06` = pnorm(0) - round(pnorm(seq(from = 0.06, to = 3.06, by = 0.1), lower.tail = FALSE), 4),
+  `0.07` = pnorm(0) - round(pnorm(seq(from = 0.07, to = 3.07, by = 0.1), lower.tail = FALSE), 4),
+  `0.08` = pnorm(0) - round(pnorm(seq(from = 0.08, to = 3.08, by = 0.1), lower.tail = FALSE), 4),
+  `0.09` = pnorm(0) - round(pnorm(seq(from = 0.09, to = 3.09, by = 0.1), lower.tail = FALSE), 4)
+) %>% knitr::kable()
+```
+
+　  
+
+# About handout style
+The Tufte handout style is a style that Edward Tufte uses in his books and handouts. Tufte's style is known for its extensive use of sidenotes, tight integration of graphics with text, and well-set typography. This style has been implemented in LaTeX and HTML/CSS^[See Github repositories [tufte-latex](https://github.com/tufte-latex/tufte-latex) and [tufte-css](https://github.com/edwardtufte/tufte-css)], respectively.
+
+　  
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```
