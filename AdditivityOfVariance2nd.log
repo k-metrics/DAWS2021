@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2021.5.28)  31 MAY 2021 18:30
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2021) (preloaded format=xelatex 2021.5.28)  31 MAY 2021 18:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**AdditivityOfVariance.tex
-(./AdditivityOfVariance.tex
+**AdditivityOfVariance2nd.tex
+(./AdditivityOfVariance2nd.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-05-27> (/home/sampo/.TinyTeX/texmf-dist/tex/latex/tu
 fte-latex/tufte-handout.cls
@@ -357,7 +357,8 @@ LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count292
 ) (/home/sampo/.TinyTeX/texmf-dist/tex/latex/natbib/bibentry.sty
 Package: bibentry 2007/10/30 1.5 (PWD)
-) (./AdditivityOfVariance.bbl)
+)
+No file AdditivityOfVariance2nd.bbl.
 \c@@tufte@num@bibkeys=\count293
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/sauerj/optparams.sty
 Package: optparams 2004/08/14 v0.9 multiple optional parameters in macros
@@ -937,8 +938,8 @@ phenChar=None,PunctuationSpace=WordSpace].
 (fontspec)             4\font \fontdimen 7\font =0\fontdimen 2\font
 (fontspec)             \tex_hyphenchar:D \font =-1\scan_stop: 
 
-(./AdditivityOfVariance.aux)
-\openout1 = `AdditivityOfVariance.aux'.
+(./AdditivityOfVariance2nd.aux)
+\openout1 = `AdditivityOfVariance2nd.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 184.
 LaTeX Font Info:    ... okay on input line 184.
@@ -1038,9 +1039,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 184.
 LaTeX Info: Redefining \pageref on input line 184.
 LaTeX Info: Redefining \nameref on input line 184.
-(./AdditivityOfVariance.out) (./AdditivityOfVariance.out)
+(./AdditivityOfVariance2nd.out) (./AdditivityOfVariance2nd.out)
 \@outlinefile=\write4
-\openout4 = `AdditivityOfVariance.out'.
+\openout4 = `AdditivityOfVariance2nd.out'.
 
 ABD: EverySelectfont initializing macros
 LaTeX Info: Redefining \selectfont on input line 184.
@@ -1089,22 +1090,28 @@ ine 186.
 
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
 (Font)              scaled to size 14.4pt on input line 186.
+LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
+(Font)              scaled to size 12.0pt on input line 192.
+LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
+(Font)              scaled to size 12.0pt on input line 192.
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
 (Font)              scaled to size 10.0pt on input line 194.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 196
+LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
+(Font)              scaled to size 10.95pt on input line 199.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 206
 .
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 196
+LaTeX Font Info:    Trying to load font information for U+msb on input line 206
 .
 (/home/sampo/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
-(Font)              scaled to size 12.0pt on input line 201.
+LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
+(Font)              scaled to size 8.0pt on input line 206.
 
-Package fontspec Info: NotoSansCJKjp-Regular scale = 0.7937346499485756.
+Package fontspec Info: NotoSansCJKjp-Regular scale = 0.7937363227943476.
 
 
 Package fontspec Info: Could not resolve font "NotoSansCJKjp-Bold/I" (it
@@ -1115,21 +1122,21 @@ Package fontspec Info: Could not resolve font "NotoSansCJKjp-Regular/I" (it
 (fontspec)             probably doesn't exist).
 
 
-Package fontspec Info: NotoSansCJKjp-Bold scale = 0.7937346499485756.
+Package fontspec Info: NotoSansCJKjp-Bold scale = 0.7937363227943476.
 
 LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/n' will be
-(Font)              scaled to size 7.98141pt on input line 203.
+(Font)              scaled to size 7.98141pt on input line 206.
 
-Package fontspec Info: NotoSansCJKjp-Black scale = 0.7937346499485756.
-
-
-Package fontspec Info: NotoSansCJKjp-Regular scale = 0.7937346499485756.
+Package fontspec Info: NotoSansCJKjp-Black scale = 0.7937363227943476.
 
 
-Package fontspec Info: NotoSansCJKjp-Bold scale = 0.7937346499485756.
+Package fontspec Info: NotoSansCJKjp-Regular scale = 0.7937363227943476.
 
 
-Package fontspec Info: NotoSansCJKjp-Regular/BI scale = 0.7937346499485756.
+Package fontspec Info: NotoSansCJKjp-Bold scale = 0.7937363227943476.
+
+
+Package fontspec Info: NotoSansCJKjp-Regular/BI scale = 0.7937363227943476.
 
 
 Package fontspec Info: Font family 'NotoSansCJKjp-Regular(0)' created for font
@@ -1162,316 +1169,169 @@ flt;-palt;-kern;mapping=tex-text;"
 e=dflt;-palt;-kern;mapping=tex-text;"
 (fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
 
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 8.0pt on input line 204.
+LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/n' will be
+(Font)              scaled to size 6.38513pt on input line 206.
 
 LaTeX Warning: Marginpar on page 1 moved.
 
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-2-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-2-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-3-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-3-1.pdf>
-Missing character: There is no ｂ ("FF42) in font cmmi8!
 
 LaTeX Warning: Marginpar on page 1 moved.
 
+
+LaTeX Warning: Marginpar on page 1 moved.
+
+LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/b/n' will be
+(Font)              scaled to size 7.98141pt on input line 217.
+LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/it' will be
+(Font)              scaled to size 7.98141pt on input line 218.
+
+LaTeX Font Warning: Font shape `TU/NotoSansCJKjp-Regular(0)/m/it' undefined
+(Font)              using `TU/NotoSansCJKjp-Regular(0)/m/n' instead on input li
+ne 218.
+
+LaTeX Font Info:    Font shape `TU/NotoSansCJKjp-Regular(0)/m/n' will be
+(Font)              scaled to size 10.0pt on input line 218.
 [1
 
 ]
-LaTeX Font Info:    Font shape `TU/NotoSansCJKjp-Regular(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 274.
-
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1] 24.667622 31.612037 47.536352 66.916889
- 33.749761 36.649172 54.290921[] 
+Overfull \hbox (99.18547pt too wide) in alignment at lines 241--246
+ [] [] [] 
  []
 
 
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [8] 77.884441 44.691841 40.621955 43.838847
- 16.358541 34.144425 38.581142[] 
+Overfull \hbox (99.18547pt too wide) in alignment at lines 246--250
+ [] [] [] 
  []
 
 
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [15] 42.666889 40.791640 37.229227 -7.237897
- 25.148347 61.800948 61.526631[] 
+Overfull \hbox (99.18547pt too wide) in alignment at lines 250--264
+ [] [] [] 
  []
 
-
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [22] 60.641850 40.064745 58.387025 33.583883
- 57.739139 39.467519 41.188832[] 
- []
-
-
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [29] 64.905717 30.787344 36.475048 36.619361
- 44.598386 47.886578 14.004975[] 
- []
-
-
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [36] 66.057824 46.678635 21.642013 44.987430
- 36.928684 32.562940 57.779482[] 
- []
-
-
-Overfull \hbox (97.9175pt too wide) in paragraph at lines 283--283
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43] 11.197685 38.806596 26.628165 59.812965
- 47.331169 58.127789 24.942328[] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-5-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-5-1.pdf>
 
 Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
 set up.
-This message occurred on input line 316.
+This message occurred on input line 266.
 
 [2]
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/it' will be
-(Font)              scaled to size 10.95pt on input line 319.
-
-Overfull \hbox (97.91753pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1] 12.034606 -1.214004 13.776530 16.143755
-  3.106183  6.182120 23.451810[] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 271--276
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91753pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [8] -6.150912 15.639383  7.830779  8.198381
- -1.305731 18.704214 10.084423[] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 276--280
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91754pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [15] 14.747408 -2.926950 10.300094 -4.751576
-  8.199263  7.273566  6.745570[] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 280--321
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91751pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [22] -0.311655 22.643916 16.646436 24.806921
-  7.657171 15.581767 39.094705[] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 321--340
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91754pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [29] -1.861820  5.465032  8.717058  8.975608
- -7.211283 10.600658 12.367784[] 
+Overfull \hbox (32.62pt too wide) in alignment at lines 342--347
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91754pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [36] -3.024190 17.559373 22.125600  8.687596
-  7.064100  9.843990 20.489812[] 
+Overfull \hbox (32.62pt too wide) in alignment at lines 347--351
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (97.91753pt too wide) in paragraph at lines 345--345
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43] 13.497414 14.323515 15.146395 11.668585
-  4.629327  3.715618 11.520781[] 
+Overfull \hbox (32.62pt too wide) in alignment at lines 351--355
+ [] [] [] [] [] [] [] [] [] 
  []
 
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1] 20.8336628 14.4599047  3.9145979 14.556
-5685 -0.9508145 14.9970491[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7] -6.9557951 28.2038815 10.5317038 -0.959
-3997 25.6304693  1.6113688[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13]  6.3702246 35.1270067 28.1501076 46.648
-3243 22.0890673 10.7547139[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [19] 26.2734756 29.6064915  0.5089567  2.119
-4499  8.3471013 28.5236195[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [25] 13.1189476  3.0607473 17.9480463 30.335
-8709  9.8321002 32.7045648[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [31]  5.5616795 -0.7902418 18.7189952 -2.380
-6151  9.6897299  7.1552882[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [37] 21.8980739 17.3509717 13.9177152 27.643
-1257 44.5932552 48.9292005[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 368--368
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [43] 28.4559518 40.3104493 31.0517835 14.956
-8908  8.5540292 10.3550870[] 
- []
-
+Missing character: There is no 　 (U+3000) in font [lmroman10-regular]:mapping=t
+ex-text;!
 
 Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
 set up.
-This message occurred on input line 370.
+This message occurred on input line 359.
 
 [3]
-Overfull \hbox (2.63855pt too wide) in alignment at lines 383--388
- [] [] [] [] [] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 364--369
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (2.63855pt too wide) in alignment at lines 388--392
- [] [] [] [] [] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 369--373
+ [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (2.63855pt too wide) in alignment at lines 392--396
- [] [] [] [] [] 
+Overfull \hbox (42.62pt too wide) in alignment at lines 373--414
+ [] [] [] [] [] [] [] [] [] 
  []
 
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-8-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-8-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-9-1.pdf Graphic fil
-e (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-9-1.pdf>
 
-LaTeX Warning: Marginpar on page 4 moved.
+Overfull \hbox (42.62pt too wide) in alignment at lines 414--433
+ [] [] [] [] [] [] [] [] [] 
+ []
 
+
+Overfull \hbox (37.62pt too wide) in alignment at lines 435--440
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (37.62pt too wide) in alignment at lines 440--444
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (37.62pt too wide) in alignment at lines 444--448
+ [] [] [] [] [] [] [] [] [] 
+ []
+
+Missing character: There is no 　 (U+3000) in font [lmroman10-regular]:mapping=t
+ex-text;!
 
 Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
 set up.
-This message occurred on input line 436.
+This message occurred on input line 452.
 
 [4]
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 441.
-
-Overfull \hbox (97.91757pt too wide) in paragraph at lines 454--454
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]  6.652945  9.960451  7.072505 12.127334
-  7.176384  8.525928 13.713095[] 
- []
-
-
-Overfull \hbox (97.91757pt too wide) in paragraph at lines 454--454
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [8]  5.759468  3.484226 21.679843 24.694319
-  8.824793  7.736349  7.051991[] 
- []
-
-
-Overfull \hbox (44.68152pt too wide) in paragraph at lines 454--454
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [15]  7.460617  5.019521  9.915649  7.197053
- 12.885202 17.102998[] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-11-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-11-1.pdf>
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-12-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-12-1.pdf>
-
-LaTeX Warning: Marginpar on page 5 moved.
-
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 503.
-
-[5]
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 524--524
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [1]  7.1260897 18.2776983  8.8753585  7.728
-7394  8.9023006  8.2626464[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 524--524
-[]\TU/SourceHanCodeJP(0)/m/n/10 ##  [7] 10.4617740 14.2212462  5.8337332  4.121
-1284  5.7325064  8.9405417[] 
- []
-
-
-Overfull \hbox (76.62311pt too wide) in paragraph at lines 524--524
-[]\TU/SourceHanCodeJP(0)/m/n/10 ## [13]  0.4938622  0.1307224  8.7384554 17.189
-0772  3.8833432 19.4887704[] 
- []
-
-
-Overfull \hbox (11.93457pt too wide) in alignment at lines 526--531
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (11.93457pt too wide) in alignment at lines 531--535
- [] [] [] [] [] 
- []
-
-
-Overfull \hbox (11.93457pt too wide) in alignment at lines 535--542
- [] [] [] [] [] 
- []
-
-File: AdditivityOfVariance_files/figure-latex/unnamed-chunk-14-1.pdf Graphic fi
-le (type pdf)
-<use AdditivityOfVariance_files/figure-latex/unnamed-chunk-14-1.pdf>
-
-Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
-set up.
-This message occurred on input line 570.
-
-[6]
-LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/it' will be
-(Font)              scaled to size 8.73964pt on input line 573.
 LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
-(Font)              scaled to size 10.95pt on input line 573.
+(Font)              scaled to size 10.95pt on input line 455.
+LaTeX Font Info:    Font shape `TU/SourceHanCodeJP(0)/m/it' will be
+(Font)              scaled to size 8.73964pt on input line 462.
 
-Overfull \hbox (12.73987pt too wide) in paragraph at lines 591--591
+Overfull \hbox (12.73987pt too wide) in paragraph at lines 480--480
 []\TU/SourceHanCodeJP(0)/m/n/10 ## alternative hypothesis: true correlation is 
 not equal to 0[] 
  []
 
 
-LaTeX Warning: Marginpar on page 7 moved.
+LaTeX Warning: Marginpar on page 5 moved.
 
-(./AdditivityOfVariance.bbl
-LaTeX Font Info:    Font shape `TU/NotoSerifCJKjp-Regular(0)/m/it' will be
-(Font)              scaled to size 10.0pt on input line 10.
-)
+No file AdditivityOfVariance2nd.bbl.
 
 Class tufte-handout Warning: Proper spacing of small-caps letters has not been 
 set up.
-This message occurred on input line 616.
+This message occurred on input line 505.
 
-[7] (./AdditivityOfVariance.aux)
+[5] (./AdditivityOfVariance2nd.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package rerunfilecheck Info: File `AdditivityOfVariance.out' has not changed.
-(rerunfilecheck)             Checksum: F6F27947D3515F5E073974250F8FE648;304.
+Package rerunfilecheck Info: File `AdditivityOfVariance2nd.out' has not changed
+.
+(rerunfilecheck)             Checksum: 56264CE9CDDD2D60D77182ED910BDEF5;272.
  ) 
 Here is how much of TeX's memory you used:
- 22460 strings out of 478682
- 422264 string characters out of 5862726
- 825033 words of memory out of 5000000
- 42071 multiletter control sequences out of 15000+600000
- 409111 words of font info for 101 fonts, out of 8000000 for 9000
+ 22322 strings out of 478682
+ 414107 string characters out of 5862726
+ 834366 words of memory out of 5000000
+ 41945 multiletter control sequences out of 15000+600000
+ 409127 words of font info for 103 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 108i,11n,143p,422b,545s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 108i,11n,143p,453b,592s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on AdditivityOfVariance.pdf (7 pages).
+Output written on AdditivityOfVariance2nd.pdf (5 pages).

@@ -59,8 +59,6 @@ if (knitr::is_latex_output()) {
 }
 
 n <- 5000000    # 5,000,000
-
-test_build <- FALSE   # テストビルド(TRUE)の場合は、おまけのコードを実行しない
 ```
 
 # **Introduction**
@@ -313,83 +311,6 @@ $$N(\mu_n, \sigma^2_n) = N(\mu, \frac{\sigma^2}{n})$$
 
 \newpage
 
-# **おまけ**（小室先生のアドバイスから）
-　分散の加法性が成り立つには「データが独立」であるという前提条件があります。データが独立ということはデータ間の相関はないはずなので、乱数生成した二つのデータが本当に独立（無相関）なのかを確認します。
-
-```{r, eval=!test_build}
-f <- function(n = 5000000) {
-  # 乱数生成したデータ
-  x <- rnorm(n = n, mean = 10, sd = 10)
-  y <- rnorm(n = n, mean = 30, sd = 10)
-  # 乱数生成したデータ間の無相関の検定結果をデータフレーム化
-  cor.test(x, y) %>% broom::tidy()
-}
-```
-
-上記の関数を繰り返し実行し結果を表示します。
-```{r, eval=!test_build}
-df <- data.frame()
-for (i in c(1:100)) {
-  df <- dplyr::bind_rows(df, f())
-}
-
-df %>% 
-  dplyr::select(conf.low, corr = estimate, conf.high,
-                p.value, t.value = statistic) %>% 
-  knitr::kable()
-```
-
-得られた結果の内、有意水準$\alpha = 0.05$で帰無仮説が棄却（$p < \alpha$）されるケースを抽出します。
-```{r, eval=!test_build}
-df %>% 
-  dplyr::select(conf.low, corr = estimate, conf.high,
-                p.value, t.value = statistic) %>% 
-  dplyr::filter(p.value < 0.05) %>% 
-  knitr::kable()
-```
-
-```{r, include=FALSE, eval=FALSE}
-df %>% 
-  dplyr::filter(p.value < 0.05)
-```
-
-
-　  
-
-乱数生成した二つのデータからそれぞれランダムサンプリングを行った場合（観測で得られたデータに相当）についても同様に確認してみます。
-```{r, eval=!test_build}
-fs <- function(n = 5000000) {
-  # 乱数生成したデータをランダムサンプリングする
-  x <- rnorm(n = n, mean = 10, sd = 10) %>% sample(n, replace = TRUE)
-  y <- rnorm(n = n, mean = 30, sd = 10) %>% sample(n, replace = TRUE)
-  # ランダムサンプリングしたデータ間の無相関の検定結果をデータフレーム化
-  cor.test(x, y) %>% broom::tidy()
-}
-
-df <- data.frame()
-for (i in c(1:100)) {
-  df <- dplyr::bind_rows(df, fs())
-}
-
-df %>% 
-  dplyr::select(conf.low, corr = estimate, conf.high,
-                p.value, t.value = statistic) %>% 
-  knitr::kable()
-
-df %>% 
-  dplyr::select(conf.low, corr = estimate, conf.high,
-                p.value, t.value = statistic) %>% 
-  dplyr::filter(p.value < 0.05) %>% 
-  knitr::kable()
-```
-
-　  
-
-## まとめ
-　無相関の検定が成功するケース（$95\%$信頼区間に$0$が入らない）があるものの、その場合でも相関係数がゼロから大きく外れてはいない（極めてゼロに近い値になっている）ため、乱数生成した二つのデータ、ならびに、乱数生成した二つのデータからランダムサンプリングした二つのデータは、どちらも独立していると考えて差し支えないかと。
-
-　  
-
 ## `cor.test()`関数について
 　`cor.test()`関数は無相関の検定を行う関数です。対立仮説（$H_1$）は下記の出力の通り「true correlation is **not** equal to 0（相関係数はゼロではない）」ですので、帰無仮説（$H_0$）は「相関係数はゼロである（相関はない）」となります。有意水準$\alpha$で検定が失敗すれば（帰無仮説が棄却されない、$p \geqq \alpha$である）帰無仮説が採択されますので相関係数はゼロ（データ間には相関がない）と考えられます。
 
@@ -397,7 +318,7 @@ df %>%
 cor.test(rnorm(n), rnorm(n))
 ```
 
-\newpage
+　  
 
 # Appendix
 

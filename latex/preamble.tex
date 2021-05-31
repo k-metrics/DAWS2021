@@ -10,7 +10,7 @@
 %   \usepackage{indentfirst}   # tinytexのリポジトリには存在しない？
 % \usepackage[a4paper, total={160mm, 247mm}, left=25mm, top=25mm]{geometry}
 % \usepackage[pdfbox,tombo]{gentombow}  % トンボを設定する場合は有効にする
-% \usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
+\usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
 \usepackage{booktabs}                   % ここからkableExtra用パッケージ
 \usepackage{longtable}                  % 
 \usepackage{array}                      % 
@@ -28,11 +28,12 @@
 \usepackage{xcolor}                     % ここまでkableExtra用
 \usepackage{amsmath}                    % 
 \usepackage{fontawesome5}               % fontawesomeを使うために必要
-\usepackage{subfig}
+\usepackage{subfig}                     % 複数の図を並べる際に必要（古い？）
+% \usepackage{subcaption}                 % 同上（新しい？）
 \usepackage{xeCJK}                      % 以下、日本語フォント用に必要
-% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
-\usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
-\usepackage{zxjatype}
+\usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
+% \usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
+\usepackage{zxjatype}                   % 日本語処理に必要
 \usepackage{pxrubrica}                  % ルビ用
 \usepackage{hyperref}                   % ハイパーリンク用必要？
 
@@ -51,7 +52,7 @@
 % --- Fonts -------------------------------------------------------------------
 % フォントしては index.html でも可能（pandoc用オプションは index.htmlにて）
 % \setCJKmonofont{Source Han Code JP}
-% \setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
+\setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
 % \setjamonofont{Source Han Code JP}
 
 % ## 日本語フォントの扱いについてはzxjafontパッケージの解説を参照のこと

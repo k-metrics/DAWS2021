@@ -1,0 +1,71 @@
+% --- 参考資料 ----------------------------------------------------------------
+% https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
+% https://teastat.blogspot.com/2019/01/bookdown.html
+
+% --- Packages ----------------------------------------------------------------
+% 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
+% tufteではA4サイズの指定が不可能
+%  A4 210mm x 297mm
+%   \usepackage[a4paper, total={6.5in, 9.5in}]{geometry}
+%   \usepackage{indentfirst}   # tinytexのリポジトリには存在しない？
+% \usepackage[a4paper, total={160mm, 247mm}, left=25mm, top=25mm]{geometry}
+% \usepackage[pdfbox,tombo]{gentombow}  % トンボを設定する場合は有効にする
+% \usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
+\usepackage{booktabs}                   % ここからkableExtra用パッケージ
+\usepackage{longtable}                  % 
+\usepackage{array}                      % 
+\usepackage{multirow}                   % 
+\usepackage{wrapfig}                    % 
+\usepackage{float}                      % 
+\usepackage{colortbl}                   % 
+\usepackage{pdflscape}                  % 
+\usepackage{tabu}                       % 
+\usepackage{threeparttable}             % 
+\usepackage{threeparttablex}            % 
+\usepackage[normalem]{ulem}             % 
+\usepackage{inputenc}                   % 
+\usepackage{makecell}                   % 
+\usepackage{xcolor}                     % ここまでkableExtra用
+\usepackage{amsmath}                    % 
+\usepackage{fontawesome5}               % fontawesomeを使うために必要
+\usepackage{subfig}
+\usepackage{xeCJK}                      % 以下、日本語フォント用に必要
+% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
+\usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
+\usepackage{zxjatype}
+\usepackage{pxrubrica}                  % ルビ用
+\usepackage{hyperref}                   % ハイパーリンク用必要？
+
+% --- Index ------------------------------------------------------------------
+% https://texwiki.texjp.org/?%E7%B4%A2%E5%BC%95%E4%BD%9C%E6%88%90
+% これを指定するとIndex(索引)は作成されるが参照ページがズレる
+% 中間ファイルの.indではページはズレていないので、その後の結合処理がおかしい
+% \usepackage{makeidx}
+% \makeindex
+% \usepackage{showidx}                  % 索引確認用
+
+% --- Table of Contentes ------------------------------------------------------
+% TOCにLOT(List of Tables), LOF(List of Figures), Bibliography, Indexを表示
+% \usepackage[nottoc]{tocbibind}
+
+% --- Fonts -------------------------------------------------------------------
+% フォントしては index.html でも可能（pandoc用オプションは index.htmlにて）
+% \setCJKmonofont{Source Han Code JP}
+% \setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
+% \setjamonofont{Source Han Code JP}
+
+% ## 日本語フォントの扱いについてはzxjafontパッケージの解説を参照のこと
+% # https://mirror.las.iastate.edu/tex-archive/language/japanese/zxjafont/zxjafont.pdf
+% #
+% ## Windows環境ではなぜかNotoフォントが認識されないので源ノシリーズベースの
+% ## 原ノ味フォントかIPAexフォントを利用する（原ノ味はtlmgrでインストール可）
+% # \usepackage[haranoaji]{zxjafont}
+% # \usepackage[ipaex]{zxjafont}
+% #
+% ## Windows環境でNotoフォントを指定したい場合は以下のようにheader-includeで
+% ## 個別に指定する（setCJKxxxfotnの指定は必要？）
+% # \setmainfont{NotoSerifCJKjp-Regular.otf}[BoldFont=NotoSerifCJKjp-Bold.otf]
+% # \setsansfont{NotoSansCJKjp-Regular.otf}[BoldFont=NotoSansCJKjp-Bold.otf]
+% # \setmonofont{NotoSansMonoCJKjp-Regular.otf}[BoldFont=NotoSansMonoCJKjp-Bold.otf]
+% ## モノフォントは源ノ角コード(Source Code Proの日本語版)がおすゝめ
+% # \setmonofont{SourceHanCodeJP-Regular.otf}[BoldFont=SourceHanCodeJPS-Bold.otf]
