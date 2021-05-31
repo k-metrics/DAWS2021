@@ -1,11 +1,11 @@
 ---
 title: "PDF Document Template"
-author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+author: "Your Name, Licence"
 date: "`r Sys.Date()`"
 output:
   pdf_document: 
     include:
-      in_header: latex/default_preamble.tex # 必要なパッケージやフォントの設定
+      in_header: latex/default_preamble.tex # 必要なパッケージやフォント設定
     latex_engine: xelatex
     number_sections: true
     fig_caption: yes
@@ -51,28 +51,40 @@ if (knitr::is_latex_output()) {
 
 前提条件
 
-* **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている
+* **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている（**R** 4.x推奨）
+)
+* **RStudio**（v1.4推奨）
 
 作成手順
 
 1. **`tinytex`**パッケージをインストールする
-1. `tinytex::install_tinytex()`でtinytex本体をインストールする
+1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
 1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
 1. 本ドキュメントをknitする
     * 必要なTeXパッケージを自動的にインストール後、レンタリングします
+    * TeXのパッケージが不足している場合はログを参考にインストールしてください
+        * `tinytex::tlmgr_install("package")`
+    * フォーマットを変更したい場合はYAMLの`documentclass`を変更してください
 
+\newpage
 
 ## 日本語PDFの制限など
 R MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらできません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。  
 
+* **tinytex**以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
+    * 他のTeX/LaTeXでの動作は確認していません
 * 本テンプレートは必要最低限の設定になっています
     * PDFのデフォルトとして図表は自動的に再配置されます
-      * 固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してみてください
+        * 固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してみてください
 * 見出しの日本語が化ける場合があります
-    * 化けた場合は見出しを工夫してください
+    * 化けた場合は見出しを工夫してください（回避方法不明）
 * Winodws環境はレンダリングに時間がかかります
+* レンダリング時にワーニングが出ますがPDFは作成できます
+    * Ubuntu環境とWindows環境で動作確認しています
 
+enjoy!
 
+\newpage
 
 # R Markdown
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.

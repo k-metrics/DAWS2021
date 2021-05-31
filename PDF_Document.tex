@@ -40,7 +40,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={PDF Document Template},
-  pdfauthor={Sampo Suzuki, CC 4.0 BY-NC-SA},
+  pdfauthor={Your Name, Licence},
   colorlinks=true,
   linkcolor=Maroon,
   filecolor=Maroon,
@@ -122,7 +122,7 @@
 % https://teastat.blogspot.com/2019/01/bookdown.html
 
 % --- Packages ----------------------------------------------------------------
-% 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
+% 日本語とkableExtraを使うために必要なTeXパッケージ指定
 %  A4 210mm x 297mm
 \usepackage[a4paper]{geometry}
 \usepackage{indentfirst}                % tinytexのリポジトリには存在しない？
@@ -151,20 +151,12 @@
 \usepackage{zxjatype}                   % 日本語処理に必要
 \usepackage{pxrubrica}                  % ルビ用
 \usepackage{hyperref}                   % ハイパーリンク用必要？
-
-% ## Windows環境でNotoフォントを指定したい場合は以下のようにheader-includeで
-% ## 個別に指定する（setCJKxxxfotnの指定は必要？）
-% # \setmainfont{NotoSerifCJKjp-Regular.otf}[BoldFont=NotoSerifCJKjp-Bold.otf]
-% # \setsansfont{NotoSansCJKjp-Regular.otf}[BoldFont=NotoSansCJKjp-Bold.otf]
-% # \setmonofont{NotoSansMonoCJKjp-Regular.otf}[BoldFont=NotoSansMonoCJKjp-Bold.otf]
-% ## モノフォントは源ノ角コード(Source Code Proの日本語版)がおすゝめ
-% \setmonofont{SourceHanCodeJP-Regular.otf}[BoldFont=SourceHanCodeJPS-Bold.otf]
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
 
 \title{PDF Document Template}
-\author{Sampo Suzuki, CC 4.0 BY-NC-SA}
+\author{Your Name, Licence}
 \date{2021-05-31}
 
 \begin{document}
@@ -180,7 +172,10 @@
 \tightlist
 \item
   \textbf{\texttt{tidyverse}, \texttt{knitr},
-  \texttt{rmarkdown}}パッケージがインストールされている
+  \texttt{rmarkdown}}パッケージがインストールされている（\textbf{R}
+  4.x推奨） )
+\item
+  \textbf{RStudio}（v1.4推奨）
 \end{itemize}
 
 作成手順
@@ -191,7 +186,7 @@
 \item
   \textbf{\texttt{tinytex}}パッケージをインストールする
 \item
-  \texttt{tinytex::install\_tinytex()}でtinytex本体をインストールする
+  \texttt{tinytex::install\_tinytex()}で\textbf{tinytex}本体をインストールする
 \item
   \texttt{tinytex::tlmgr\_install("haranoaji")}で原の味フォントをインストールする
 \item
@@ -201,8 +196,20 @@
   \tightlist
   \item
     必要なTeXパッケージを自動的にインストール後、レンタリングします
+  \item
+    TeXのパッケージが不足している場合はログを参考にインストールしてください
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \texttt{tinytex::tlmgr\_install("package")}
+    \end{itemize}
+  \item
+    フォーマットを変更したい場合はYAMLの\texttt{documentclass}を変更してください
   \end{itemize}
 \end{enumerate}
+
+\newpage
 
 \hypertarget{ux65e5ux672cux8a9epdfux306eux5236ux9650ux306aux3069}{%
 \subsection{日本語PDFの制限など}\label{ux65e5ux672cux8a9epdfux306eux5236ux9650ux306aux3069}}
@@ -213,14 +220,26 @@ MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを
 \begin{itemize}
 \tightlist
 \item
+  \textbf{tinytex}以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
+
+  \begin{itemize}
+  \tightlist
+  \item
+    他のTeX/LaTeXでの動作は確認していません
+  \end{itemize}
+\item
   本テンプレートは必要最低限の設定になっています
 
   \begin{itemize}
   \tightlist
   \item
     PDFのデフォルトとして図表は自動的に再配置されます
-  \item
-    固定したい場合は\texttt{setup}チャンク内の\texttt{fig.pos}オプションを試してみてください
+
+    \begin{itemize}
+    \tightlist
+    \item
+      固定したい場合は\texttt{setup}チャンク内の\texttt{fig.pos}オプションを試してみてください
+    \end{itemize}
   \end{itemize}
 \item
   見出しの日本語が化ける場合があります
@@ -228,11 +247,23 @@ MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを
   \begin{itemize}
   \tightlist
   \item
-    化けた場合は見出しを工夫してください
+    化けた場合は見出しを工夫してください（回避方法不明）
   \end{itemize}
 \item
   Winodws環境はレンダリングに時間がかかります
+\item
+  レンダリング時にワーニングが出ますがPDFは作成できます
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Ubuntu環境とWindows環境で動作確認しています
+  \end{itemize}
 \end{itemize}
+
+enjoy!
+
+\newpage
 
 \hypertarget{r-markdown}{%
 \section{R Markdown}\label{r-markdown}}
