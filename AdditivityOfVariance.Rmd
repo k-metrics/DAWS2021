@@ -321,7 +321,7 @@ f <- function(n = 5000000) {
   # 乱数生成したデータ
   x <- rnorm(n = n, mean = 10, sd = 10)
   y <- rnorm(n = n, mean = 30, sd = 10)
-  # 乱数生成したデータ間の無相関の検定結果と要約統計量を結合
+  # 乱数生成したデータ間の無相関の検定結果をデータフレーム化
   cor.test(x, y) %>% broom::tidy()
 }
 ```
@@ -362,7 +362,7 @@ fs <- function(n = 5000000) {
   # 乱数生成したデータをランダムサンプリングする
   x <- rnorm(n = n, mean = 10, sd = 10) %>% sample(n, replace = TRUE)
   y <- rnorm(n = n, mean = 30, sd = 10) %>% sample(n, replace = TRUE)
-  # ランダムサンプリングしたデータ間の無相関の検定結果と要約統計量を結合
+  # ランダムサンプリングしたデータ間の無相関の検定結果をデータフレーム化
   cor.test(x, y) %>% broom::tidy()
 }
 

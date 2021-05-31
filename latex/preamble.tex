@@ -30,8 +30,8 @@
 \usepackage{fontawesome5}               % fontawesomeを使うために必要
 \usepackage{subfig}
 \usepackage{xeCJK}                      % 以下、日本語フォント用に必要
-\usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
-% \usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
+% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
+\usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
 \usepackage{zxjatype}
 \usepackage{pxrubrica}                  % ルビ用
 \usepackage{hyperref}                   % ハイパーリンク用必要？
@@ -51,7 +51,7 @@
 % --- Fonts -------------------------------------------------------------------
 % フォントしては index.html でも可能（pandoc用オプションは index.htmlにて）
 % \setCJKmonofont{Source Han Code JP}
-\setmonofont{Source Han Code JP}
+% \setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
 % \setjamonofont{Source Han Code JP}
 
 % ## 日本語フォントの扱いについてはzxjafontパッケージの解説を参照のこと
