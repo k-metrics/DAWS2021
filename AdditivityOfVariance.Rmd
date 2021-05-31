@@ -1,0 +1,333 @@
+---
+title: "分散の加法性を視覚的に理解する"
+runningheader: "分散の加法性を視覚的に理解する" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.1         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+n <- 5000000    # 5,000,000
+```
+
+# **Introduction**
+　2021年度データ分析勉強会のテキストである『統計解析のはなし』[@ToukeiKaisekinoHanashi]の「標本が２つになれば」（P26〜）には分散の加法性の話が出てきます。分散の加法性は理解できるようでいて、理解できていないので、**R**を使って分散の加法性を可視化しながら説明してみます。
+
+以降、平均値$\mu$、標準偏差$\sigma$、分散$\sigma^2$である正規分布を$N(\mu, \sigma^2)$と表記します。
+
+　  
+
+# **加法性を可視化する**
+　以下の平均値と標準偏差を持つ二つの正規分布を`rnorm()`関数による正規分布乱数を用いて作成^[n = `r n`個の値を作成しています]します。
+
+: 二つの正規分布
+
+正規分布               | 平均         | 標準偏差        | 備考
+-----------------------|:------------:|:---------------:|------
+$N(\mu_a, \sigma^2_a)$ | $\mu_a = 10$ | $\sigma_a = 10$ |
+$N(\mu_b, \sigma^2_b)$ | $\mu_b = 30$ | $\sigma_b = 10$ |
+
+
+```{r}
+a <- rnorm(n, mean = 10, sd = 10)
+b <- rnorm(n, mean = 30, sd = 10)
+```
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_a, \\sigma^2_a)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+data.frame(x = a) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+  ggthemes::theme_tufte()
+```
+
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_b, \\sigma^2_bｂ)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_b, \\sigma^2_b)$の分布"}
+data.frame(x = b) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+  ggthemes::theme_tufte()
+```
+
+
+: 二つの正規分布の要約統計量
+
+正規分布               | 平均          | 分散          | 標準偏差      | 備考
+-----------------------|:-------------:|:-------------:|:-------------:|------
+$N(\mu_a, \sigma^2_a)$ | `r mean(a)`   | `r var(a)`    | `r sd(a)`     |
+$N(\mu_b, \sigma^2_b)$ | `r mean(b)`   | `r var(b)`    | `r sd(b)`     |
+
+
+この二つの正規分布$N(\mu_a, \sigma^2_a)$と$N(\mu_b,\sigma^2_b)$からランダムサンプリングにより一つずづ値を取り出して加算します。すなわち
+　
+$$N(\mu_a, \sigma^2_a)\mbox{ から取り出した値} + N(\mu_b,\sigma^2_b)\mbox{ から取り出した値}$$
+
+という新しい値を作成します。取り出した値は元に戻し、同様の取り出し、加算を繰り返すと以下のようなデータが作成できます。ここではスペースの都合で先頭から限定して表示しています。
+
+<!-- \newpage -->
+
+```{r}
+c <- c(sample(a, n, replace = TRUE) + sample(b, n, replace = TRUE))
+head(c, 50)
+```
+
+
+分散の加法性により上記のデータは$N(\mu_a + \mu_b, \sigma^2_a + \sigma^2_b))$という正規分布になるはずですが実際はどうでしょう。各正規分布の平均値と分散を比較します。
+
+: 各分布の要約統計量
+
+正規分布               | 平均          | 分散          | 備考
+-----------------------|:-------------:|:-------------:|------
+$N(\mu_a, \sigma^2_a)$ | `r mean(a)`   | `r var(a)`    | 元の分布
+$N(\mu_b, \sigma^2_b)$ | `r mean(b)`   | `r var(b)`    | 元の分布
+$N(\mu_a + \mu_b, \sigma^2_a + \sigma^2_b))$ | `r mean(a) + mean(b)` | `r var(a) + var(b)` | 分散の加法性
+$N(\mu_c, \sigma^2_c)$ | `r mean(c)`   | `r var(c)`      | 実際の分布
+
+このように確かに分散の加法性が成り立っており、正規分布$N(\mu_a, \sigma^2_a)$や$N(\mu_b,\sigma^2_b)$より横に広がった正規分布になっていることが分かります。
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_c, \\sigma^2_c)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_c, \\sigma^2_c)$の分布"}
+data.frame(x = c) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+  ggthemes::theme_tufte()
+```
+
+\newpage
+
+## **同一の正規分布から取り出し値を加算した場合**
+　次に二つの正規分布$N(\mu_a, \sigma^2_a)$と$N(\mu_b,\sigma^2_b)$がまったく等しいと仮定します。つまり
+
+$$\mu_a = \mu_b = \mu_d$$
+
+$$\sigma_a = \sigma_b = \sigma_d$$
+
+という正規分布$N(\mu_d, \sigma^2_d)$を作成します。
+
+```{r}
+d <- rnorm(n, mean = 10, sd = 10)
+head(d, 50)
+```
+
+
+この正規分布$N(\mu_d, \sigma^2_d)$から先程と同様にランダムサンプリングにより一つずづ値を取り出して加算しますが、今回は同一正規分布$N(\mu_d, \sigma^2_d)$ですので、二つ取り出します。取り出した値は元の正規分布に戻し同様の操作を繰り返します。
+
+　  
+
+```{r}
+e <- c(sample(d, n, replace = TRUE) + sample(d, n, replace = TRUE))
+head(e, 50)
+```
+
+\newpage
+
+分散の加法性により以下が成り立ちます。
+
+$$N(\mu_d + \mu_d, \sigma^2_d + \sigma^2_d) = N(2\mu_d, 2\sigma^2_d)$$
+
+つまり、正規分布$N(\mu_d, \sigma^2_d)$から取り出した二つの値の和である正規分布$N(\mu_e, \sigma^2_e)$は
+
+: 加法性による要約統計量
+
+正規分布 | 平均      | 分散      | 標準偏差           |備考
+---------|:---------:|:---------:|:------------------:|-----
+$N(\mu_e, \sigma^2_e)$ | $2 \mu_d$ | $2 \sigma^2_d$  | $\sqrt{2 \sigma^2_d} = \sqrt{2}\sigma_d$
+
+という正規分布をすることになります。加法性と実際の正規分布を比べてみると
+
+: 各分布の要約統計量
+
+正規分布       | 平均      | 分散      | 備考
+---------------|:---------:|:---------:|------
+$N(\mu_d, \sigma^2_d)$ | `r mean(d)` | `r var(d)`    | 元の分布
+$N(2\mu_d, 2\sigma^2_d)$ | `r 2*mean(d)` | `r 2*var(d)` | 分散の加法性
+$N(\mu_e, \sigma^2_e)$ | `r mean(e)` | `r var(e)`    | 実際の分布
+
+
+となり、同一正規分布の場合でも分散の加法性が成り立っていることが分かります。
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_d, \\sigma^2_d)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_c, \\sigma^2_c)$の分布"}
+data.frame(x = d) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+  ggthemes::theme_tufte()
+```
+
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_e, \\sigma^2_e)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_c, \\sigma^2_c)$の分布"}
+data.frame(x = e) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+  ggthemes::theme_tufte()
+```
+
+\newpage
+
+## **同一の正規分布から取り出した値を平均した場合**
+　同一の正規分布$N(\mu_d, \sigma^2_d)$から取り出した二つの値の**平均値の分布**を考えてみます。「二つの値の平均値の平均値」とは、正規分布$N(\mu_d, \sigma^2_d)$から、ランダムサンプリングで二つの値を取り出して、その平均値を取るということです。取り出した値は元の正規分布へ戻し、同様の操作を繰り返します。
+
+```{r}
+f <- c((sample(d, n, replace = TRUE) + sample(d, n, replace = TRUE)) / 2)
+head(f, 20)
+```
+
+この正規分布正規分布$N(\mu_f, \sigma^2_f)$は、二つの値の平均値、つまり二つの値を半分に割った値ですので正規分布$N(2\mu_d, 2\sigma^2_d)$のすべての値を半分にした正規分布になると予想できます。
+
+$$\mbox{「二つの標本の平均値」の平均値} = \frac{2\mu_d}{2} = \mu_d$$
+
+
+$$\mbox{「二つの標本の平均値」の標準偏差} = \frac{\sqrt{2}\sigma_d}{2} = \frac{\sigma_d}{\sqrt{2}}$$
+
+$$\mbox{「二つの標本の平均値」の分散} = (\frac{\sigma_d}{\sqrt{2}})^2 = \frac{\sigma^2_d}{2}$$
+
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_d, \\sigma^2_d)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_c, \\sigma^2_c)$の分布"}
+data.frame(x = d) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-30, 60), y = c(0, 0.07)) +
+  ggthemes::theme_tufte()
+```
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_f, \\sigma^2_f)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+# ```{r, echo=FALSE, message=FALSE, fig.cap="$N(\\mu_c, \\sigma^2_c)$の分布"}
+data.frame(x = f) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-30, 60), y = c(0, 0.07)) +
+  ggthemes::theme_tufte()
+```
+
+: 各分布の要約統計量
+
+正規分布       | 平均      | 分散      | 標準偏差  | 備考
+---------------|:---------:|:---------:|:---------:|------
+$N(\mu_d, \sigma^2_d)$ | `r mean(d)` | `r var(d)`  | `r sd(d)` | 元の分布
+$N(\mu_d, \frac{\sigma^2_d}{2})$ | `r mean(d)` | `r var(d) / 2`  | `r sd(d) / sqrt(2)` | 分散の加法性
+$N(\mu_f, \sigma^2_f)$ | `r mean(f)` | `r var(f)`  | `r sd(f)` | 実際の分布
+
+このように元の分布よりも鋭い分布になっていることがわかります。
+
+\newpage
+
+## **三つ値の平均値の場合**
+　次に同一の正規分布$N(\mu_d, \sigma^2_d)$から取り出した三つの値の**平均値の分布**を考えてみます。
+　
+```{r}
+g <- c((sample(d, n, replace = TRUE) + sample(d, n, replace = TRUE) 
+        + sample(d, n, replace = TRUE)) / 3)
+head(g, 20)
+```
+
+: 各分布の要約統計量
+
+正規分布       | 平均      | 分散      | 標準偏差  | 備考
+---------------|:---------:|:---------:|:---------:|------
+$N(\mu_d, \sigma^2_d)$ | `r mean(d)` | `r var(d)`  | `r sd(d)` | 元の分布
+$N(\mu_g, \sigma^2_g)$ | `r mean(g)` | `r var(g)`  | `r sd(g)` | 実際の分布
+比率 | `r mean(g) / mean(d)` | `r var(g) / var(d)` | `r sd(g) / sd(d)` | 元の分布に対する比率
+
+標準偏差の比率（`r sd(g) / sd(d)`）は、$\frac{1}{\sqrt{3}} = `r sqrt(1 / 3)`$とほぼ等しいことが分かります。これより
+
+$$N(\mu_g, \sigma^2_g) = N(\mu_d, \frac{\sigma^2_d}{3})$$
+
+となることがわかります。
+
+```{r, fig.margin = TRUE, fig.cap = "$N(\\mu_g, \\sigma^2_g)$の分布", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+data.frame(x = g) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) + 
+  ggplot2::geom_density() +
+  ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-30, 60), y = c(0, 0.07)) +
+  ggthemes::theme_tufte()
+```
+
+　  
+
+## **一般化すると**
+　同一正規分布$N(\mu, \sigma^2)$から取り出した$n$個の値の**平均値の分布**$N(\mu_, \sigma^2_n)$は
+
+$$N(\mu_n, \sigma^2_n) = N(\mu, \frac{\sigma^2}{n})$$
+
+であり、平均は変わらず標準偏差が$\frac{\sigma}{\sqrt{n}}$となります。
+
+\newpage
+
+## `cor.test()`関数について
+　`cor.test()`関数は無相関の検定を行う関数です。対立仮説（$H_1$）は下記の出力の通り「true correlation is **not** equal to 0（相関係数はゼロではない）」ですので、帰無仮説（$H_0$）は「相関係数はゼロである（相関はない）」となります。有意水準$\alpha$で検定が失敗すれば（帰無仮説が棄却されない、$p \geqq \alpha$である）帰無仮説が採択されますので相関係数はゼロ（データ間には相関がない）と考えられます。
+
+```{r, echo=FALSE}
+cor.test(rnorm(n), rnorm(n))
+```
+
+　  
+
+# Appendix
+
+## About handout style
+The Tufte handout style is a style that Edward Tufte uses in his books and handouts. Tufte's style is known for its extensive use of sidenotes, tight integration of graphics with text, and well-set typography. This style has been implemented in LaTeX and HTML/CSS^[See Github repositories [tufte-latex](https://github.com/tufte-latex/tufte-latex) and [tufte-css](https://github.com/edwardtufte/tufte-css)], respectively.
+
+　  
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```
