@@ -10,9 +10,9 @@ output:
     number_sections: true
     fig_caption: yes
     keep_tex: yes
-# documentclass: bxjsarticle     # 表紙のないレポート用
+documentclass: bxjsarticle     # 表紙のないレポート用
 # documentclass: bxjsreport      # 表紙のあるレポート用
-documentclass: bxjsslide       # スライド用
+# documentclass: bxjsslide       # スライド用
 classoption: a4paper,xelatex,ja=standard
 always_allow_html: true        # 一種の呪文
 link-citations: true           # 参考文献一覧へのリンクを有効化
@@ -53,17 +53,24 @@ df_print <- function(df = NULL,             # 表示させたいデータをフ�
                      position = "center",   # 表の横位置
                      full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
                      scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     pos_hold = TRUE,       # TRUEでその場で表示させる
                      all = FALSE,           # TRUEですべてのデータを表示
                      head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
                      ...) {                 # kableExtra::kblに渡す引数
   if (!is.null(df)) {
     if (knitr::is_latex_output()) {
       if (scale_down == FALSE) {
-        # latex_option = c("striped", "HOLD_position")
-        latex_option = c("striped")
+        if (pos_hold == TRUE) {
+          latex_option = c("striped", "HOLD_position")
+        } else {
+          latex_option = c("striped")
+        }
       } else {
-        # latex_option = c("striped", "HOLD_position", "scale_down")
-        latex_option = c("striped", "scale_down")
+        if (pos_hold == TRUE) {
+          latex_option = c("striped", "HOLD_position", "scale_down")
+        } else {
+          latex_option = c("striped", "scale_down")
+        }
       }
       if (all == FALSE) {
         df <- df %>% 
