@@ -1,0 +1,40 @@
+% --- BXjsクラス用 ------------------------------------------------------------
+% https://ctan.math.washington.edu/tex-archive/language/japanese/BX/bxjscls/bxjscls-manual.pdf
+% --- 参考資料 ----------------------------------------------------------------
+% https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
+% https://teastat.blogspot.com/2019/01/bookdown.html
+
+% --- Document Class ----------------------------------------------------------
+% Rmd側で指定した方が分かりやすいかも
+% \documentclass[a4paper,xelatex,ja=standard]{bxjsarticle}
+
+% --- Packages ----------------------------------------------------------------
+% 日本語とkableExtraを使うために必要なTeXパッケージ指定
+%  A4 210mm x 297mm
+% \usepackage[a4paper]{geometry}         % Rmdのclassoptionでも指定可能
+\usepackage{indentfirst}               % tinytexのリポジトリには存在しない？
+\usepackage{booktabs}                  % ここからkableExtra用パッケージ
+\usepackage{longtable}                 % 1 column modeのみで利用可
+\usepackage{array}                     % 
+\usepackage{multirow}                  % 
+\usepackage{wrapfig}                   % 
+\usepackage{float}                     % 
+\usepackage{colortbl}                  % 
+\usepackage{pdflscape}                 % 
+\usepackage{tabu}                      % 
+\usepackage{threeparttable}            % 
+\usepackage{threeparttablex}           % 
+\usepackage[normalem]{ulem}            % 
+\usepackage{inputenc}                  % 
+\usepackage{makecell}                  % 
+\usepackage{xcolor}                    % ここまでkableExtra用
+\usepackage{amsmath}                   % 
+\usepackage{fontawesome5}              % fontawesomeを使うために必要
+\usepackage{subfig}                    % 複数の図を並べる際に必要（古い？）
+% \usepackage{subcaption}                % 同上（新しい？）
+\usepackage{hyperref}                  % ハイパーリンク用必要？
+% \usepackage[noto]{zxjafont}            % Linux環境ではこちも使える
+\usepackage[haranoaji]{zxjafont}       % Windows環境ではこちらだけ
+\usepackage{zxjatype}                  % 日本語処理に必要
+% \usepackage{xeCJK}                     % zxjatypeを読み込むと自動で読み込む
+\usepackage{pxrubrica}                 % ルビ用

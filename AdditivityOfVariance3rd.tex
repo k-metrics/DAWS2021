@@ -1,0 +1,493 @@
+\documentclass[]{tufte-handout}
+
+% ams
+\usepackage{amssymb,amsmath}
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \makeatletter
+  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
+  \makeatother
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \makeatletter
+  \@ifpackageloaded{soul}{
+     \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+     \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+   }{}
+  \makeatother
+
+\fi
+
+% graphix
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+% booktabs
+\usepackage{booktabs}
+
+% url
+\usepackage{url}
+
+% hyperref
+\usepackage{hyperref}
+
+% units.
+\usepackage{units}
+
+
+\setcounter{secnumdepth}{-1}
+
+% citations
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+
+% pandoc syntax highlighting
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+
+% longtable
+\usepackage{longtable,booktabs}
+
+% multiplecol
+\usepackage{multicol}
+
+% strikeout
+\usepackage[normalem]{ulem}
+
+% morefloats
+\usepackage{morefloats}
+
+
+% tightlist macro required by pandoc >= 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% title / author / date
+\title[分散の加法性を視覚的に理解する（その３）]{分散の加法性を視覚的に理解する（その３）}
+\author{Sampo Suzuki, CC 4.0 BY-NC-SA}
+\date{2021-06-01}
+
+% --- 参考資料 ----------------------------------------------------------------
+% https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
+% https://teastat.blogspot.com/2019/01/bookdown.html
+
+% --- Packages ----------------------------------------------------------------
+% 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
+% tufteではA4サイズの指定が不可能
+%  A4 210mm x 297mm
+%   \usepackage[a4paper, total={6.5in, 9.5in}]{geometry}
+%   \usepackage{indentfirst}   # tinytexのリポジトリには存在しない？
+% \usepackage[a4paper, total={160mm, 247mm}, left=25mm, top=25mm]{geometry}
+% \usepackage[pdfbox,tombo]{gentombow}  % トンボを設定する場合は有効にする
+\usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
+\usepackage{booktabs}                   % ここからkableExtra用パッケージ
+\usepackage{longtable}                  % 
+\usepackage{array}                      % 
+\usepackage{multirow}                   % 
+\usepackage{wrapfig}                    % 
+\usepackage{float}                      % 
+\usepackage{colortbl}                   % 
+\usepackage{pdflscape}                  % 
+\usepackage{tabu}                       % 
+\usepackage{threeparttable}             % 
+\usepackage{threeparttablex}            % 
+\usepackage[normalem]{ulem}             % 
+\usepackage{inputenc}                   % 
+\usepackage{makecell}                   % 
+\usepackage{xcolor}                     % ここまでkableExtra用
+\usepackage{amsmath}                    % 
+\usepackage{fontawesome5}               % fontawesomeを使うために必要
+\usepackage{subfig}                     % 複数の図を並べる際に必要（古い？）
+% \usepackage{subcaption}                 % 同上（新しい？）
+\usepackage{xeCJK}                      % 以下、日本語フォント用に必要
+\usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
+% \usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
+\usepackage{zxjatype}                   % 日本語処理に必要
+\usepackage{pxrubrica}                  % ルビ用
+\usepackage{hyperref}                   % ハイパーリンク用必要？
+
+% --- Index ------------------------------------------------------------------
+% https://texwiki.texjp.org/?%E7%B4%A2%E5%BC%95%E4%BD%9C%E6%88%90
+% これを指定するとIndex(索引)は作成されるが参照ページがズレる
+% 中間ファイルの.indではページはズレていないので、その後の結合処理がおかしい
+% \usepackage{makeidx}
+% \makeindex
+% \usepackage{showidx}                  % 索引確認用
+
+% --- Table of Contentes ------------------------------------------------------
+% TOCにLOT(List of Tables), LOF(List of Figures), Bibliography, Indexを表示
+% \usepackage[nottoc]{tocbibind}
+
+% --- Fonts -------------------------------------------------------------------
+% フォントしては index.html でも可能（pandoc用オプションは index.htmlにて）
+% \setCJKmonofont{Source Han Code JP}
+\setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
+% \setjamonofont{Source Han Code JP}
+
+% ## 日本語フォントの扱いについてはzxjafontパッケージの解説を参照のこと
+% # https://mirror.las.iastate.edu/tex-archive/language/japanese/zxjafont/zxjafont.pdf
+% #
+% ## Windows環境ではなぜかNotoフォントが認識されないので源ノシリーズベースの
+% ## 原ノ味フォントかIPAexフォントを利用する（原ノ味はtlmgrでインストール可）
+% # \usepackage[haranoaji]{zxjafont}
+% # \usepackage[ipaex]{zxjafont}
+% #
+% ## Windows環境でNotoフォントを指定したい場合は以下のようにheader-includeで
+% ## 個別に指定する（setCJKxxxfotnの指定は必要？）
+% # \setmainfont{NotoSerifCJKjp-Regular.otf}[BoldFont=NotoSerifCJKjp-Bold.otf]
+% # \setsansfont{NotoSansCJKjp-Regular.otf}[BoldFont=NotoSansCJKjp-Bold.otf]
+% # \setmonofont{NotoSansMonoCJKjp-Regular.otf}[BoldFont=NotoSansMonoCJKjp-Bold.otf]
+% ## モノフォントは源ノ角コード(Source Code Proの日本語版)がおすゝめ
+% # \setmonofont{SourceHanCodeJP-Regular.otf}[BoldFont=SourceHanCodeJPS-Bold.otf]
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\hypertarget{ux306fux3058ux3081ux306b}{%
+\section{\texorpdfstring{\textbf{はじめに}}{はじめに}}\label{ux306fux3058ux3081ux306b}}
+
+　分散の加法性を視覚的に理解する（その２）において、データが独立であれば分散の加法性がなりたつことがわかりました。では、同一正規分布から取り出した二つ、および、三つの値の平均値の場合はどうなるか、その２と同様の手段で確認してみます。
+
+　
+
+\hypertarget{ux540cux4e00ux30c7ux30fcux30bfux304bux3089ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux4e8cux3064ux306eux5024ux3092ux5e73ux5747ux3057ux305fux5834ux5408}{%
+\subsection{\texorpdfstring{\textbf{同一データからサンプリングした二つの値を平均した場合}}{同一データからサンプリングした二つの値を平均した場合}}\label{ux540cux4e00ux30c7ux30fcux30bfux304bux3089ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux4e8cux3064ux306eux5024ux3092ux5e73ux5747ux3057ux305fux5834ux5408}}
+
+　最初に以下の処理を行う関数を定義します。
+
+\begin{itemize}
+\tightlist
+\item
+  データを乱数生成する\footnote{今回は\texttt{rnorm()}関数による分散が\(100\)となる正規分布}
+\item
+  乱数生成したデータをランダムサンプリングする
+\item
+  作成したデータの統計量を求める
+\item
+  無相関検定の結果と統計量をデータフレームにまとめる
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{f2 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{i =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{n =} \DecValTok{5000000}\NormalTok{) \{}
+  \CommentTok{\# データを乱数生成する}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =} \DecValTok{10}\NormalTok{, }\AttributeTok{sd =} \DecValTok{10}\NormalTok{)}
+  \CommentTok{\# 乱数生成したデータから二つのデータを取り出す}
+\NormalTok{  a }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  b }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  num }\OtherTok{\textless{}{-}} \DecValTok{2}
+  \CommentTok{\# 統計量を求める}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{no =}\NormalTok{ i,}
+                   \AttributeTok{var.x =} \FunctionTok{var}\NormalTok{(x),}
+                   \AttributeTok{var.a =} \FunctionTok{var}\NormalTok{(a), }\AttributeTok{var.b =} \FunctionTok{var}\NormalTok{(b),}
+                   \AttributeTok{var.ab =} \FunctionTok{var}\NormalTok{((a }\SpecialCharTok{+}\NormalTok{ b) }\SpecialCharTok{/}\NormalTok{ num), }\AttributeTok{var.sum =}\NormalTok{ (}\FunctionTok{var}\NormalTok{(a }\SpecialCharTok{/}\NormalTok{ num) }\SpecialCharTok{+} \FunctionTok{var}\NormalTok{(b }\SpecialCharTok{/}\NormalTok{ num)),}
+                   \AttributeTok{cov =} \FunctionTok{cov}\NormalTok{(a }\SpecialCharTok{/}\NormalTok{ num, b }\SpecialCharTok{/}\NormalTok{ num ),}
+                   \AttributeTok{cov2 =} \FunctionTok{cov}\NormalTok{(a }\SpecialCharTok{/}\NormalTok{ num, b }\SpecialCharTok{/}\NormalTok{ num) }\SpecialCharTok{*} \DecValTok{2}\NormalTok{)}
+  \CommentTok{\# 無相関の検定結果と統計量をデータフレームにまとめる}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(a, b) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{bind\_cols}\NormalTok{(df)}
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}rrrrrrrrrrr@{}}
+\caption{二つのサンプルを平均した場合の分散}\tabularnewline
+\toprule
+No & 相関係数 & p値 & 母集団 & 標本a & 標本b & 加法1 & 加法2 & 差異 &
+母集団比 & cov2 \\
+\midrule
+\endfirsthead
+\toprule
+No & 相関係数 & p値 & 母集団 & 標本a & 標本b & 加法1 & 加法2 & 差異 &
+母集団比 & cov2 \\
+\midrule
+\endhead
+2 & 0.000 & 0.358 & 99.870 & 99.909 & 99.957 & 49.987 & 49.967 & 0.021 &
+0.501 & 0.021 \\
+4 & 0.000 & 0.842 & 100.079 & 100.129 & 100.043 & 50.038 & 50.043 &
+-0.004 & 0.500 & -0.004 \\
+5 & -0.001 & 0.178 & 100.086 & 100.129 & 100.016 & 50.006 & 50.036 &
+-0.030 & 0.500 & -0.030 \\
+6 & 0.000 & 0.322 & 100.059 & 100.070 & 100.064 & 50.011 & 50.034 &
+-0.022 & 0.500 & -0.022 \\
+7 & 0.000 & 0.551 & 99.974 & 99.993 & 99.896 & 49.959 & 49.972 & -0.013
+& 0.500 & -0.013 \\
+8 & 0.000 & 0.684 & 100.021 & 99.948 & 100.013 & 49.999 & 49.990 & 0.009
+& 0.500 & 0.009 \\
+9 & 0.000 & 0.604 & 100.022 & 100.032 & 99.981 & 49.991 & 50.003 &
+-0.012 & 0.500 & -0.012 \\
+10 & 0.001 & 0.197 & 99.869 & 99.844 & 99.867 & 49.957 & 49.928 & 0.029
+& 0.500 & 0.029 \\
+11 & 0.000 & 0.628 & 100.059 & 100.149 & 99.999 & 50.048 & 50.037 &
+0.011 & 0.500 & 0.011 \\
+12 & 0.000 & 0.570 & 99.988 & 99.986 & 99.940 & 49.994 & 49.982 & 0.013
+& 0.500 & 0.013 \\
+13 & 0.000 & 0.783 & 99.986 & 100.023 & 99.891 & 49.972 & 49.979 &
+-0.006 & 0.500 & -0.006 \\
+16 & 0.000 & 0.555 & 100.025 & 100.083 & 99.997 & 50.007 & 50.020 &
+-0.013 & 0.500 & -0.013 \\
+17 & 0.000 & 0.718 & 100.092 & 100.200 & 100.107 & 50.069 & 50.077 &
+-0.008 & 0.500 & -0.008 \\
+18 & 0.000 & 0.493 & 99.936 & 99.861 & 100.044 & 49.992 & 49.976 & 0.015
+& 0.500 & 0.015 \\
+19 & 0.000 & 0.613 & 100.071 & 99.955 & 100.036 & 49.986 & 49.998 &
+-0.011 & 0.500 & -0.011 \\
+20 & 0.000 & 0.383 & 99.987 & 99.966 & 99.947 & 49.998 & 49.978 & 0.020
+& 0.500 & 0.020 \\
+21 & 0.000 & 0.401 & 100.018 & 100.084 & 100.004 & 50.003 & 50.022 &
+-0.019 & 0.500 & -0.019 \\
+22 & 0.000 & 0.884 & 100.019 & 99.932 & 100.023 & 49.992 & 49.989 &
+0.003 & 0.500 & 0.003 \\
+23 & 0.000 & 0.709 & 100.010 & 100.011 & 100.098 & 50.036 & 50.027 &
+0.008 & 0.500 & 0.008 \\
+24 & 0.000 & 0.452 & 100.051 & 99.943 & 100.129 & 50.035 & 50.018 &
+0.017 & 0.500 & 0.017 \\
+25 & 0.000 & 0.673 & 100.014 & 100.075 & 100.003 & 50.010 & 50.019 &
+-0.009 & 0.500 & -0.009 \\
+26 & 0.000 & 0.416 & 100.010 & 99.966 & 99.993 & 49.972 & 49.990 &
+-0.018 & 0.500 & -0.018 \\
+27 & 0.000 & 0.744 & 100.028 & 100.095 & 100.036 & 50.040 & 50.033 &
+0.007 & 0.500 & 0.007 \\
+28 & -0.001 & 0.180 & 99.916 & 99.992 & 99.932 & 49.951 & 49.981 &
+-0.030 & 0.500 & -0.030 \\
+29 & 0.001 & 0.169 & 99.979 & 100.079 & 99.971 & 50.043 & 50.012 & 0.031
+& 0.501 & 0.031 \\
+30 & 0.001 & 0.185 & 100.156 & 100.189 & 100.185 & 50.123 & 50.094 &
+0.030 & 0.500 & 0.030 \\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}rrrrrrrrrrr@{}}
+\caption{二つのサンプルが独立でない場合}\tabularnewline
+\toprule
+No & 相関係数 & p値 & 母集団 & 標本a & 標本b & 加法1 & 加法2 & 差異 &
+母集団比 & cov2 \\
+\midrule
+\endfirsthead
+\toprule
+No & 相関係数 & p値 & 母集団 & 標本a & 標本b & 加法1 & 加法2 & 差異 &
+母集団比 & cov2 \\
+\midrule
+\endhead
+1 & -0.001 & 0.045 & 100.011 & 100.128 & 100.048 & 49.999 & 50.044 &
+-0.045 & 0.500 & -0.045 \\
+3 & 0.001 & 0.033 & 100.040 & 100.097 & 100.066 & 50.088 & 50.041 &
+0.048 & 0.501 & 0.048 \\
+14 & -0.001 & 0.013 & 100.070 & 100.096 & 100.076 & 49.987 & 50.043 &
+-0.056 & 0.500 & -0.056 \\
+15 & 0.001 & 0.049 & 100.106 & 100.067 & 100.094 & 50.084 & 50.040 &
+0.044 & 0.500 & 0.044 \\
+\bottomrule
+\end{longtable}
+
+\[\mbox{加法1} = var(\frac{a + b}{2}),　\mbox{加法2} = var(\frac{a}{2}) + var(\frac{b}{2})\]
+
+\newpage
+
+\hypertarget{ux540cux4e00ux30c7ux30fcux30bfux304bux3089ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux4e09ux3064ux306eux5024ux3092ux5e73ux5747ux3057ux305fux5834ux5408}{%
+\subsection{\texorpdfstring{\textbf{同一データからサンプリングした三つの値を平均した場合}}{同一データからサンプリングした三つの値を平均した場合}}\label{ux540cux4e00ux30c7ux30fcux30bfux304bux3089ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux4e09ux3064ux306eux5024ux3092ux5e73ux5747ux3057ux305fux5834ux5408}}
+
+　最初に以下の処理を行う関数を定義します。
+
+\begin{itemize}
+\tightlist
+\item
+  データを乱数生成する\footnote{今回は\texttt{rnorm()}関数による分散が\(100\)となる正規分布}
+\item
+  乱数生成したデータをランダムサンプリングする
+\item
+  作成したデータの統計量を求める
+\item
+  無相関検定の結果と統計量をデータフレームにまとめる
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{f3 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{i =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{n =} \DecValTok{5000000}\NormalTok{) \{}
+  \CommentTok{\# データを乱数生成する}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =} \DecValTok{10}\NormalTok{, }\AttributeTok{sd =} \DecValTok{10}\NormalTok{)}
+  \CommentTok{\# 乱数生成したデータから三つのデータを取り出す}
+\NormalTok{  a }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  b }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  c }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  num }\OtherTok{\textless{}{-}} \DecValTok{3}
+  \CommentTok{\# 統計量を求める}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{no =}\NormalTok{ i,}
+                   \AttributeTok{var.x =} \FunctionTok{var}\NormalTok{(x), }
+                   \AttributeTok{var.a =} \FunctionTok{var}\NormalTok{(a), }\AttributeTok{var.b =} \FunctionTok{var}\NormalTok{(b), }\AttributeTok{var.c =} \FunctionTok{var}\NormalTok{(c),}
+                   \AttributeTok{var.abc =} \FunctionTok{var}\NormalTok{((a }\SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{+}\NormalTok{ c) }\SpecialCharTok{/}\NormalTok{ num),}
+                   \AttributeTok{var.sum =}\NormalTok{ (}\FunctionTok{var}\NormalTok{(a }\SpecialCharTok{/}\NormalTok{ num) }\SpecialCharTok{+} \FunctionTok{var}\NormalTok{(b }\SpecialCharTok{/}\NormalTok{ num) }\SpecialCharTok{+} \FunctionTok{var}\NormalTok{(c }\SpecialCharTok{/}\NormalTok{ num)),}
+                   \AttributeTok{cov.ab =} \FunctionTok{cov}\NormalTok{(a, b), }\AttributeTok{cov.ac =} \FunctionTok{cov}\NormalTok{(a, c), }\AttributeTok{cov.bc =} \FunctionTok{cov}\NormalTok{(b, c),}
+                   \AttributeTok{cov2.ab =} \FunctionTok{cov}\NormalTok{(a, b) }\SpecialCharTok{*} \DecValTok{2}\NormalTok{, }\AttributeTok{cov2.ac =} \FunctionTok{cov}\NormalTok{(a, c) }\SpecialCharTok{*} \DecValTok{2}\NormalTok{, }\AttributeTok{cov2.bc =} \FunctionTok{cov}\NormalTok{(b, c) }\SpecialCharTok{*} \DecValTok{2}\NormalTok{)}
+  \CommentTok{\# 無相関の検定結果と統計量をデータフレームにまとめる}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(a, b) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{bind\_cols}\NormalTok{(df)}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(a, c) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{bind\_cols}\NormalTok{(df)}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(b, c) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{bind\_cols}\NormalTok{(df)}
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\newpage
+
+\begin{longtable}[]{@{}rrrrrrrrr@{}}
+\caption{三つのサンプルを平均した場合の分散}\tabularnewline
+\toprule
+No & 母集団 & 標本a & 標本b & 標本c & 加法1 & 加法2 & 差異 & 母集団比 \\
+\midrule
+\endfirsthead
+\toprule
+No & 母集団 & 標本a & 標本b & 標本c & 加法1 & 加法2 & 差異 & 母集団比 \\
+\midrule
+\endhead
+1 & 99.945 & 99.934 & 100.023 & 99.931 & 33.305 & 33.321 & -0.016 &
+0.333 \\
+3 & 99.973 & 99.938 & 99.870 & 99.907 & 33.306 & 33.302 & 0.005 &
+0.333 \\
+4 & 100.020 & 99.998 & 99.930 & 100.067 & 33.307 & 33.333 & -0.026 &
+0.333 \\
+5 & 99.947 & 99.905 & 100.021 & 99.909 & 33.319 & 33.315 & 0.004 &
+0.333 \\
+6 & 99.966 & 99.965 & 99.928 & 99.928 & 33.329 & 33.314 & 0.016 &
+0.333 \\
+7 & 100.002 & 100.063 & 100.001 & 99.956 & 33.351 & 33.335 & 0.016 &
+0.334 \\
+8 & 100.004 & 100.050 & 99.928 & 100.014 & 33.319 & 33.332 & -0.013 &
+0.333 \\
+9 & 100.079 & 100.021 & 100.057 & 100.095 & 33.365 & 33.353 & 0.013 &
+0.333 \\
+10 & 100.228 & 100.285 & 100.336 & 100.261 & 33.418 & 33.431 & -0.013 &
+0.333 \\
+11 & 100.006 & 100.048 & 100.064 & 100.030 & 33.355 & 33.349 & 0.006 &
+0.334 \\
+12 & 99.858 & 99.744 & 99.905 & 99.867 & 33.286 & 33.280 & 0.006 &
+0.333 \\
+13 & 99.980 & 99.878 & 99.915 & 99.958 & 33.308 & 33.306 & 0.003 &
+0.333 \\
+14 & 100.110 & 100.019 & 100.165 & 100.043 & 33.368 & 33.359 & 0.009 &
+0.333 \\
+15 & 100.095 & 100.124 & 100.090 & 100.110 & 33.376 & 33.369 & 0.007 &
+0.333 \\
+16 & 99.968 & 99.979 & 99.984 & 99.981 & 33.351 & 33.327 & 0.024 &
+0.334 \\
+17 & 100.057 & 100.078 & 100.166 & 100.171 & 33.373 & 33.379 & -0.007 &
+0.334 \\
+18 & 99.897 & 99.885 & 99.888 & 100.061 & 33.304 & 33.315 & -0.011 &
+0.333 \\
+19 & 99.856 & 99.790 & 99.856 & 99.870 & 33.281 & 33.280 & 0.002 &
+0.333 \\
+20 & 99.971 & 99.955 & 100.086 & 99.948 & 33.354 & 33.332 & 0.022 &
+0.334 \\
+22 & 99.895 & 99.792 & 99.833 & 99.839 & 33.289 & 33.274 & 0.015 &
+0.333 \\
+25 & 100.140 & 99.969 & 100.260 & 100.097 & 33.389 & 33.370 & 0.020 &
+0.333 \\
+26 & 99.920 & 99.968 & 99.884 & 99.923 & 33.307 & 33.308 & -0.002 &
+0.333 \\
+27 & 100.025 & 99.991 & 100.153 & 99.970 & 33.352 & 33.346 & 0.006 &
+0.333 \\
+28 & 100.000 & 99.940 & 100.028 & 100.013 & 33.351 & 33.331 & 0.020 &
+0.334 \\
+29 & 99.960 & 100.023 & 99.911 & 99.962 & 33.321 & 33.322 & -0.001 &
+0.333 \\
+30 & 99.999 & 100.052 & 100.067 & 99.986 & 33.340 & 33.345 & -0.005 &
+0.333 \\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}rrrrrrrrr@{}}
+\caption{三つのサンプルのどれかが独立でない場合}\tabularnewline
+\toprule
+No & 母集団 & 標本a & 標本b & 標本c & 加法1 & 加法2 & 差異 & 母集団比 \\
+\midrule
+\endfirsthead
+\toprule
+No & 母集団 & 標本a & 標本b & 標本c & 加法1 & 加法2 & 差異 & 母集団比 \\
+\midrule
+\endhead
+2 & 99.968 & 100.051 & 99.987 & 100.012 & 33.292 & 33.339 & -0.047 &
+0.333 \\
+21 & 99.966 & 99.894 & 100.034 & 99.932 & 33.297 & 33.318 & -0.021 &
+0.333 \\
+23 & 100.047 & 99.977 & 99.869 & 100.056 & 33.289 & 33.322 & -0.034 &
+0.333 \\
+24 & 99.930 & 99.913 & 99.977 & 99.899 & 33.343 & 33.310 & 0.033 &
+0.334 \\
+\bottomrule
+\end{longtable}
+
+\[\mbox{加法1} = var(\frac{a + b + c}{3}),　\mbox{加法2} = var(\frac{a}{3}) + var(\frac{b}{3}) + var(\frac{c}{3})\]
+
+\newpage
+
+\hypertarget{ux307eux3068ux3081}{%
+\section{まとめ}\label{ux307eux3068ux3081}}
+
+　データが独立であれば分散の加法性が成り立っており、\(n\)個の平均をとった場合、分散が\(\frac{1}{n}\)になることが予想できます。
+
+　
+
+\hypertarget{about-handout-style}{%
+\section{About handout style}\label{about-handout-style}}
+
+The Tufte handout style is a style that Edward Tufte uses in his books
+and handouts. Tufte's style is known for its extensive use of sidenotes,
+tight integration of graphics with text, and well-set typography. This
+style has been implemented in LaTeX and HTML/CSS\footnote{See Github
+  repositories
+  \href{https://github.com/tufte-latex/tufte-latex}{tufte-latex} and
+  \href{https://github.com/edwardtufte/tufte-css}{tufte-css}},
+respectively.
+
+　
+
+\bibliography{bib/references.bib}
+
+
+
+\end{document}
