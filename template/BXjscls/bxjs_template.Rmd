@@ -1,0 +1,127 @@
+---
+title: "PDF Document Template, BXjs Class"
+author: "Your Name, Licence"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: 
+    include:
+      in_header: latex/bxjs_preamble.tex # 必要なパッケージやフォント設定
+    latex_engine: xelatex      # R Markdown で日本語を利用する場合
+    number_sections: true
+    fig_caption: yes
+    keep_tex: yes
+documentclass: bxjsarticle     # 表紙のないレポート用
+# documentclass: bxjsreport      # 表紙のあるレポート用
+# documentclass: bxjsslide       # スライド用
+classoption: a4paper,xelatex,ja=standard
+always_allow_html: true        # 一種の呪文
+link-citations: true           # 参考文献一覧へのリンクを有効化
+colorlinks: true               # ハイパーリンクを色分けする
+fig_crop: false
+fontsize: 12pt                 # 本文のフォントサイズ
+linestretch: 0.85              # 行間の指定
+links-as-notes: true           # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.96"  # 0.96がベストらしいが…よく分からない。
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+require(tidyverse)
+require(knitr)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      message = FALSE,             # Rのメッセージを抑止する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",         # 図の出力にPDFデバイスを使う
+                        # fig.pos = "H",             # 図をその場で表示させる
+                        tinytex.verbose = TRUE     # デバッグ用メッセージを出力
+                        )
+}
+```
+
+
+# 本テンプレートの使い方
+
+前提条件
+
+* **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている（**R** 4.x推奨）
+* **RStudio**（v1.4推奨）
+
+作成手順
+
+1. **`tinytex`**パッケージをインストールする
+1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
+1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
+1. 本ドキュメントをknitする
+    * YAMLの`include`で指定しているファイルが必要です
+    * 必要なTeXパッケージは自動的にインストールしてくれます
+    * TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール[^1]してください
+    * フォーマットを変更したい場合はYAMLの`documentclass`を変更してください
+
+[^1]: `tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行すればインストールできます
+
+\newpage
+
+## 制限事項など
+R MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらままなりません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。  
+
+* **tinytex**以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
+    * 他のTeX/LaTeXでの動作は確認していません
+    * RStudioでのLaTeXエンジンは必ず`xelatex`を指定します
+* 本テンプレートは必要最低限の設定になっています
+    * TeXのデフォルト仕様として図表は自動的に再配置されます
+    * 図表を固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してください
+* 日本語が化ける場合があります
+    * 化けた場合は表現を工夫してください（回避方法不明）
+* Winodws環境はレンダリングに時間がかかる場合があります
+* レンダリング時に`xeCJK`パッケージのワーニングが出ます
+    * フォント設定を再設定しているだけなので特に問題はないかと…
+    * Ubuntu環境とWindows環境で動作確認しています
+* レイアウト調整をしたい場合は[BXjsclsユーザーマニュアル(PDF)](https://ctan.math.washington.edu/tex-archive/language/japanese/BX/bxjscls/bxjscls-manual.pdf)を参照してください
+* TeXの特殊文字（「\\TeX」など）は使えません^[もしかしたらなにか指定方法があるのかも…]
+    * LaTeX数式モードは使えます
+
+
+enjoy!
+
+\newpage
+
+# R Markdown
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars) %>%
+  knitr::kable(caption = "車のデータセット")
+```
+
+\newpage
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure, main = "日本語")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+\newpage
+
+```{r, fig.cap="アイリスデータセット"}
+iris %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Petal.Width, y = Petal.Length)) + 
+    ggplot2::geom_point() + 
+    ggplot2::geom_smooth(method = "lm") +
+    ggplot2::labs(caption = "アイリスデータセット")
+```
+

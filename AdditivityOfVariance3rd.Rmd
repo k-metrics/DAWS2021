@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 output:
   tufte::tufte_handout:
     includes:
-      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
     citation_package: natbib
     latex_engine: xelatex
     fig_caption: yes
@@ -15,7 +15,7 @@ output:
   tufte::tufte_html: default
   tufte::tufte_book:
     includes:
-      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
     citation_package: natbib
     latex_engine: xelatex
     fig_caption: yes
@@ -26,7 +26,7 @@ link-citations: true     # 参考文献一覧へのリンクを有効化
 colorlinks: true         # ハイパーリンクを色分けする
 fig_crop: false
 # fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
-linestretch: 1.1         # 行間の指定
+linestretch: 1.0         # 行間の指定
 links-as-notes: true     # ハイパーリンク先を脚注に記載
 mainfontoptions: "Scale=MatchUppercase"
 monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…

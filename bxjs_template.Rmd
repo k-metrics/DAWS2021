@@ -1,19 +1,19 @@
 ---
-title: "PDF Document Template"
+title: "PDF Document Template, BXjs Class"
 author: "Your Name, Licence"
 date: "`r Sys.Date()`"
 output:
   pdf_document: 
     include:
-      in_header: latex/default_preamble.tex # 必要なパッケージやフォント設定
-    latex_engine: xelatex
+      in_header: latex/bxjs_preamble.tex # 必要なパッケージやフォント設定
+    latex_engine: xelatex      # R Markdown で日本語を利用する場合
     number_sections: true
     fig_caption: yes
     keep_tex: yes
-documentclass: bxjsarticle     # 章のないレポート用
-# documentclass: bxjsreport      # 章のあるレポート用
+documentclass: bxjsarticle     # 表紙のないレポート用
+# documentclass: bxjsreport      # 表紙のあるレポート用
 # documentclass: bxjsslide       # スライド用
-classoption: xelatex,ja=standard
+classoption: a4paper,xelatex,ja=standard
 always_allow_html: true        # 一種の呪文
 link-citations: true           # 参考文献一覧へのリンクを有効化
 colorlinks: true               # ハイパーリンクを色分けする
@@ -22,7 +22,7 @@ fontsize: 12pt                 # 本文のフォントサイズ
 linestretch: 0.85              # 行間の指定
 links-as-notes: true           # ハイパーリンク先を脚注に記載
 mainfontoptions: "Scale=MatchUppercase"
-monofontoptions: "Scale=0.8"   # 0.96がベストらしいが…よく分からない。
+monofontoptions: "Scale=0.96"  # 0.96がベストらしいが…よく分からない。
 CJKoptions: "Scale=1.0"
 ---
 
@@ -47,12 +47,11 @@ if (knitr::is_latex_output()) {
 ```
 
 
-# 本テンプレートが必要とする環境
+# 本テンプレートの使い方
 
 前提条件
 
 * **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている（**R** 4.x推奨）
-)
 * **RStudio**（v1.4推奨）
 
 作成手順
@@ -61,26 +60,34 @@ if (knitr::is_latex_output()) {
 1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
 1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
 1. 本ドキュメントをknitする
-    * 必要なTeXパッケージを自動的にインストール後、レンタリングします
-    * TeXのパッケージが不足している場合はログを参考にインストールしてください
-        * `tinytex::tlmgr_install("package")`
+    * YAMLの`include`で指定しているファイルが必要です
+    * 必要なTeXパッケージは自動的にインストールしてくれます
+    * TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール[^1]してください
     * フォーマットを変更したい場合はYAMLの`documentclass`を変更してください
+
+[^1]: `tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行すればインストールできます
 
 \newpage
 
-## 日本語PDFの制限など
-R MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらできません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。  
+## 制限事項など
+R MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらままなりません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。  
 
 * **tinytex**以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
     * 他のTeX/LaTeXでの動作は確認していません
+    * RStudioでのLaTeXエンジンは必ず`xelatex`を指定します
 * 本テンプレートは必要最低限の設定になっています
-    * PDFのデフォルトとして図表は自動的に再配置されます
-        * 固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してみてください
-* 見出しの日本語が化ける場合があります
-    * 化けた場合は見出しを工夫してください（回避方法不明）
-* Winodws環境はレンダリングに時間がかかります
-* レンダリング時にワーニングが出ますがPDFは作成できます
+    * TeXのデフォルト仕様として図表は自動的に再配置されます
+    * 図表を固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してください
+* 日本語が化ける場合があります
+    * 化けた場合は表現を工夫してください（回避方法不明）
+* Winodws環境はレンダリングに時間がかかる場合があります
+* レンダリング時に`xeCJK`パッケージのワーニングが出ます
+    * フォント設定を再設定しているだけなので特に問題はないかと…
     * Ubuntu環境とWindows環境で動作確認しています
+* レイアウト調整をしたい場合は[BXjsclsユーザーマニュアル(PDF)](https://ctan.math.washington.edu/tex-archive/language/japanese/BX/bxjscls/bxjscls-manual.pdf)を参照してください
+* TeXの特殊文字（「\\TeX」など）は使えません^[もしかしたらなにか指定方法があるのかも…]
+    * LaTeX数式モードは使えます
+
 
 enjoy!
 
@@ -92,7 +99,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars) %>% 
+summary(cars) %>%
   knitr::kable(caption = "車のデータセット")
 ```
 
@@ -107,6 +114,8 @@ plot(pressure, main = "日本語")
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+\newpage
 
 ```{r, fig.cap="アイリスデータセット"}
 iris %>% 
