@@ -30,7 +30,9 @@ bibliography: ./bib/skeleton.bib  # 参考文献一覧ファイル（ファイ�
 ---
 
 ```{r setup, include=FALSE}
+library(tidyverse)
 library(tufte)
+
 # invalidate cache when the tufte version changes
 knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
@@ -50,13 +52,38 @@ if (knitr::is_latex_output()) {
                         )
 }
 
+df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
+                     font_size = NULL, position = "center", full_width = FALSE,
+                     head_tail = FALSE, booktabs = TRUE, ...) {
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      
+      df %>% 
+        psych::headTail(top = n,
+                        bottom = dplyr::if_else(head_tail == TRUE, n, 0L)) %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      return(NULL)
+    }
+  }
+}
 ```
 
 # 本テンプレートの使い方
 
 前提条件
 
-* **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている（**R** 4.x推奨）
+* **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージがインストールされている（**R** 4.x推奨）
 * **RStudio**（v1.4推奨）
 
 作成手順
@@ -65,24 +92,41 @@ if (knitr::is_latex_output()) {
 1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
 1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
 1. 本ドキュメントをknitする
-    * YAMLの`include`で指定しているファイルが必要です
-    * 必要な$\TeX$パッケージは自動的にインストールしてくれます
-    * TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール[^1]してください
-    * フォーマットを変更したい場合はYAMLの`output`指定を変更してください
+    * YAMLの`include`で指定しているファイルが必要ですので必ずテンプレートと共にコピーしてください
+    * 必要な$\TeX$パッケージは自動的に**tinytex**がインストールします
+    * もし、$\TeX$のメッセージが出た場合にはログを参考に必要なパッケージをインストール[^1]してください
+    * 出力フォーマットを変更したい場合はYAMLの`output`指定を変更してください
 
 [^1]: `tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行すればインストールできます
 
 注意事項
 
-* **tinytex**以外の$\TeX / \LaTeX$では手動でパッケージをインストールする必要があります
-    * `xelatex`以外の$\TeX / \LaTeX$での動作は確認していません
-    * RStudioでの$\LaTeX$エンジンは必ず`xelatex`を指定します
+* **tinytex**以外の$\TeX / \LaTeX$を利用する場合は手動でパッケージをインストールしてください
+    * **tinytex**以外の$\TeX / \LaTeX$での動作は確認していません
+    * RStudioでの$\LaTeX$エンジンは必ず`xelatex`を指定してください
 * 本テンプレートは必要最低限の設定になっています
     * $\TeX / \LaTeX$のデフォルト仕様として図表は自動的に再配置されます^[**`tufte`**パッケージの仕様上図表の固定はできません]
     * 余白への図などの配置はチャンクオプションで指定する必要があります^[本ドキュメントが記述仕様書になっています]
     * その他の[ドキュメントサンプル(PDF)](https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf)
 * Winodws環境はレンダリングに時間がかかる場合があります
+* 平仮名の「う(U)」が表示されない問題があります^[原ノ味フォントの場合]
 
+\newpage
+
+# 独自の関数定義
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。表現の自由度を高めるために**`kableExtra`**パッケージと**`psych`**パッケージを用いた`df_print()`関数^[詳細は`setup`チャンク内の関数が定義を参照方]を定義してあります。以下は使い方の一例です。
+```{r}
+mtcars[1:6, 1:6] %>% 
+  df_print(caption = "デフォルトの表示方法です")
+
+mtcars[, 1:6] %>% 
+  df_print(caption = "データの先頭と最後から規定行数表示します",
+           head_tail = TRUE)
+
+mtcars %>% 
+  df_print(caption = "全カラムを収めるためにスケールダウン表示します",
+           scale_down = TRUE, head_tail = TRUE)
+```
 
 \newpage
 
@@ -338,3 +382,4 @@ This document is also available in [Chinese](https://rstudio.github.io/tufte/cn/
 # create a bib file for the R packages used in this document
 knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
 ```
+

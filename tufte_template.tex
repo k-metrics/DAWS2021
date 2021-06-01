@@ -140,10 +140,24 @@ Handout}
 % \usepackage{subcaption}                 % 同上（新しい？）
 \usepackage{hyperref}                   % ハイパーリンク用必要？
 \usepackage{zxjatype}                   % 日本語処理に必要
-\usepackage{xeCJK}                      % 以下、日本語フォント用に必要
-% \usepackage[noto]{zxjafont}             % Linux環境ではこちも指定可
-\usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
+% \usepackage{xeCJK}                      % 以下、日本語フォント用に必要
+\usepackage[noto]{zxjafont}             % Linux環境ではこちも指定可
+% \usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
 \usepackage{pxrubrica}                  % ルビ用
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 \begin{document}
 
@@ -160,8 +174,9 @@ Handout}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{\texttt{tidyverse}, \texttt{knitr},
-  \texttt{rmarkdown}}パッケージがインストールされている（\textbf{R}
+  \textbf{\texttt{tidyverse}, \texttt{knitr}, \texttt{rmarkdown},
+  \texttt{psych},
+  \texttt{kableExtra}}パッケージがインストールされている（\textbf{R}
   4.x推奨）
 \item
   \textbf{RStudio}（v1.4推奨）
@@ -184,13 +199,13 @@ Handout}
   \begin{itemize}
   \tightlist
   \item
-    YAMLの\texttt{include}で指定しているファイルが必要です
+    YAMLの\texttt{include}で指定しているファイルが必要ですので必ずテンプレートと共にコピーしてください
   \item
-    必要な\(\TeX\)パッケージは自動的にインストールしてくれます
+    必要な\(\TeX\)パッケージは自動的に\textbf{tinytex}がインストールします
   \item
-    TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行すればインストールできます}してください
+    もし、\(\TeX\)のメッセージが出た場合にはログを参考に必要なパッケージをインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行すればインストールできます}してください
   \item
-    フォーマットを変更したい場合はYAMLの\texttt{output}指定を変更してください
+    出力フォーマットを変更したい場合はYAMLの\texttt{output}指定を変更してください
   \end{itemize}
 \end{enumerate}
 
@@ -199,14 +214,14 @@ Handout}
 \begin{itemize}
 \tightlist
 \item
-  \textbf{tinytex}以外の\(\TeX / \LaTeX\)では手動でパッケージをインストールする必要があります
+  \textbf{tinytex}以外の\(\TeX / \LaTeX\)を利用する場合は手動でパッケージをインストールしてください
 
   \begin{itemize}
   \tightlist
   \item
-    \texttt{xelatex}以外の\(\TeX / \LaTeX\)での動作は確認していません
+    \textbf{tinytex}以外の\(\TeX / \LaTeX\)での動作は確認していません
   \item
-    RStudioでの\(\LaTeX\)エンジンは必ず\texttt{xelatex}を指定します
+    RStudioでの\(\LaTeX\)エンジンは必ず\texttt{xelatex}を指定してください
   \end{itemize}
 \item
   本テンプレートは必要最低限の設定になっています
@@ -222,7 +237,96 @@ Handout}
   \end{itemize}
 \item
   Winodws環境はレンダリングに時間がかかる場合があります
+\item
+  平仮名の「う(U)」が表示されない問題があります\footnote{原ノ味フォントの場合}
 \end{itemize}
+
+\newpage
+
+\hypertarget{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}{%
+\section{独自の関数定義}\label{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}}
+
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。表現の自由度を高めるために\textbf{\texttt{kableExtra}}パッケージと\textbf{\texttt{psych}}パッケージを用いた\texttt{df\_print()}関数\footnote{詳細は\texttt{setup}チャンク内の関数が定義を参照方}を定義してあります。以下は使い方の一例です。
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"デフォルトの表示方法です"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-1}デフォルトの表示方法です}
+\centering
+\begin{tabular}[t]{lllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32}\\
+... & ... & ... & ... & ... & ... & ...\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"データの先頭と最後から規定行数表示します"}\NormalTok{,}
+           \AttributeTok{head\_tail =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-1}データの先頭と最後から規定行数表示します}
+\centering
+\begin{tabular}[t]{lllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32}\\
+... & ... & ... & ... & ... & ... & ...\\
+\cellcolor{gray!6}{Ferrari Dino} & \cellcolor{gray!6}{19.7} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{145} & \cellcolor{gray!6}{175} & \cellcolor{gray!6}{3.62} & \cellcolor{gray!6}{2.77}\\
+\addlinespace
+Maserati Bora & 15 & 8 & 301 & 335 & 3.54 & 3.57\\
+\cellcolor{gray!6}{Volvo 142E} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{121} & \cellcolor{gray!6}{109} & \cellcolor{gray!6}{4.11} & \cellcolor{gray!6}{2.78}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"全カラムを収めるためにスケールダウン表示します"}\NormalTok{,}
+           \AttributeTok{scale\_down =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{head\_tail =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-1}全カラムを収めるためにスケールダウン表示します}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{llllllllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62} & \cellcolor{gray!6}{16.46} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{4}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88 & 17.02 & 0 & 1 & 4 & 4\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32} & \cellcolor{gray!6}{18.61} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{1}\\
+... & ... & ... & ... & ... & ... & ... & ... & ... & ... & ... & ...\\
+\cellcolor{gray!6}{Ferrari Dino} & \cellcolor{gray!6}{19.7} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{145} & \cellcolor{gray!6}{175} & \cellcolor{gray!6}{3.62} & \cellcolor{gray!6}{2.77} & \cellcolor{gray!6}{15.5} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{6}\\
+\addlinespace
+Maserati Bora & 15 & 8 & 301 & 335 & 3.54 & 3.57 & 14.6 & 0 & 1 & 5 & 8\\
+\cellcolor{gray!6}{Volvo 142E} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{121} & \cellcolor{gray!6}{109} & \cellcolor{gray!6}{4.11} & \cellcolor{gray!6}{2.78} & \cellcolor{gray!6}{18.6} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{2}\\
+\bottomrule
+\end{tabular}}
+\end{table}
 
 \newpage
 
@@ -500,24 +604,28 @@ in the HTML output.
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}lrrrrrr@{}}
-\caption{A subset of mtcars.}\tabularnewline
-\toprule
-& mpg & cyl & disp & hp & drat & wt \\
-\midrule
-\endfirsthead
-\toprule
-& mpg & cyl & disp & hp & drat & wt \\
-\midrule
-\endhead
-Mazda RX4 & 21.0 & 6 & 160 & 110 & 3.90 & 2.620 \\
-Mazda RX4 Wag & 21.0 & 6 & 160 & 110 & 3.90 & 2.875 \\
-Datsun 710 & 22.8 & 4 & 108 & 93 & 3.85 & 2.320 \\
-Hornet 4 Drive & 21.4 & 6 & 258 & 110 & 3.08 & 3.215 \\
-Hornet Sportabout & 18.7 & 8 & 360 & 175 & 3.15 & 3.440 \\
-Valiant & 18.1 & 6 & 225 & 105 & 2.76 & 3.460 \\
-\bottomrule
-\end{longtable}
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-4}A subset of mtcars.}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r|r}
+\hline
+  & mpg & cyl & disp & hp & drat & wt\\
+\hline
+Mazda RX4 & 21.0 & 6 & 160 & 110 & 3.90 & 2.620\\
+\hline
+Mazda RX4 Wag & 21.0 & 6 & 160 & 110 & 3.90 & 2.875\\
+\hline
+Datsun 710 & 22.8 & 4 & 108 & 93 & 3.85 & 2.320\\
+\hline
+Hornet 4 Drive & 21.4 & 6 & 258 & 110 & 3.08 & 3.215\\
+\hline
+Hornet Sportabout & 18.7 & 8 & 360 & 175 & 3.15 & 3.440\\
+\hline
+Valiant & 18.1 & 6 & 225 & 105 & 2.76 & 3.460\\
+\hline
+\end{tabular}
+\end{table}
 
 \hypertarget{block-quotes}{%
 \section{Block Quotes}\label{block-quotes}}
