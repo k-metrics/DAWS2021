@@ -20,6 +20,7 @@ output:
     latex_engine: xelatex
     fig_caption: yes
     keep_tex: yes
+classoption: a4paper     # 指定しないとデフォルトではUS Letterサイズになる
 always_allow_html: true  # 一種の呪文
 bibliography: [bib/references.bib]
 link-citations: true     # 参考文献一覧へのリンクを有効化
@@ -29,7 +30,7 @@ fig_crop: false
 linestretch: 1.1         # 行間の指定
 links-as-notes: true     # ハイパーリンク先を脚注に記載
 mainfontoptions: "Scale=MatchUppercase"
-monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+monofontoptions: "Scale=0.96"      # 0.96がベストらしいが…
 CJKoptions: "Scale=1.0"
 ---
 
@@ -58,15 +59,51 @@ if (knitr::is_latex_output()) {
                         )
 }
 
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      return(NULL)
+    }
+  }
+}
+
 n <- 5000000    # 5,000,000
-times <- c(1:30)     # 試行回数
+times <- c(1:45)     # 試行回数
 
 test_build <- FALSE   # テストビルド(TRUE)の場合は、おまけのコードを実行しない
 ```
 
 
 # **はじめに**（小室先生のアドバイスから）
-　分散の加法性が成り立つには「データが独立」であるという前提条件があります。乱数生成した二つのデータが本当に独立なのかを確認すると共に分散の加法性も確認してみます。
+　分散の加法性が成り立つには「データが独立」であるという前提条件があります。乱数生成した二つのデータ^[各々`ｒr n`個のデータ]が本当に独立なのかを確認すると共に分散の加法性も確認してみます。
 
 　  
 
@@ -133,8 +170,9 @@ df %>%
   dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
                 `標本x` = var.x, `標本y` = var.y, 
                 `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, cov2) %>% 
-  dplyr::mutate_all(.funs = round, digits = 3) %>% 
-  knitr::kable(caption = "乱数生成した二つのデータの分散")
+  # dplyr::mutate_all(.funs = round, digits = 3) %>% 
+  # knitr::kable(caption = "乱数生成した二つのデータの分散")
+  df_print(caption = "乱数生成した二つのデータの分散", scale_down = TRUE, all = TRUE)
 
 df %>% 
   dplyr::filter(p.value < 0.05) %>% 
@@ -143,11 +181,12 @@ df %>%
   dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
                 `標本x` = var.x, `標本y` = var.y, 
                 `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, cov2) %>% 
-  dplyr::mutate_all(.funs = round, digits = 3) %>% 
-  knitr::kable(caption = "乱数生成した二つのデータが独立でない場合")
+  # dplyr::mutate_all(.funs = round, digits = 3) %>% 
+  # knitr::kable(caption = "乱数生成した二つのデータが独立でない場合")
+  df_print(caption = "乱数生成した二つのデータが独立でない場合", scale_down = TRUE, all = TRUE)
 ```
 
-$$\mbox{加法1} = var(a + b),　\mbox{加法2} = var(a) + var(b)$$
+$$\mbox{加法1} = var(x + y),　\mbox{加法2} = var(x) + var(y)$$
 
 ```{r, include=FALSE, eval=FALSE}
 df %>% 
@@ -173,8 +212,10 @@ df %>%
                 `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, cov2) %>% 
   # dplyr::select(No = no, corr = estimate, p.value,
   #               var.xy, var.sum, var.diff, cov2) %>% 
-  dplyr::mutate_all(.funs = round, digits = 3) %>% 
-  knitr::kable(caption = "ランダムサンプリングしたデータの分散")
+  # dplyr::mutate_all(.funs = round, digits = 3) %>% 
+  # knitr::kable(caption = "ランダムサンプリングしたデータの分散")
+  df_print(caption = "ランダムサンプリングしたデータの分散",
+           scale_down = TRUE, all = TRUE)
 
 df %>% 
   dplyr::filter(p.value < 0.05) %>% 
@@ -183,16 +224,18 @@ df %>%
                 `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, cov2) %>% 
   # dplyr::select(No = no, conf.low, corr = estimate, conf.high,
   #               p.value, var.diff, cov2) %>% 
-  dplyr::mutate_all(.funs = round, digits = 3) %>% 
-  knitr::kable(caption = "ランダムサンプリングしたデータが独立でない場合")
+  # dplyr::mutate_all(.funs = round, digits = 3) %>% 
+  # knitr::kable(caption = "ランダムサンプリングしたデータが独立でない場合")
+  df_print(caption = "ランダムサンプリングしたデータが独立でない場合",
+           scale_down = TRUE, all = TRUE)
 ```
 
-$$\mbox{加法1} = var(a + b),　\mbox{加法2} = var(a) + var(b)$$
+$$\mbox{加法1} = var(x + y),　\mbox{加法2} = var(x) + var(y)$$
 
 \newpage
 
 ## まとめ
-　データが独立であれば分散の加法性が成り立っていることがわかります。データが独立とは言い難い無相関の検定が成功するケース（$95\%$信頼区間に$0$が入らない）では、分散の差（共分散の2倍数）が一桁大きいので加法性が成り立っているとは言い難いように言えますがこのケースでは数値だけを見ている限り差はよくわかりません。
+　データが独立であれば分散の加法性が成り立っていることがわかります。データが独立とは言い難い無相関の検定が成功するケース（$95\%$信頼区間に$0$が入らない）では、分散の差（共分散の2倍数）が一桁大きいので加法性が成り立っているとは言い難いように思えますがこのケースでは数値だけを見ている限り差はよくわかりません。
 
 　  
 

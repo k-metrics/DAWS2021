@@ -1,11 +1,10 @@
 % --- 参考資料 ----------------------------------------------------------------
+% http://ctan.math.illinois.edu/language/japanese/zxjafont/zxjafont.pdf
 % https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
 % https://teastat.blogspot.com/2019/01/bookdown.html
 
 % --- Packages ----------------------------------------------------------------
 % 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
-% tufteではA4サイズの指定が不可能
-%  A4 210mm x 297mm
 % \usepackage[pdfbox,tombo]{gentombow}    % トンボを設定する場合は有効にする
 \usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
 \usepackage{booktabs}                   % ここからkableExtra用パッケージ
@@ -27,9 +26,10 @@
 \usepackage{fontawesome5}               % fontawesomeを使うために必要
 \usepackage{subfig}                     % 複数の図を並べる際に必要（古い？）
 % \usepackage{subcaption}                 % 同上（新しい？）
-\usepackage{hyperref}                   % ハイパーリンク用必要？
 \usepackage{zxjatype}                   % 日本語処理に必要
-\usepackage{xeCJK}                      % 以下、日本語フォント用に必要
-% \usepackage[noto]{zxjafont}             % Linux環境ではこちも指定可
-\usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
+% \usepackage{xeCJK}                      % zxjatypeを読み込むと一緒に読み込まれる
+\usepackage[noto]{zxjafont}             % Linux環境用
+% \usepackage[haranoaji]{zxjafont}        % Windows環境用
+% \usepackage[hiragino-pro]{zxjafont}     % macOS環境用（おそらく、駄目ならNotoで）
 \usepackage{pxrubrica}                  % ルビ用
+\usepackage{hyperref}                   % ハイパーリンク用必要？

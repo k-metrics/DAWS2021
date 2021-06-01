@@ -87,7 +87,6 @@
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 
 % longtable
-\usepackage{longtable,booktabs}
 
 % multiplecol
 \usepackage{multicol}
@@ -760,28 +759,41 @@ environments:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}rrrrl@{}}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\
-\midrule
-\endhead
-5.1 & 3.5 & 1.4 & 0.2 & setosa \\
-4.9 & 3.0 & 1.4 & 0.2 & setosa \\
-4.7 & 3.2 & 1.3 & 0.2 & setosa \\
-4.6 & 3.1 & 1.5 & 0.2 & setosa \\
-5.0 & 3.6 & 1.4 & 0.2 & setosa \\
-5.4 & 3.9 & 1.7 & 0.4 & setosa \\
-4.6 & 3.4 & 1.4 & 0.3 & setosa \\
-5.0 & 3.4 & 1.5 & 0.2 & setosa \\
-4.4 & 2.9 & 1.4 & 0.2 & setosa \\
-4.9 & 3.1 & 1.5 & 0.1 & setosa \\
-5.4 & 3.7 & 1.5 & 0.2 & setosa \\
-4.8 & 3.4 & 1.6 & 0.2 & setosa \\
-4.8 & 3.0 & 1.4 & 0.1 & setosa \\
-4.3 & 3.0 & 1.1 & 0.1 & setosa \\
-5.8 & 4.0 & 1.2 & 0.2 & setosa \\
-\bottomrule
-\end{longtable}
+\begin{tabular}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\hline
+4.6 & 3.4 & 1.4 & 0.3 & setosa\\
+\hline
+5.0 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+4.4 & 2.9 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.4 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+4.8 & 3.4 & 1.6 & 0.2 & setosa\\
+\hline
+4.8 & 3.0 & 1.4 & 0.1 & setosa\\
+\hline
+4.3 & 3.0 & 1.1 & 0.1 & setosa\\
+\hline
+5.8 & 4.0 & 1.2 & 0.2 & setosa\\
+\hline
+\end{tabular}
 
 \begin{Shaded}
 \begin{Highlighting}[numbers=left,,]
@@ -804,25 +816,35 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}rrrrl@{}}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\
-\midrule
-\endhead
-5.1 & 3.5 & 1.4 & 0.2 & setosa \\
-4.9 & 3.0 & 1.4 & 0.2 & setosa \\
-4.7 & 3.2 & 1.3 & 0.2 & setosa \\
-4.6 & 3.1 & 1.5 & 0.2 & setosa \\
-5.0 & 3.6 & 1.4 & 0.2 & setosa \\
-5.4 & 3.9 & 1.7 & 0.4 & setosa \\
-4.6 & 3.4 & 1.4 & 0.3 & setosa \\
-5.0 & 3.4 & 1.5 & 0.2 & setosa \\
-4.4 & 2.9 & 1.4 & 0.2 & setosa \\
-4.9 & 3.1 & 1.5 & 0.1 & setosa \\
-5.4 & 3.7 & 1.5 & 0.2 & setosa \\
-4.8 & 3.4 & 1.6 & 0.2 & setosa \\
-\bottomrule
-\end{longtable}
+\begin{tabular}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+5.4 & 3.9 & 1.7 & 0.4 & setosa\\
+\hline
+4.6 & 3.4 & 1.4 & 0.3 & setosa\\
+\hline
+5.0 & 3.4 & 1.5 & 0.2 & setosa\\
+\hline
+4.4 & 2.9 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.1 & 1.5 & 0.1 & setosa\\
+\hline
+5.4 & 3.7 & 1.5 & 0.2 & setosa\\
+\hline
+4.8 & 3.4 & 1.6 & 0.2 & setosa\\
+\hline
+\end{tabular}
 
 \begin{Shaded}
 \begin{Highlighting}[numbers=left,,]
@@ -849,18 +871,21 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}rrrrl@{}}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species \\
-\midrule
-\endhead
-5.1 & 3.5 & 1.4 & 0.2 & setosa \\
-4.9 & 3.0 & 1.4 & 0.2 & setosa \\
-4.7 & 3.2 & 1.3 & 0.2 & setosa \\
-4.6 & 3.1 & 1.5 & 0.2 & setosa \\
-5.0 & 3.6 & 1.4 & 0.2 & setosa \\
-\bottomrule
-\end{longtable}
+\begin{tabular}{r|r|r|r|l}
+\hline
+Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
+\hline
+5.1 & 3.5 & 1.4 & 0.2 & setosa\\
+\hline
+4.9 & 3.0 & 1.4 & 0.2 & setosa\\
+\hline
+4.7 & 3.2 & 1.3 & 0.2 & setosa\\
+\hline
+4.6 & 3.1 & 1.5 & 0.2 & setosa\\
+\hline
+5.0 & 3.6 & 1.4 & 0.2 & setosa\\
+\hline
+\end{tabular}
 
 We blended some tables in the above code chunk only as
 \emph{placeholders} to make sure there is enough vertical space among

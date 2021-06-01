@@ -20,6 +20,7 @@ output:
     latex_engine: xelatex
     fig_caption: yes
     keep_tex: yes
+classoption: a4paper     # 指定しないとデフォルトではUS Letterサイズになる
 always_allow_html: true  # 一種の呪文
 bibliography: [bib/references.bib]
 link-citations: true     # 参考文献一覧へのリンクを有効化
@@ -29,7 +30,7 @@ fig_crop: false
 linestretch: 1.0         # 行間の指定
 links-as-notes: true     # ハイパーリンク先を脚注に記載
 mainfontoptions: "Scale=MatchUppercase"
-monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+monofontoptions: "Scale=0.96"      # 0.96がベストらしいが…
 CJKoptions: "Scale=1.0"
 ---
 
@@ -58,8 +59,44 @@ if (knitr::is_latex_output()) {
                         )
 }
 
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      return(NULL)
+    }
+  }
+}
+
 n <- 5000000    # 5,000,000
-times <- c(1:30)     # 試行回数
+times <- c(1:45)     # 試行回数
 
 test_build <- FALSE   # テストビルド(TRUE)の場合は、おまけのコードを実行しない
 ```
@@ -111,6 +148,8 @@ df <- df %>%
 # df
 ```
 
+\newpage
+
 ```{r, echo=FALSE}
 df %>% 
   dplyr::filter(p.value >= 0.05) %>% 
@@ -118,8 +157,10 @@ df %>%
                 `標本a` = var.a, `標本b` = var.b,
                 `加法1` = var.ab, `加法2` = var.sum, `差異` = var.diff, 
                 `母集団比` = var.rate, cov2) %>% 
-  dplyr::mutate_all(.funs = round, 3) %>% 
-  knitr::kable(caption = "二つのサンプルを平均した場合の分散")
+  # dplyr::mutate_all(.funs = round, 3) %>% 
+  # knitr::kable(caption = "二つのサンプルを平均した場合の分散")
+  df_print(caption = "二つのサンプルを平均した場合の分散",
+           scale_down = TRUE, all = TRUE)
 
 df %>% 
   dplyr::filter(p.value < 0.05) %>% 
@@ -129,8 +170,10 @@ df %>%
                 `標本a` = var.a, `標本b` = var.b,
                 `加法1` = var.ab, `加法2` = var.sum, `差異` = var.diff, 
                 `母集団比` = var.rate, cov2) %>% 
-  dplyr::mutate_all(.funs = round, 3) %>% 
-  knitr::kable(caption = "二つのサンプルが独立でない場合")
+  # dplyr::mutate_all(.funs = round, 3) %>% 
+  # knitr::kable(caption = "二つのサンプルが独立でない場合")
+  df_print(caption = "二つのサンプルが独立でない場合",
+           scale_down = TRUE, all = TRUE)
 ```
 
 $$\mbox{加法1} = var(\frac{a + b}{2}),　\mbox{加法2} = var(\frac{a}{2}) + var(\frac{b}{2})$$
@@ -188,8 +231,10 @@ df %>%
   dplyr::filter(p.value...3 >= 0.05 & p.value...11 >= 0.05 & p.value...19 >= 0.05) %>% 
   dplyr::select(No = no, `母集団` = var.x, `標本a` = var.a, `標本b` = var.b, `標本c` = var.c,
                 `加法1` = var.abc, `加法2` = var.sum, `差異` = var.diff, `母集団比` = var.rate) %>% 
-  dplyr::mutate_all(.funs = round, 3) %>% 
-  knitr::kable(caption = "三つのサンプルを平均した場合の分散")
+  # dplyr::mutate_all(.funs = round, 3) %>% 
+  # knitr::kable(caption = "三つのサンプルを平均した場合の分散")
+  df_print(caption = "三つのサンプルを平均した場合の分散",
+           scale_down = TRUE, all = TRUE)
 
 df %>%
   dplyr::filter(!(p.value...3 >= 0.05 & p.value...11 >= 0.05 & p.value...19 >= 0.05)) %>% 
@@ -198,8 +243,10 @@ df %>%
   #               `母集団比` = var.rate) %>% 
   dplyr::select(No = no, `母集団` = var.x, `標本a` = var.a, `標本b` = var.b, `標本c` = var.c,
                 `加法1` = var.abc, `加法2` = var.sum, `差異` = var.diff, `母集団比` = var.rate) %>% 
-  dplyr::mutate_all(.funs = round, 3) %>% 
-  knitr::kable(caption = "三つのサンプルのどれかが独立でない場合")
+  # dplyr::mutate_all(.funs = round, 3) %>% 
+  # knitr::kable(caption = "三つのサンプルのどれかが独立でない場合")
+  df_print(caption = "三つのサンプルのどれかが独立でない場合",
+           scale_down = TRUE, all = TRUE)
 ```
 
 

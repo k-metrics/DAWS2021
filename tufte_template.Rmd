@@ -51,9 +51,17 @@ if (knitr::is_latex_output()) {
                         )
 }
 
-df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
-                     font_size = NULL, position = "center", full_width = FALSE,
-                     head_tail = FALSE, booktabs = TRUE, ...) {
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
   if (!is.null(df)) {
     if (knitr::is_latex_output()) {
       if (scale_down == FALSE) {
@@ -63,10 +71,12 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
         # latex_option = c("striped", "HOLD_position", "scale_down")
         latex_option = c("striped", "scale_down")
       }
-      
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
       df %>% 
-        psych::headTail(top = n,
-                        bottom = dplyr::if_else(head_tail == TRUE, n, 0L)) %>% 
         kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
         kableExtra::kable_styling(font_size = font_size, position = position,
                                   full_width = full_width,
@@ -76,6 +86,7 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
     }
   }
 }
+
 ```
 
 # 本テンプレートの使い方
