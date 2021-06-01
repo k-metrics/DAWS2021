@@ -6,27 +6,26 @@ date: "`r Sys.Date()`"
 output:
   tufte::tufte_handout:
     includes:
-      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
-    citation_package: natbib
-    latex_engine: xelatex
+      in_header: ./latex/tufte_preamble.tex # 日本語処理のために必ず指定する
+    citation_package: natbib                # 参考文献一覧を使う場合
+    latex_engine: xelatex                   # 他のLaTeXエンジンは使用不可
     fig_caption: yes
     keep_tex: yes
   tufte::tufte_book:
     includes:
-      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
-    citation_package: natbib
-    latex_engine: xelatex
+      in_header: ./latex/tufte_preamble.tex # 日本語処理のために必ず指定する
+    citation_package: natbib                # 参考文献一覧を使う場合
+    latex_engine: xelatex                   # 他のLaTeXエンジンは使用不可
     fig_caption: yes
     keep_tex: yes
-classoption: a4paper     # 指定しないとデフォルトのUS Letterサイズ
+classoption: a4paper     # 指定しないとデフォルトではUS Letterサイズになる
 always_allow_html: true  # 一種の呪文
 link-citations: true     # 参考文献一覧へのリンクを有効化
-fig_crop: false
-linestretch: 1.1         # 行間の指定
-mainfontoptions: "Scale=MatchUppercase"
-monofontoptions: "Scale=0.96"     # 0.96がベストらしいが…
-CJKoptions: "Scale=1.0"
 bibliography: ./bib/skeleton.bib  # 参考文献一覧ファイル（ファイル末で自動生成）
+linestretch: 1.1         # 行間の指定（お好みで調整を）
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.96"     # 0.96がベストらしい
+CJKoptions: "Scale=1.0"
 ---
 
 ```{r setup, include=FALSE}
@@ -83,20 +82,20 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
 
 前提条件
 
-* **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージがインストールされている（**R** 4.x推奨）
-* **RStudio**（v1.4推奨）
-* **Notoフォント**（Linux）、**ヒラノギフォント**（macOSは多分これかと）
+* **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージ^[**R** 4.x推奨]
+* **RStudio**^[v1.4推奨]
+* **Notoフォント**（Linux）・**ヒラギノフォント**^[検証していないので推測です]（macOS）
 
 作成手順
 
 1. **`tufte`, `tinytex`**パッケージをインストールする
-1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
-1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
+1. `tinytex::install_tinytex()`で**tinytex**をインストールする
+1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする^[Windows環境のみ]
+1. `latex/tufte_preamble.tex`を開いてOS環境に見合ったフォント設定を有効にする^[不要な設定は%文字でコメントアウトします]
 1. 本ドキュメントをknitする
-    * YAMLの`include`で指定しているファイルが必要ですので必ずテンプレートと共にコピーしてください
-    * 必要な$\TeX$パッケージは自動的に**tinytex**がインストールします
-    * もし、$\TeX$のメッセージが出た場合にはログを参考に必要なパッケージをインストール[^1]してください
-    * 出力フォーマットを変更したい場合はYAMLの`output`指定を変更してください
+    * 必要な$\TeX$パッケージは**tinytex**が自動的にインストールする
+    * もし$\TeX$のメッセージが出た場合にはログを参考に必要なパッケージをインストール[^1]する
+    * 出力フォーマットを変更したい場合はYAMLの`output`指定を変更する
 
 [^1]: `tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行すればインストールできます
 
@@ -104,18 +103,17 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
 
 * **tinytex**以外の$\TeX / \LaTeX$を利用する場合は手動でパッケージをインストールしてください
     * **tinytex**以外の$\TeX / \LaTeX$での動作は確認していません
-    * RStudioでの$\LaTeX$エンジンは必ず`xelatex`を指定してください
-* 本テンプレートは必要最低限の設定になっています
-    * $\TeX / \LaTeX$のデフォルト仕様として図表は自動的に再配置されます^[**`tufte`**パッケージの仕様上図表の固定はできません]
-    * 余白への図などの配置はチャンクオプションで指定する必要があります^[本ドキュメントが記述仕様書になっています]
-    * その他の[ドキュメントサンプル(PDF)](https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf)
+    * **RStudio**での$\LaTeX$エンジン指定は必ず`xelatex`を指定してください
+* 本テンプレートは必要最低限の設定だけです
+    * $\TeX / \LaTeX$のデフォルト仕様として図表は自動的に再配置されます^[**`tufte`**パッケージの仕様上図表の固定指定はできません]
+    * 各種の指定方法は本ドキュメントに記述されています^[[ドキュメントサンプル(PDF)](https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf)も参照してください]
 * Winodws環境はレンダリングに時間がかかる場合があります
 * 平仮名の「う(U)」が表示されない問題があります^[Linux環境で原ノ味フォントを指定した場合、Linux環境ではNotoフォントを指定してください]
 
 \newpage
 
 # 独自の関数定義
-PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。表現の自由度を高めるために**`kableExtra`**パッケージと**`psych`**パッケージを用いた`df_print()`関数^[詳細は`setup`チャンク内の関数が定義を参照方]を定義してあります。以下は使い方の一例です。
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。そこで、表現の自由度を高めるために**`kableExtra`**パッケージと**`psych`**パッケージを用いた`df_print()`関数^[詳細は`setup`チャンク内の関数が定義を参照方]を定義してあります。以下は使い方の一例です。
 ```{r}
 mtcars[1:6, 1:6] %>% 
   df_print(caption = "デフォルトの表示方法です")

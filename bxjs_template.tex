@@ -88,16 +88,6 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -151,12 +141,27 @@
 \usepackage{fontawesome5}              % fontawesomeを使うために必要
 \usepackage{subfig}                    % 複数の図を並べる際に必要（古い？）
 % \usepackage{subcaption}                % 同上（新しい？）
-\usepackage{hyperref}                  % ハイパーリンク用必要？
-% \usepackage[noto]{zxjafont}            % Linux環境ではこちも使える
-\usepackage[haranoaji]{zxjafont}       % Windows環境ではこちらだけ
 \usepackage{zxjatype}                  % 日本語処理に必要
 % \usepackage{xeCJK}                     % zxjatypeを読み込むと自動で読み込む
+\usepackage[noto]{zxjafont}            % Linux環境ではこちも使える
+% \usepackage[haranoaji]{zxjafont}       % Windows環境ではこちらだけ
+% \usepackage[hiragino-pro]{zxjafont}    % macOS環境用（おそらく、駄目ならNotoで）
 \usepackage{pxrubrica}                 % ルビ用
+\usepackage{hyperref}                  % ハイパーリンク用必要？
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -177,11 +182,13 @@
 \begin{itemize}
 \tightlist
 \item
-  \textbf{\texttt{tidyverse}, \texttt{knitr},
-  \texttt{rmarkdown}}パッケージがインストールされている（\textbf{R}
-  4.x推奨）
+  \textbf{\texttt{tidyverse}, \texttt{knitr}, \texttt{rmarkdown},
+  \texttt{psych}, \texttt{kableExtra}}パッケージ\footnote{\textbf{R}
+    4.x推奨}
 \item
-  \textbf{RStudio}（v1.4推奨）
+  \textbf{RStudio}\footnote{v1.4推奨}
+\item
+  \textbf{Notoフォント}（Linux）・\textbf{ヒラギノフォント}\footnote{検証していないので推測です}（macOS）
 \end{itemize}
 
 作成手順
@@ -192,26 +199,24 @@
 \item
   \textbf{\texttt{tinytex}}パッケージをインストールする
 \item
-  \texttt{tinytex::install\_tinytex()}で\textbf{tinytex}本体をインストールする
+  \texttt{tinytex::install\_tinytex()}で\textbf{tinytex}をインストールする
 \item
-  \texttt{tinytex::tlmgr\_install("haranoaji")}で原の味フォントをインストールする
+  \texttt{tinytex::tlmgr\_install("haranoaji")}で原の味フォントをインストールする\footnote{Windows環境のみ}
+\item
+  \texttt{latex/tufte\_preamble.tex}を開いてOS環境に見合ったフォント設定を有効にする\footnote{不要な設定は\%文字でコメントアウトします}
 \item
   本ドキュメントをknitする
 
   \begin{itemize}
   \tightlist
   \item
-    YAMLの\texttt{include}で指定しているファイルが必要です
+    必要なTeXパッケージは\textbf{tinytex}が自動的にインストールする
   \item
-    必要なTeXパッケージは自動的にインストールしてくれます
+    もしTeXのメッセージが出た場合にはログを参考に必要なパッケージをインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行します}する
   \item
-    TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行すればインストールできます}してください
-  \item
-    フォーマットを変更したい場合はYAMLの\texttt{documentclass}を変更してください
+    出力フォーマットを変更したい場合はYAMLの\texttt{documentclass}指定を変更する
   \end{itemize}
 \end{enumerate}
-
-\newpage
 
 \hypertarget{ux5236ux9650ux4e8bux9805ux306aux3069}{%
 \subsection{制限事項など}\label{ux5236ux9650ux4e8bux9805ux306aux3069}}
@@ -220,47 +225,36 @@ R
 MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらままなりません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。
 
 \begin{itemize}
-\tightlist
 \item
-  \textbf{tinytex}以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
+  \textbf{tinytex}以外のTeX/LaTeXを利用する場合は手動でパッケージをインストールしてください
 
   \begin{itemize}
   \tightlist
   \item
-    他のTeX/LaTeXでの動作は確認していません
+    \textbf{tinytex}以外のTeX/LaTeXでの動作は確認していません
   \item
-    RStudioでのLaTeXエンジンは必ず\texttt{xelatex}を指定します
+    \textbf{RStudio}でのLaTeXエンジン指定は必ず\texttt{xelatex}を指定してください
   \end{itemize}
 \item
-  本テンプレートは必要最低限の設定になっています
+  本テンプレートは必要最低限の設定だけです
 
   \begin{itemize}
   \tightlist
   \item
-    TeXのデフォルト仕様として図表は自動的に再配置されます
+    TeX/LaTeX\$のデフォルト仕様として図表は自動的に再配置されます
   \item
-    図表を固定したい場合は\texttt{setup}チャンク内の\texttt{fig.pos}オプションを試してください
-  \end{itemize}
-\item
-  日本語が化ける場合があります
-
-  \begin{itemize}
-  \tightlist
+    図を位置固定したい場合は\texttt{setup}チャンク内の\texttt{fig.pos}オプションを試してください
   \item
-    化けた場合は表現を工夫してください（回避方法不明）
+    表を位置固定したい場合は定義してある\texttt{df\_print()}関数を試してください
+  \item
+    各種の指定方法は本ドキュメントに記述されています\footnote{\href{https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf}{ドキュメントサンプル(PDF)}も参照してください}
   \end{itemize}
 \item
   Winodws環境はレンダリングに時間がかかる場合があります
 \item
-  レンダリング時に\texttt{xeCJK}パッケージのワーニングが出ます
-
-  \begin{itemize}
-  \tightlist
-  \item
-    フォント設定を再設定しているだけなので特に問題はないかと\ldots{}
-  \item
-    Ubuntu環境とWindows環境で動作確認しています
-  \end{itemize}
+  レンダリング時に\texttt{xeCJK}パッケージのワーニングが出ます\footnote{フォント設定を再設定しているだけなので特に問題はないかと\ldots{}}
+\item
+  平仮名の「う(U)」が表示されない問題があります\footnote{Linux環境で原ノ味フォントを指定した場合、Linux環境ではNotoフォントを指定してください}
 \item
   レイアウト調整をしたい場合は\href{https://ctan.math.washington.edu/tex-archive/language/japanese/BX/bxjscls/bxjscls-manual.pdf}{BXjsclsユーザーマニュアル(PDF)}を参照してください
 \item
@@ -274,6 +268,93 @@ MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを
 \end{itemize}
 
 enjoy!
+
+\newpage
+
+\hypertarget{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}{%
+\section{独自の関数定義}\label{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}}
+
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。そこで、表現の自由度を高めるために\textbf{\texttt{kableExtra}}パッケージと\textbf{\texttt{psych}}パッケージを用いた\texttt{df\_print()}関数\footnote{詳細は\texttt{setup}チャンク内の関数が定義を参照方}を定義してあります。以下は使い方の一例です。
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"デフォルトの表示方法です"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:unnamed-chunk-1}デフォルトの表示方法です}
+\centering
+\begin{tabular}[t]{lllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32}\\
+... & ... & ... & ... & ... & ... & ...\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"データの先頭と最後から規定行数表示します"}\NormalTok{,}
+           \AttributeTok{head\_tail =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:unnamed-chunk-1}データの先頭と最後から規定行数表示します}
+\centering
+\begin{tabular}[t]{lllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32}\\
+... & ... & ... & ... & ... & ... & ...\\
+\cellcolor{gray!6}{Ferrari Dino} & \cellcolor{gray!6}{19.7} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{145} & \cellcolor{gray!6}{175} & \cellcolor{gray!6}{3.62} & \cellcolor{gray!6}{2.77}\\
+\addlinespace
+Maserati Bora & 15 & 8 & 301 & 335 & 3.54 & 3.57\\
+\cellcolor{gray!6}{Volvo 142E} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{121} & \cellcolor{gray!6}{109} & \cellcolor{gray!6}{4.11} & \cellcolor{gray!6}{2.78}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mtcars }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{df\_print}\NormalTok{(}\AttributeTok{caption =} \StringTok{"全カラムを収めるためにスケールダウン表示します（コードの位置に表示されません）"}\NormalTok{,}
+           \AttributeTok{scale\_down =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{head\_tail =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{pos\_hold =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-1}全カラムを収めるためにスケールダウン表示します（コードの位置に表示されません）}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{llllllllllll}
+\toprule
+  & mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\\
+\midrule
+\cellcolor{gray!6}{Mazda RX4} & \cellcolor{gray!6}{21} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{160} & \cellcolor{gray!6}{110} & \cellcolor{gray!6}{3.9} & \cellcolor{gray!6}{2.62} & \cellcolor{gray!6}{16.46} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{4}\\
+Mazda RX4 Wag & 21 & 6 & 160 & 110 & 3.9 & 2.88 & 17.02 & 0 & 1 & 4 & 4\\
+\cellcolor{gray!6}{Datsun 710} & \cellcolor{gray!6}{22.8} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{108} & \cellcolor{gray!6}{93} & \cellcolor{gray!6}{3.85} & \cellcolor{gray!6}{2.32} & \cellcolor{gray!6}{18.61} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{1}\\
+... & ... & ... & ... & ... & ... & ... & ... & ... & ... & ... & ...\\
+\cellcolor{gray!6}{Ferrari Dino} & \cellcolor{gray!6}{19.7} & \cellcolor{gray!6}{6} & \cellcolor{gray!6}{145} & \cellcolor{gray!6}{175} & \cellcolor{gray!6}{3.62} & \cellcolor{gray!6}{2.77} & \cellcolor{gray!6}{15.5} & \cellcolor{gray!6}{0} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{5} & \cellcolor{gray!6}{6}\\
+\addlinespace
+Maserati Bora & 15 & 8 & 301 & 335 & 3.54 & 3.57 & 14.6 & 0 & 1 & 5 & 8\\
+\cellcolor{gray!6}{Volvo 142E} & \cellcolor{gray!6}{21.4} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{121} & \cellcolor{gray!6}{109} & \cellcolor{gray!6}{4.11} & \cellcolor{gray!6}{2.78} & \cellcolor{gray!6}{18.6} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{1} & \cellcolor{gray!6}{4} & \cellcolor{gray!6}{2}\\
+\bottomrule
+\end{tabular}}
+\end{table}
 
 \newpage
 
@@ -291,28 +372,32 @@ chunks within the document. You can embed an R code chunk like this:
 \begin{Shaded}
 \begin{Highlighting}[numbers=left,,]
 \FunctionTok{summary}\NormalTok{(cars) }\SpecialCharTok{\%\textgreater{}\%}
-\NormalTok{  knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"車のデータセット"}\NormalTok{)}
+\NormalTok{  knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"車のデータセット（コードの位置に表示されません）"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{longtable}[]{@{}lll@{}}
-\caption{車のデータセット}\tabularnewline
-\toprule
-& speed & dist \\
-\midrule
-\endfirsthead
-\toprule
-& speed & dist \\
-\midrule
-\endhead
-& Min. : 4.0 & Min. : 2.00 \\
-& 1st Qu.:12.0 & 1st Qu.: 26.00 \\
-& Median :15.0 & Median : 36.00 \\
-& Mean :15.4 & Mean : 42.98 \\
-& 3rd Qu.:19.0 & 3rd Qu.: 56.00 \\
-& Max. :25.0 & Max. :120.00 \\
-\bottomrule
-\end{longtable}
+\begin{table}
+
+\caption{\label{tab:cars}車のデータセット（コードの位置に表示されません）}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+  &     speed &      dist\\
+\hline
+ & Min.   : 4.0 & Min.   :  2.00\\
+\hline
+ & 1st Qu.:12.0 & 1st Qu.: 26.00\\
+\hline
+ & Median :15.0 & Median : 36.00\\
+\hline
+ & Mean   :15.4 & Mean   : 42.98\\
+\hline
+ & 3rd Qu.:19.0 & 3rd Qu.: 56.00\\
+\hline
+ & Max.   :25.0 & Max.   :120.00\\
+\hline
+\end{tabular}
+\end{table}
 
 \newpage
 
@@ -340,11 +425,11 @@ chunk to prevent printing of the R code that generated the plot.
 
 \begin{figure}
 
-{\centering \includegraphics{bxjs_template_files/figure-latex/unnamed-chunk-1-1} 
+{\centering \includegraphics{bxjs_template_files/figure-latex/unnamed-chunk-2-1} 
 
 }
 
-\caption{アイリスデータセット}\label{fig:unnamed-chunk-1}
+\caption{アイリスデータセット}\label{fig:unnamed-chunk-2}
 \end{figure}
 
 \end{document}

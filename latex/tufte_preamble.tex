@@ -5,8 +5,6 @@
 
 % --- Packages ----------------------------------------------------------------
 % 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
-% tufteではA4サイズの指定が不可能
-%  A4 210mm x 297mm
 % \usepackage[pdfbox,tombo]{gentombow}    % トンボを設定する場合は有効にする
 \usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
 \usepackage{booktabs}                   % ここからkableExtra用パッケージ
@@ -30,9 +28,8 @@
 % \usepackage{subcaption}                 % 同上（新しい？）
 \usepackage{zxjatype}                   % 日本語処理に必要
 % \usepackage{xeCJK}                      % zxjatypeを読み込むと一緒に読み込まれる
-% \usepackage[noto-jp]{zxjafont}          % Linux環境ではこちを指定する
-% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定する
-\usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
-% \usepackage[hiragino-pro]{zxjafont}     % macOS環境はこれか、Notoでいけるかと
+\usepackage[noto]{zxjafont}             % Linux環境用
+% \usepackage[haranoaji]{zxjafont}        % Windows環境用
+% \usepackage[hiragino-pro]{zxjafont}     % macOS環境用（おそらく、駄目ならNotoで）
 \usepackage{pxrubrica}                  % ルビ用
 \usepackage{hyperref}                   % ハイパーリンク用必要？

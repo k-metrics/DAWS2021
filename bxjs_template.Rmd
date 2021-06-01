@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:
   pdf_document: 
     include:
-      in_header: latex/bxjs_preamble.tex # 必要なパッケージやフォント設定
+      in_header: ./latex/bxjs_preamble.tex # 必要なパッケージやフォント設定
     latex_engine: xelatex      # R Markdown で日本語を利用する場合
     number_sections: true
     fig_caption: yes
@@ -44,6 +44,40 @@ if (knitr::is_latex_output()) {
                         tinytex.verbose = TRUE     # デバッグ用メッセージを出力
                         )
 }
+
+df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
+                     font_size = NULL, position = "center", full_width = FALSE,
+                     head_tail = FALSE, booktabs = TRUE, pos_hold = TRUE, ...) {
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        if (pos_hold == TRUE) {
+          latex_option = c("striped", "HOLD_position")
+        } else {
+          latex_option = c("striped")
+        }
+      } else {
+        if (pos_hold == TRUE) {
+          latex_option = c("striped", "HOLD_position", "scale_down")
+        } else {
+          latex_option = c("striped", "scale_down")
+        }
+      }
+      
+      df %>% 
+        psych::headTail(top = n,
+                        bottom = dplyr::if_else(head_tail == TRUE, n, 0L)) %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+
+    } else {   # 出力タイプ不明の場合
+      return(NULL)
+    }
+  }
+}
+
 ```
 
 
@@ -51,45 +85,58 @@ if (knitr::is_latex_output()) {
 
 前提条件
 
-* **`tidyverse`, `knitr`, `rmarkdown`**パッケージがインストールされている（**R** 4.x推奨）
-* **RStudio**（v1.4推奨）
+* **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージ^[**R** 4.x推奨]
+* **RStudio**^[v1.4推奨]
+* **Notoフォント**（Linux）・**ヒラギノフォント**^[検証していないので推測です]（macOS）
 
 作成手順
 
 1. **`tinytex`**パッケージをインストールする
-1. `tinytex::install_tinytex()`で**tinytex**本体をインストールする
-1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする
+1. `tinytex::install_tinytex()`で**tinytex**をインストールする
+1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする^[Windows環境のみ]
+1. `latex/tufte_preamble.tex`を開いてOS環境に見合ったフォント設定を有効にする^[不要な設定は%文字でコメントアウトします]
 1. 本ドキュメントをknitする
-    * YAMLの`include`で指定しているファイルが必要です
-    * 必要なTeXパッケージは自動的にインストールしてくれます
-    * TeXのパッケージが不足しているとのメッセージが出た場合にはログを参考にインストール[^1]してください
-    * フォーマットを変更したい場合はYAMLの`documentclass`を変更してください
-
-[^1]: `tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行すればインストールできます
-
-\newpage
+    * 必要なTeXパッケージは**tinytex**が自動的にインストールする
+    * もしTeXのメッセージが出た場合にはログを参考に必要なパッケージをインストール^[`tinytex::tlmgr_install("package")`を**RStudio**のコンソールから実行します]する
+    * 出力フォーマットを変更したい場合はYAMLの`documentclass`指定を変更する
 
 ## 制限事項など
 R MarkdownでPDFを作成するのは簡単ですが、日本語を含んだPDFを作成するには様々な知識が必要です。特にTeXの知識がないと日本語の表示すらままなりません。特にWindows環境は経験的に厄介ですので基本的にサポートはありません。  
 
-* **tinytex**以外のTeX/LaTeXでは手動でパッケージをインストールする必要があります
-    * 他のTeX/LaTeXでの動作は確認していません
-    * RStudioでのLaTeXエンジンは必ず`xelatex`を指定します
-* 本テンプレートは必要最低限の設定になっています
-    * TeXのデフォルト仕様として図表は自動的に再配置されます
-    * 図表を固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してください
-* 日本語が化ける場合があります
-    * 化けた場合は表現を工夫してください（回避方法不明）
+* **tinytex**以外のTeX/LaTeXを利用する場合は手動でパッケージをインストールしてください
+    * **tinytex**以外のTeX/LaTeXでの動作は確認していません
+    * **RStudio**でのLaTeXエンジン指定は必ず`xelatex`を指定してください
+* 本テンプレートは必要最低限の設定だけです
+    * TeX/LaTeX$のデフォルト仕様として図表は自動的に再配置されます
+    * 図を位置固定したい場合は`setup`チャンク内の`fig.pos`オプションを試してください
+    * 表を位置固定したい場合は定義してある`df_print()`関数を試してください
+    * 各種の指定方法は本ドキュメントに記述されています^[[ドキュメントサンプル(PDF)](https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf)も参照してください]
 * Winodws環境はレンダリングに時間がかかる場合があります
-* レンダリング時に`xeCJK`パッケージのワーニングが出ます
-    * フォント設定を再設定しているだけなので特に問題はないかと…
-    * Ubuntu環境とWindows環境で動作確認しています
+* レンダリング時に`xeCJK`パッケージのワーニングが出ます^[フォント設定を再設定しているだけなので特に問題はないかと…]
+* 平仮名の「う(U)」が表示されない問題があります^[Linux環境で原ノ味フォントを指定した場合、Linux環境ではNotoフォントを指定してください]
+
 * レイアウト調整をしたい場合は[BXjsclsユーザーマニュアル(PDF)](https://ctan.math.washington.edu/tex-archive/language/japanese/BX/bxjscls/bxjscls-manual.pdf)を参照してください
 * TeXの特殊文字（「\\TeX」など）は使えません^[もしかしたらなにか指定方法があるのかも…]
     * LaTeX数式モードは使えます
 
-
 enjoy!
+
+\newpage
+
+# 独自の関数定義
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。そこで、表現の自由度を高めるために**`kableExtra`**パッケージと**`psych`**パッケージを用いた`df_print()`関数^[詳細は`setup`チャンク内の関数が定義を参照方]を定義してあります。以下は使い方の一例です。
+```{r}
+mtcars[1:6, 1:6] %>% 
+  df_print(caption = "デフォルトの表示方法です")
+
+mtcars[, 1:6] %>% 
+  df_print(caption = "データの先頭と最後から規定行数表示します",
+           head_tail = TRUE)
+
+mtcars %>% 
+  df_print(caption = "全カラムを収めるためにスケールダウン表示します（コードの位置に表示されません）",
+           scale_down = TRUE, head_tail = TRUE, pos_hold = FALSE)
+```
 
 \newpage
 
@@ -100,7 +147,7 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r cars}
 summary(cars) %>%
-  knitr::kable(caption = "車のデータセット")
+  knitr::kable(caption = "車のデータセット（コードの位置に表示されません）")
 ```
 
 \newpage

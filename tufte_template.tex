@@ -116,8 +116,6 @@ Handout}
 
 % --- Packages ----------------------------------------------------------------
 % 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
-% tufteではA4サイズの指定が不可能
-%  A4 210mm x 297mm
 % \usepackage[pdfbox,tombo]{gentombow}    % トンボを設定する場合は有効にする
 \usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
 \usepackage{booktabs}                   % ここからkableExtra用パッケージ
@@ -141,10 +139,9 @@ Handout}
 % \usepackage{subcaption}                 % 同上（新しい？）
 \usepackage{zxjatype}                   % 日本語処理に必要
 % \usepackage{xeCJK}                      % zxjatypeを読み込むと一緒に読み込まれる
-% \usepackage[noto-jp]{zxjafont}          % Linux環境ではこちを指定する
-% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定する
-\usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
-% \usepackage[hiragino-pro]{zxjafont}     % macOS環境はこれか、Notoでいけるかと
+\usepackage[noto]{zxjafont}             % Linux環境用
+% \usepackage[haranoaji]{zxjafont}        % Windows環境用
+% \usepackage[hiragino-pro]{zxjafont}     % macOS環境用（おそらく、駄目ならNotoで）
 \usepackage{pxrubrica}                  % ルビ用
 \usepackage{hyperref}                   % ハイパーリンク用必要？
 \usepackage{booktabs}
@@ -178,13 +175,12 @@ Handout}
 \tightlist
 \item
   \textbf{\texttt{tidyverse}, \texttt{knitr}, \texttt{rmarkdown},
-  \texttt{psych},
-  \texttt{kableExtra}}パッケージがインストールされている（\textbf{R}
-  4.x推奨）
+  \texttt{psych}, \texttt{kableExtra}}パッケージ\footnote{\textbf{R}
+    4.x推奨}
 \item
-  \textbf{RStudio}（v1.4推奨）
+  \textbf{RStudio}\footnote{v1.4推奨}
 \item
-  \textbf{Notoフォント}（Linux）、\textbf{ヒラノギフォント}（macOSは多分これかと）
+  \textbf{Notoフォント}（Linux）・\textbf{ヒラギノフォント}\footnote{検証していないので推測です}（macOS）
 \end{itemize}
 
 作成手順
@@ -195,22 +191,22 @@ Handout}
 \item
   \textbf{\texttt{tufte}, \texttt{tinytex}}パッケージをインストールする
 \item
-  \texttt{tinytex::install\_tinytex()}で\textbf{tinytex}本体をインストールする
+  \texttt{tinytex::install\_tinytex()}で\textbf{tinytex}をインストールする
 \item
-  \texttt{tinytex::tlmgr\_install("haranoaji")}で原の味フォントをインストールする
+  \texttt{tinytex::tlmgr\_install("haranoaji")}で原の味フォントをインストールする\footnote{Windows環境のみ}
+\item
+  \texttt{latex/tufte\_preamble.tex}を開いてOS環境に見合ったフォント設定を有効にする\footnote{不要な設定は\%文字でコメントアウトします}
 \item
   本ドキュメントをknitする
 
   \begin{itemize}
   \tightlist
   \item
-    YAMLの\texttt{include}で指定しているファイルが必要ですので必ずテンプレートと共にコピーしてください
+    必要な\(\TeX\)パッケージは\textbf{tinytex}が自動的にインストールする
   \item
-    必要な\(\TeX\)パッケージは自動的に\textbf{tinytex}がインストールします
+    もし\(\TeX\)のメッセージが出た場合にはログを参考に必要なパッケージをインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行すればインストールできます}する
   \item
-    もし、\(\TeX\)のメッセージが出た場合にはログを参考に必要なパッケージをインストール\footnote{\texttt{tinytex::tlmgr\_install("package")}を\textbf{RStudio}のコンソールから実行すればインストールできます}してください
-  \item
-    出力フォーマットを変更したい場合はYAMLの\texttt{output}指定を変更してください
+    出力フォーマットを変更したい場合はYAMLの\texttt{output}指定を変更する
   \end{itemize}
 \end{enumerate}
 
@@ -226,19 +222,17 @@ Handout}
   \item
     \textbf{tinytex}以外の\(\TeX / \LaTeX\)での動作は確認していません
   \item
-    RStudioでの\(\LaTeX\)エンジンは必ず\texttt{xelatex}を指定してください
+    \textbf{RStudio}での\(\LaTeX\)エンジン指定は必ず\texttt{xelatex}を指定してください
   \end{itemize}
 \item
-  本テンプレートは必要最低限の設定になっています
+  本テンプレートは必要最低限の設定だけです
 
   \begin{itemize}
   \tightlist
   \item
-    \(\TeX / \LaTeX\)のデフォルト仕様として図表は自動的に再配置されます\footnote{\textbf{\texttt{tufte}}パッケージの仕様上図表の固定はできません}
+    \(\TeX / \LaTeX\)のデフォルト仕様として図表は自動的に再配置されます\footnote{\textbf{\texttt{tufte}}パッケージの仕様上図表の固定指定はできません}
   \item
-    余白への図などの配置はチャンクオプションで指定する必要があります\footnote{本ドキュメントが記述仕様書になっています}
-  \item
-    その他の\href{https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf}{ドキュメントサンプル(PDF)}
+    各種の指定方法は本ドキュメントに記述されています\footnote{\href{https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf}{ドキュメントサンプル(PDF)}も参照してください}
   \end{itemize}
 \item
   Winodws環境はレンダリングに時間がかかる場合があります
@@ -251,7 +245,7 @@ Handout}
 \hypertarget{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}{%
 \section{独自の関数定義}\label{ux72ecux81eaux306eux95a2ux6570ux5b9aux7fa9}}
 
-PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。表現の自由度を高めるために\textbf{\texttt{kableExtra}}パッケージと\textbf{\texttt{psych}}パッケージを用いた\texttt{df\_print()}関数\footnote{詳細は\texttt{setup}チャンク内の関数が定義を参照方}を定義してあります。以下は使い方の一例です。
+PDFではインタラクティブな表が使えません。また、tufteは余白が広いので通常の表出力では表示できる項目数が限られてしまいます。そこで、表現の自由度を高めるために\textbf{\texttt{kableExtra}}パッケージと\textbf{\texttt{psych}}パッケージを用いた\texttt{df\_print()}関数\footnote{詳細は\texttt{setup}チャンク内の関数が定義を参照方}を定義してあります。以下は使い方の一例です。
 
 \begin{Shaded}
 \begin{Highlighting}[numbers=left,,]
