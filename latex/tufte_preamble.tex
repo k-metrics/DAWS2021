@@ -1,4 +1,5 @@
 % --- 参考資料 ----------------------------------------------------------------
+% http://ctan.math.illinois.edu/language/japanese/zxjafont/zxjafont.pdf
 % https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
 % https://teastat.blogspot.com/2019/01/bookdown.html
 
@@ -27,9 +28,11 @@
 \usepackage{fontawesome5}               % fontawesomeを使うために必要
 \usepackage{subfig}                     % 複数の図を並べる際に必要（古い？）
 % \usepackage{subcaption}                 % 同上（新しい？）
-\usepackage{hyperref}                   % ハイパーリンク用必要？
 \usepackage{zxjatype}                   % 日本語処理に必要
-% \usepackage{xeCJK}                      % 以下、日本語フォント用に必要
-\usepackage[noto]{zxjafont}             % Linux環境ではこちも指定可
-% \usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
+% \usepackage{xeCJK}                      % zxjatypeを読み込むと一緒に読み込まれる
+% \usepackage[noto-jp]{zxjafont}          % Linux環境ではこちを指定する
+% \usepackage[noto]{zxjafont}             % Linux環境ではこちを指定する
+\usepackage[haranoaji]{zxjafont}        % Windows環境ではこちらを指定する
+% \usepackage[hiragino-pro]{zxjafont}     % macOS環境はこれか、Notoでいけるかと
 \usepackage{pxrubrica}                  % ルビ用
+\usepackage{hyperref}                   % ハイパーリンク用必要？

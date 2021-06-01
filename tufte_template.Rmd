@@ -85,6 +85,7 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
 
 * **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージがインストールされている（**R** 4.x推奨）
 * **RStudio**（v1.4推奨）
+* **Notoフォント**（Linux）、**ヒラノギフォント**（macOSは多分これかと）
 
 作成手順
 
@@ -109,7 +110,7 @@ df_print <- function(df = NULL, n = 3L, caption = NULL, scale_down = FALSE,
     * 余白への図などの配置はチャンクオプションで指定する必要があります^[本ドキュメントが記述仕様書になっています]
     * その他の[ドキュメントサンプル(PDF)](https://ftp.jaist.ac.jp/pub/CTAN/macros/latex/contrib/tufte-latex/sample-handout.pdf)
 * Winodws環境はレンダリングに時間がかかる場合があります
-* 平仮名の「う(U)」が表示されない問題があります^[原ノ味フォントの場合]
+* 平仮名の「う(U)」が表示されない問題があります^[Linux環境で原ノ味フォントを指定した場合、Linux環境ではNotoフォントを指定してください]
 
 \newpage
 
