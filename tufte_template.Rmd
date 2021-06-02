@@ -3,6 +3,7 @@ title: "PDF Document Template, Tufte Handout"
 runningheader: "Tufte Handout with R Markdown"
 author: "Your Name, Licence"
 date: "`r Sys.Date()`"
+abstract: "本ファイルは**`tufte`**パッケージを用いたTufte handoutフォーマットにおいて日本語が使えるような設定を施してあります。必ず同梱の`latex`フォルダと同じ階層に配置してください。"
 output:
   tufte::tufte_handout:
     includes:
@@ -18,7 +19,7 @@ output:
     latex_engine: xelatex                   # 他のLaTeXエンジンは使用不可
     fig_caption: yes
     keep_tex: yes
-classoption: a4paper     # 指定しないとデフォルトではUS Letterサイズになる
+classoption: a4paper     # デフォルトではUS Letterサイズ
 always_allow_html: true  # 一種の呪文
 link-citations: true     # 参考文献一覧へのリンクを有効化
 bibliography: ./bib/skeleton.bib  # 参考文献一覧ファイル（ファイル末で自動生成）
@@ -93,15 +94,15 @@ df_print <- function(df = NULL,             # 表示させたいデータをフ�
 
 前提条件
 
-* **`tidyverse`, `knitr`, `rmarkdown`, `psych`, `kableExtra`**パッケージ^[**R** 4.x推奨]
+* **`tidyverse`**[@R-tidyverse], **`knitr`**[@knitr2014; @R-knitr], **`rmarkdown`**[@R-rmarkdown], **`psych`**[@R-psych], **`kableExtra`**[@R-kableExtra]パッケージ^[**R** 4.x推奨]
 * **RStudio**^[v1.4推奨]
-* **Notoフォント**（Linux）・**ヒラギノフォント**^[検証していないので推測です]（macOS）
+* **Notoフォント**（Linux）・**ヒラギノフォント**^[多分これでいけるんじゃないかと… 駄目ならNotoフォントで]（macOS）
 
 作成手順
 
-1. **`tufte`, `tinytex`**パッケージをインストールする
+1. **`tufte`**[@R-tufte], **`tinytex`**[@R-tinytex; @tinytex2019]パッケージをインストールする
 1. `tinytex::install_tinytex()`で**tinytex**をインストールする
-1. `tinytex::tlmgr_install("haranoaji")`で原の味フォントをインストールする^[Windows環境のみ]
+1. `tinytex::tlmgr_install("haranoaji")`で原ノ味フォントをインストールする^[Windows環境のみ]
 1. `latex/tufte_preamble.tex`を開いてOS環境に見合ったフォント設定を有効にする^[不要な設定は%文字でコメントアウトします]
 1. 本ドキュメントをknitする
     * 必要な$\TeX$パッケージは**tinytex**が自動的にインストールする
@@ -388,8 +389,12 @@ file.edit(
 
 This document is also available in [Chinese](https://rstudio.github.io/tufte/cn/), and its `envisioned` style can be found [here](https://rstudio.github.io/tufte/envisioned/).
 
+\newpage
+
 ```{r bib, include=FALSE}
 # create a bib file for the R packages used in this document
-knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+knitr::write_bib(c('base', 'rmarkdown', 'tidyverse', 'kableExtra', 'psych',
+                   'tufte', 'knitr', 'tinytex'),
+                 file = './bib/skeleton.bib')
 ```
 

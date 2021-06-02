@@ -1,0 +1,505 @@
+\documentclass[a4paper]{tufte-handout}
+
+% ams
+\usepackage{amssymb,amsmath}
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \makeatletter
+  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
+  \makeatother
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \makeatletter
+  \@ifpackageloaded{soul}{
+     \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+     \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+   }{}
+  \makeatother
+
+\fi
+
+% graphix
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+% booktabs
+\usepackage{booktabs}
+
+% url
+\usepackage{url}
+
+% hyperref
+\usepackage{hyperref}
+
+% units.
+\usepackage{units}
+
+
+\setcounter{secnumdepth}{-1}
+
+% citations
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+
+% pandoc syntax highlighting
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+
+% longtable
+\usepackage{longtable,booktabs}
+
+% multiplecol
+\usepackage{multicol}
+
+% strikeout
+\usepackage[normalem]{ulem}
+
+% morefloats
+\usepackage{morefloats}
+
+
+% tightlist macro required by pandoc >= 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% title / author / date
+\title[分散の加法性を視覚的に理解する（その２）]{分散の加法性を視覚的に理解する（その２）}
+\author{Sampo Suzuki, CC 4.0 BY-NC-SA}
+\date{2021-06-02}
+
+% --- 参考資料 ----------------------------------------------------------------
+% https://github.com/Gedevan-Aleksizde/Japan.R2019/blob/master/latex/preamble.tex
+% https://teastat.blogspot.com/2019/01/bookdown.html
+
+% --- Packages ----------------------------------------------------------------
+% 日本語とtufte, kableExtraを使うために必要なTeXパッケージ指定
+% tufteではA4サイズの指定が不可能
+%  A4 210mm x 297mm
+%   \usepackage[a4paper, total={6.5in, 9.5in}]{geometry}
+%   \usepackage{indentfirst}   # tinytexのリポジトリには存在しない？
+% \usepackage[a4paper, total={160mm, 247mm}, left=25mm, top=25mm]{geometry}
+% \usepackage[pdfbox,tombo]{gentombow}  % トンボを設定する場合は有効にする
+\usepackage{ifthen}                     % 条件分岐用 \ifthenelse{条件}{T}{F}
+\usepackage{booktabs}                   % ここからkableExtra用パッケージ
+\usepackage{longtable}                  % 
+\usepackage{array}                      % 
+\usepackage{multirow}                   % 
+\usepackage{wrapfig}                    % 
+\usepackage{float}                      % 
+\usepackage{colortbl}                   % 
+\usepackage{pdflscape}                  % 
+\usepackage{tabu}                       % 
+\usepackage{threeparttable}             % 
+\usepackage{threeparttablex}            % 
+\usepackage[normalem]{ulem}             % 
+\usepackage{inputenc}                   % 
+\usepackage{makecell}                   % 
+\usepackage{xcolor}                     % ここまでkableExtra用
+\usepackage{amsmath}                    % 
+\usepackage{fontawesome5}               % fontawesomeを使うために必要
+\usepackage{subfig}                     % 複数の図を並べる際に必要（古い？）
+% \usepackage{subcaption}                 % 同上（新しい？）
+\usepackage{xeCJK}                      % 以下、日本語フォント用に必要
+\usepackage[noto]{zxjafont}             % Linux環境ではこちを指定
+% \usepackage[haranoaji]{zxjafont}      % Windows環境ではこちらを指定する
+\usepackage{zxjatype}                   % 日本語処理に必要
+\usepackage{pxrubrica}                  % ルビ用
+\usepackage{hyperref}                   % ハイパーリンク用必要？
+
+% --- Index ------------------------------------------------------------------
+% https://texwiki.texjp.org/?%E7%B4%A2%E5%BC%95%E4%BD%9C%E6%88%90
+% これを指定するとIndex(索引)は作成されるが参照ページがズレる
+% 中間ファイルの.indではページはズレていないので、その後の結合処理がおかしい
+% \usepackage{makeidx}
+% \makeindex
+% \usepackage{showidx}                  % 索引確認用
+
+% --- Table of Contentes ------------------------------------------------------
+% TOCにLOT(List of Tables), LOF(List of Figures), Bibliography, Indexを表示
+% \usepackage[nottoc]{tocbibind}
+
+% --- Fonts -------------------------------------------------------------------
+% フォントしては index.html でも可能（pandoc用オプションは index.htmlにて）
+% \setCJKmonofont{Source Han Code JP}
+\setmonofont{Source Han Code JP}     % Linuxではこれのみコメントアウトする
+% \setjamonofont{Source Han Code JP}
+
+% ## 日本語フォントの扱いについてはzxjafontパッケージの解説を参照のこと
+% # https://mirror.las.iastate.edu/tex-archive/language/japanese/zxjafont/zxjafont.pdf
+% #
+% ## Windows環境ではなぜかNotoフォントが認識されないので源ノシリーズベースの
+% ## 原ノ味フォントかIPAexフォントを利用する（原ノ味はtlmgrでインストール可）
+% # \usepackage[haranoaji]{zxjafont}
+% # \usepackage[ipaex]{zxjafont}
+% #
+% ## Windows環境でNotoフォントを指定したい場合は以下のようにheader-includeで
+% ## 個別に指定する（setCJKxxxfotnの指定は必要？）
+% # \setmainfont{NotoSerifCJKjp-Regular.otf}[BoldFont=NotoSerifCJKjp-Bold.otf]
+% # \setsansfont{NotoSansCJKjp-Regular.otf}[BoldFont=NotoSansCJKjp-Bold.otf]
+% # \setmonofont{NotoSansMonoCJKjp-Regular.otf}[BoldFont=NotoSansMonoCJKjp-Bold.otf]
+% ## モノフォントは源ノ角コード(Source Code Proの日本語版)がおすゝめ
+% # \setmonofont{SourceHanCodeJP-Regular.otf}[BoldFont=SourceHanCodeJPS-Bold.otf]
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\hypertarget{ux306fux3058ux3081ux306bux5c0fux5ba4ux5148ux751fux306eux30a2ux30c9ux30d0ux30a4ux30b9ux304bux3089}{%
+\section{\texorpdfstring{\textbf{はじめに}（小室先生のアドバイスから）}{はじめに（小室先生のアドバイスから）}}\label{ux306fux3058ux3081ux306bux5c0fux5ba4ux5148ux751fux306eux30a2ux30c9ux30d0ux30a4ux30b9ux304bux3089}}
+
+　分散の加法性が成り立つには「データが独立」であるという前提条件があります。乱数生成した二つのデータ\footnote{各々\ensuremath{5\times 10^{6}}個のデータ}が本当に独立なのかを確認すると共に分散の加法性も確認してみます。
+
+　
+
+\hypertarget{ux95a2ux6570ux306eux5b9aux7fa9}{%
+\subsection{\texorpdfstring{\textbf{関数の定義}}{関数の定義}}\label{ux95a2ux6570ux306eux5b9aux7fa9}}
+
+　最初に以下の処理を行う関数を定義します。
+
+\begin{itemize}
+\tightlist
+\item
+  データを乱数生成する\footnote{今回は\texttt{rnorm()}関数による分散が\(100\)となる正規分布}
+\item
+  乱数生成したデータをランダムサンプリングする\footnote{\texttt{sampling\ =\ TRUE}の場合のみ}
+\item
+  作成したデータの統計量を求める
+\item
+  無相関検定の結果と統計量をデータフレームにまとめる
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{f }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{i =} \ConstantTok{NA}\NormalTok{, }\AttributeTok{sampling =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{n =} \DecValTok{5000000}\NormalTok{) \{}
+  \CommentTok{\# データを乱数生成する}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =} \DecValTok{10}\NormalTok{, }\AttributeTok{sd =} \DecValTok{10}\NormalTok{)}
+\NormalTok{  y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n =}\NormalTok{ n, }\AttributeTok{mean =} \DecValTok{30}\NormalTok{, }\AttributeTok{sd =} \DecValTok{10}\NormalTok{)}
+  \CommentTok{\# 乱数生成したデータからサンプリングする場合}
+  \ControlFlowTok{if}\NormalTok{ (sampling }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) \{}
+\NormalTok{    x }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(x, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    y }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(y, n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \CommentTok{\# 統計量を求める}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{no =}\NormalTok{ i, }\AttributeTok{var.x =} \FunctionTok{var}\NormalTok{(x), }\AttributeTok{var.y =} \FunctionTok{var}\NormalTok{(y),}
+                   \AttributeTok{var.xy =} \FunctionTok{var}\NormalTok{(x }\SpecialCharTok{+}\NormalTok{ y), }\AttributeTok{var.sum =} \FunctionTok{var}\NormalTok{(x) }\SpecialCharTok{+} \FunctionTok{var}\NormalTok{(y),}
+                   \AttributeTok{cov =} \FunctionTok{cov}\NormalTok{(x, y), }\AttributeTok{cov2 =} \FunctionTok{cov}\NormalTok{(x, y) }\SpecialCharTok{*} \DecValTok{2}\NormalTok{)}
+  \CommentTok{\# 無相関の検定結果と統計量をデータフレームにまとめる}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{cor.test}\NormalTok{(x, y) }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{bind\_cols}\NormalTok{(df)}
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+この関数を\texttt{for}ループで45回繰り返し、その結果をデータフレームにまとめ、分散がどのようになっているかを比較します。
+
+\newpage
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{変数の意味}\tabularnewline
+\toprule
+変数名 & その意味 & 備考 \\
+\midrule
+\endfirsthead
+\toprule
+変数名 & その意味 & 備考 \\
+\midrule
+\endhead
+\texttt{var.x} & データ\texttt{x}の分散 & \\
+\texttt{var.y} & データ\texttt{y}の分散 & \\
+\texttt{var.xy} &
+データ\texttt{x}と\texttt{y}を加算したものの分散（\texttt{var(x\ +\ y)}）
+& 加法1 \\
+\texttt{var.sum} & データ\texttt{x},
+\texttt{y}の分散を加算したもの（\texttt{var(x)\ +\ var(y)}） & 加法2 \\
+\texttt{var.diff} & \texttt{var.xy}から\texttt{var.sum}を減算したもの &
+加法1と加法2の差異 \\
+\texttt{cov2} & データ\texttt{x}, \texttt{y}の共分散の2倍数 & \\
+\texttt{cov} & データ\texttt{x}, \texttt{y}の共分散 &
+計算のみで未出力 \\
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\hypertarget{ux4e71ux6570ux751fux6210ux3057ux305fux30c7ux30fcux30bfux306eux5834ux5408}{%
+\subsection{\texorpdfstring{\textbf{乱数生成したデータの場合}}{乱数生成したデータの場合}}\label{ux4e71ux6570ux751fux6210ux3057ux305fux30c7ux30fcux30bfux306eux5834ux5408}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-3}乱数生成した二つのデータの分散}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{rrrrrrrrr}
+\toprule
+No & 相関係数 & p値 & 標本x & 標本y & 加法1 & 加法2 & 差異 & cov2\\
+\midrule
+\cellcolor{gray!6}{1} & \cellcolor{gray!6}{0.0002405} & \cellcolor{gray!6}{0.5906758} & \cellcolor{gray!6}{100.03355} & \cellcolor{gray!6}{99.95040} & \cellcolor{gray!6}{200.0321} & \cellcolor{gray!6}{199.9840} & \cellcolor{gray!6}{0.0481035} & \cellcolor{gray!6}{0.0481035}\\
+2 & 0.0007900 & 0.0773232 & 100.04689 & 100.11172 & 200.3167 & 200.1586 & 0.1581199 & 0.1581199\\
+\cellcolor{gray!6}{3} & \cellcolor{gray!6}{0.0001524} & \cellcolor{gray!6}{0.7333445} & \cellcolor{gray!6}{100.00385} & \cellcolor{gray!6}{99.94863} & \cellcolor{gray!6}{199.9829} & \cellcolor{gray!6}{199.9525} & \cellcolor{gray!6}{0.0304641} & \cellcolor{gray!6}{0.0304641}\\
+4 & 0.0003742 & 0.4027862 & 100.06641 & 99.97769 & 200.1189 & 200.0441 & 0.0748493 & 0.0748493\\
+\cellcolor{gray!6}{5} & \cellcolor{gray!6}{-0.0000289} & \cellcolor{gray!6}{0.9484144} & \cellcolor{gray!6}{99.92723} & \cellcolor{gray!6}{99.99781} & \cellcolor{gray!6}{199.9193} & \cellcolor{gray!6}{199.9250} & \cellcolor{gray!6}{-0.0057846} & \cellcolor{gray!6}{-0.0057846}\\
+\addlinespace
+6 & -0.0008565 & 0.0554575 & 99.96148 & 99.96261 & 199.7528 & 199.9241 & -0.1712423 & -0.1712423\\
+\cellcolor{gray!6}{7} & \cellcolor{gray!6}{0.0001456} & \cellcolor{gray!6}{0.7447831} & \cellcolor{gray!6}{100.15102} & \cellcolor{gray!6}{100.03861} & \cellcolor{gray!6}{200.2188} & \cellcolor{gray!6}{200.1896} & \cellcolor{gray!6}{0.0291435} & \cellcolor{gray!6}{0.0291435}\\
+8 & -0.0002626 & 0.5570963 & 99.93554 & 99.91521 & 199.7983 & 199.8508 & -0.0524780 & -0.0524780\\
+\cellcolor{gray!6}{9} & \cellcolor{gray!6}{-0.0002504} & \cellcolor{gray!6}{0.5754730} & \cellcolor{gray!6}{99.92129} & \cellcolor{gray!6}{100.03234} & \cellcolor{gray!6}{199.9036} & \cellcolor{gray!6}{199.9536} & \cellcolor{gray!6}{-0.0500772} & \cellcolor{gray!6}{-0.0500772}\\
+11 & -0.0004257 & 0.3412065 & 99.97925 & 100.03056 & 199.9247 & 200.0098 & -0.0851343 & -0.0851343\\
+\addlinespace
+\cellcolor{gray!6}{12} & \cellcolor{gray!6}{-0.0004302} & \cellcolor{gray!6}{0.3360899} & \cellcolor{gray!6}{100.09555} & \cellcolor{gray!6}{100.03086} & \cellcolor{gray!6}{200.0403} & \cellcolor{gray!6}{200.1264} & \cellcolor{gray!6}{-0.0860911} & \cellcolor{gray!6}{-0.0860911}\\
+13 & -0.0001740 & 0.6972663 & 100.13433 & 99.94565 & 200.0452 & 200.0800 & -0.0348083 & -0.0348083\\
+\cellcolor{gray!6}{15} & \cellcolor{gray!6}{-0.0002304} & \cellcolor{gray!6}{0.6064396} & \cellcolor{gray!6}{100.03044} & \cellcolor{gray!6}{99.97619} & \cellcolor{gray!6}{199.9606} & \cellcolor{gray!6}{200.0066} & \cellcolor{gray!6}{-0.0460791} & \cellcolor{gray!6}{-0.0460791}\\
+16 & -0.0004032 & 0.3672358 & 99.96101 & 100.04571 & 199.9261 & 200.0067 & -0.0806499 & -0.0806499\\
+\cellcolor{gray!6}{17} & \cellcolor{gray!6}{-0.0002355} & \cellcolor{gray!6}{0.5985000} & \cellcolor{gray!6}{99.86689} & \cellcolor{gray!6}{99.91427} & \cellcolor{gray!6}{199.7341} & \cellcolor{gray!6}{199.7812} & \cellcolor{gray!6}{-0.0470453} & \cellcolor{gray!6}{-0.0470453}\\
+\addlinespace
+18 & -0.0001552 & 0.7285535 & 100.04952 & 99.95039 & 199.9689 & 199.9999 & -0.0310411 & -0.0310411\\
+\cellcolor{gray!6}{19} & \cellcolor{gray!6}{-0.0003013} & \cellcolor{gray!6}{0.5004650} & \cellcolor{gray!6}{99.93607} & \cellcolor{gray!6}{99.93441} & \cellcolor{gray!6}{199.8103} & \cellcolor{gray!6}{199.8705} & \cellcolor{gray!6}{-0.0602238} & \cellcolor{gray!6}{-0.0602238}\\
+20 & 0.0003161 & 0.4797113 & 99.95667 & 100.08492 & 200.1048 & 200.0416 & 0.0632283 & 0.0632283\\
+\cellcolor{gray!6}{21} & \cellcolor{gray!6}{-0.0008416} & \cellcolor{gray!6}{0.0598590} & \cellcolor{gray!6}{100.04632} & \cellcolor{gray!6}{100.12057} & \cellcolor{gray!6}{199.9984} & \cellcolor{gray!6}{200.1669} & \cellcolor{gray!6}{-0.1684565} & \cellcolor{gray!6}{-0.1684565}\\
+22 & -0.0000757 & 0.8656125 & 100.06773 & 100.07331 & 200.1259 & 200.1410 & -0.0151474 & -0.0151474\\
+\addlinespace
+\cellcolor{gray!6}{24} & \cellcolor{gray!6}{0.0002168} & \cellcolor{gray!6}{0.6278622} & \cellcolor{gray!6}{99.99654} & \cellcolor{gray!6}{100.03160} & \cellcolor{gray!6}{200.0715} & \cellcolor{gray!6}{200.0281} & \cellcolor{gray!6}{0.0433624} & \cellcolor{gray!6}{0.0433624}\\
+25 & 0.0003096 & 0.4887490 & 99.98423 & 99.94195 & 199.9881 & 199.9262 & 0.0618983 & 0.0618983\\
+\cellcolor{gray!6}{26} & \cellcolor{gray!6}{-0.0003628} & \cellcolor{gray!6}{0.4171664} & \cellcolor{gray!6}{99.91858} & \cellcolor{gray!6}{99.99546} & \cellcolor{gray!6}{199.8415} & \cellcolor{gray!6}{199.9140} & \cellcolor{gray!6}{-0.0725379} & \cellcolor{gray!6}{-0.0725379}\\
+27 & 0.0004670 & 0.2964230 & 99.84074 & 99.95558 & 199.8896 & 199.7963 & 0.0932952 & 0.0932952\\
+\cellcolor{gray!6}{28} & \cellcolor{gray!6}{0.0001997} & \cellcolor{gray!6}{0.6551878} & \cellcolor{gray!6}{100.06020} & \cellcolor{gray!6}{99.96489} & \cellcolor{gray!6}{200.0650} & \cellcolor{gray!6}{200.0251} & \cellcolor{gray!6}{0.0399472} & \cellcolor{gray!6}{0.0399472}\\
+\addlinespace
+29 & -0.0004876 & 0.2756164 & 100.07406 & 99.98583 & 199.9623 & 200.0599 & -0.0975414 & -0.0975414\\
+\cellcolor{gray!6}{30} & \cellcolor{gray!6}{0.0001878} & \cellcolor{gray!6}{0.6745860} & \cellcolor{gray!6}{100.10249} & \cellcolor{gray!6}{99.97609} & \cellcolor{gray!6}{200.1162} & \cellcolor{gray!6}{200.0786} & \cellcolor{gray!6}{0.0375684} & \cellcolor{gray!6}{0.0375684}\\
+31 & -0.0005518 & 0.2172930 & 100.09740 & 100.05732 & 200.0443 & 200.1547 & -0.1104361 & -0.1104361\\
+\cellcolor{gray!6}{32} & \cellcolor{gray!6}{0.0001833} & \cellcolor{gray!6}{0.6818780} & \cellcolor{gray!6}{100.14285} & \cellcolor{gray!6}{100.04816} & \cellcolor{gray!6}{200.2277} & \cellcolor{gray!6}{200.1910} & \cellcolor{gray!6}{0.0366978} & \cellcolor{gray!6}{0.0366978}\\
+33 & -0.0004313 & 0.3348183 & 99.95623 & 99.95133 & 199.8213 & 199.9076 & -0.0862235 & -0.0862235\\
+\addlinespace
+\cellcolor{gray!6}{34} & \cellcolor{gray!6}{-0.0008274} & \cellcolor{gray!6}{0.0642915} & \cellcolor{gray!6}{99.97238} & \cellcolor{gray!6}{100.05238} & \cellcolor{gray!6}{199.8593} & \cellcolor{gray!6}{200.0248} & \cellcolor{gray!6}{-0.1655032} & \cellcolor{gray!6}{-0.1655032}\\
+35 & 0.0002048 & 0.6469738 & 100.02357 & 99.93272 & 199.9972 & 199.9563 & 0.0409532 & 0.0409532\\
+\cellcolor{gray!6}{36} & \cellcolor{gray!6}{0.0004283} & \cellcolor{gray!6}{0.3382556} & \cellcolor{gray!6}{100.08332} & \cellcolor{gray!6}{100.04006} & \cellcolor{gray!6}{200.2091} & \cellcolor{gray!6}{200.1234} & \cellcolor{gray!6}{0.0857048} & \cellcolor{gray!6}{0.0857048}\\
+37 & -0.0003048 & 0.4954516 & 99.98206 & 99.92530 & 199.8464 & 199.9074 & -0.0609416 & -0.0609416\\
+\cellcolor{gray!6}{38} & \cellcolor{gray!6}{0.0001726} & \cellcolor{gray!6}{0.6995903} & \cellcolor{gray!6}{100.01911} & \cellcolor{gray!6}{99.99586} & \cellcolor{gray!6}{200.0495} & \cellcolor{gray!6}{200.0150} & \cellcolor{gray!6}{0.0345162} & \cellcolor{gray!6}{0.0345162}\\
+\addlinespace
+39 & 0.0007299 & 0.1026352 & 99.95899 & 99.95363 & 200.0585 & 199.9126 & 0.1459256 & 0.1459256\\
+\cellcolor{gray!6}{40} & \cellcolor{gray!6}{-0.0002076} & \cellcolor{gray!6}{0.6425365} & \cellcolor{gray!6}{100.01073} & \cellcolor{gray!6}{99.93473} & \cellcolor{gray!6}{199.9040} & \cellcolor{gray!6}{199.9455} & \cellcolor{gray!6}{-0.0415040} & \cellcolor{gray!6}{-0.0415040}\\
+41 & -0.0001471 & 0.7422250 & 100.05012 & 99.97362 & 199.9943 & 200.0237 & -0.0294220 & -0.0294220\\
+\cellcolor{gray!6}{42} & \cellcolor{gray!6}{0.0001196} & \cellcolor{gray!6}{0.7892026} & \cellcolor{gray!6}{99.91426} & \cellcolor{gray!6}{99.99920} & \cellcolor{gray!6}{199.9374} & \cellcolor{gray!6}{199.9135} & \cellcolor{gray!6}{0.0239018} & \cellcolor{gray!6}{0.0239018}\\
+43 & -0.0006294 & 0.1592944 & 99.98230 & 100.04003 & 199.8964 & 200.0223 & -0.1259001 & -0.1259001\\
+\addlinespace
+\cellcolor{gray!6}{44} & \cellcolor{gray!6}{-0.0005545} & \cellcolor{gray!6}{0.2150104} & \cellcolor{gray!6}{99.96039} & \cellcolor{gray!6}{100.02832} & \cellcolor{gray!6}{199.8778} & \cellcolor{gray!6}{199.9887} & \cellcolor{gray!6}{-0.1108943} & \cellcolor{gray!6}{-0.1108943}\\
+45 & 0.0002047 & 0.6471306 & 100.10302 & 100.06351 & 200.2075 & 200.1665 & 0.0409767 & 0.0409767\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-3}乱数生成した二つのデータが独立でない場合}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{rrrrrrrrr}
+\toprule
+No & 相関係数 & p値 & 標本x & 標本y & 加法1 & 加法2 & 差異 & cov2\\
+\midrule
+\cellcolor{gray!6}{10} & \cellcolor{gray!6}{-0.0011382} & \cellcolor{gray!6}{0.0109276} & \cellcolor{gray!6}{100.02103} & \cellcolor{gray!6}{100.02146} & \cellcolor{gray!6}{199.8148} & \cellcolor{gray!6}{200.0425} & \cellcolor{gray!6}{-0.2276805} & \cellcolor{gray!6}{-0.2276805}\\
+14 & -0.0008911 & 0.0463006 & 99.97067 & 99.96079 & 199.7533 & 199.9315 & -0.1781663 & -0.1781663\\
+\cellcolor{gray!6}{23} & \cellcolor{gray!6}{-0.0009108} & \cellcolor{gray!6}{0.0416865} & \cellcolor{gray!6}{100.03319} & \cellcolor{gray!6}{99.89816} & \cellcolor{gray!6}{199.7493} & \cellcolor{gray!6}{199.9314} & \cellcolor{gray!6}{-0.1820997} & \cellcolor{gray!6}{-0.1820997}\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\[\mbox{加法1} = var(x + y),　\mbox{加法2} = var(x) + var(y)\]
+
+\newpage
+
+\hypertarget{ux4e71ux6570ux751fux6210ux3057ux305fux30c7ux30fcux30bfux3092ux30e9ux30f3ux30c0ux30e0ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux5834ux5408}{%
+\subsection{\texorpdfstring{\textbf{乱数生成したデータをランダムサンプリングした場合}}{乱数生成したデータをランダムサンプリングした場合}}\label{ux4e71ux6570ux751fux6210ux3057ux305fux30c7ux30fcux30bfux3092ux30e9ux30f3ux30c0ux30e0ux30b5ux30f3ux30d7ux30eaux30f3ux30b0ux3057ux305fux5834ux5408}}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-5}ランダムサンプリングしたデータの分散}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{rrrrrrrrr}
+\toprule
+No & 相関係数 & p値 & 標本x & 標本y & 加法1 & 加法2 & 差異 & cov2\\
+\midrule
+\cellcolor{gray!6}{1} & \cellcolor{gray!6}{0.0004992} & \cellcolor{gray!6}{0.2643631} & \cellcolor{gray!6}{100.00419} & \cellcolor{gray!6}{100.05990} & \cellcolor{gray!6}{200.1639} & \cellcolor{gray!6}{200.0641} & \cellcolor{gray!6}{0.0998624} & \cellcolor{gray!6}{0.0998624}\\
+2 & -0.0003290 & 0.4618939 & 99.96097 & 99.92836 & 199.8236 & 199.8893 & -0.0657695 & -0.0657695\\
+\cellcolor{gray!6}{3} & \cellcolor{gray!6}{0.0007499} & \cellcolor{gray!6}{0.0935831} & \cellcolor{gray!6}{99.90959} & \cellcolor{gray!6}{99.97202} & \cellcolor{gray!6}{200.0315} & \cellcolor{gray!6}{199.8816} & \cellcolor{gray!6}{0.1498881} & \cellcolor{gray!6}{0.1498881}\\
+4 & -0.0004114 & 0.3576327 & 100.05543 & 100.04644 & 200.0195 & 200.1019 & -0.0823190 & -0.0823190\\
+\cellcolor{gray!6}{5} & \cellcolor{gray!6}{-0.0001846} & \cellcolor{gray!6}{0.6796877} & \cellcolor{gray!6}{100.06244} & \cellcolor{gray!6}{99.94424} & \cellcolor{gray!6}{199.9697} & \cellcolor{gray!6}{200.0067} & \cellcolor{gray!6}{-0.0369312} & \cellcolor{gray!6}{-0.0369312}\\
+\addlinespace
+6 & 0.0004582 & 0.3055784 & 100.13468 & 99.97410 & 200.2005 & 200.1088 & 0.0916878 & 0.0916878\\
+\cellcolor{gray!6}{7} & \cellcolor{gray!6}{-0.0000583} & \cellcolor{gray!6}{0.8962583} & \cellcolor{gray!6}{99.93498} & \cellcolor{gray!6}{100.02294} & \cellcolor{gray!6}{199.9463} & \cellcolor{gray!6}{199.9579} & \cellcolor{gray!6}{-0.0116599} & \cellcolor{gray!6}{-0.0116599}\\
+8 & 0.0006919 & 0.1218079 & 100.01941 & 99.96146 & 200.1192 & 199.9809 & 0.1383752 & 0.1383752\\
+\cellcolor{gray!6}{9} & \cellcolor{gray!6}{0.0006845} & \cellcolor{gray!6}{0.1258807} & \cellcolor{gray!6}{99.89239} & \cellcolor{gray!6}{99.94080} & \cellcolor{gray!6}{199.9700} & \cellcolor{gray!6}{199.8332} & \cellcolor{gray!6}{0.1367824} & \cellcolor{gray!6}{0.1367824}\\
+10 & 0.0005111 & 0.2530770 & 100.13476 & 99.98200 & 200.2191 & 200.1168 & 0.1022844 & 0.1022844\\
+\addlinespace
+\cellcolor{gray!6}{11} & \cellcolor{gray!6}{0.0007520} & \cellcolor{gray!6}{0.0926401} & \cellcolor{gray!6}{99.92396} & \cellcolor{gray!6}{99.98816} & \cellcolor{gray!6}{200.0625} & \cellcolor{gray!6}{199.9121} & \cellcolor{gray!6}{0.1503437} & \cellcolor{gray!6}{0.1503437}\\
+12 & 0.0001118 & 0.8025082 & 100.05911 & 99.98613 & 200.0676 & 200.0452 & 0.0223749 & 0.0223749\\
+\cellcolor{gray!6}{13} & \cellcolor{gray!6}{-0.0002818} & \cellcolor{gray!6}{0.5286018} & \cellcolor{gray!6}{100.01455} & \cellcolor{gray!6}{99.94620} & \cellcolor{gray!6}{199.9044} & \cellcolor{gray!6}{199.9608} & \cellcolor{gray!6}{-0.0563506} & \cellcolor{gray!6}{-0.0563506}\\
+14 & 0.0002972 & 0.5062940 & 100.03436 & 100.06820 & 200.1620 & 200.1026 & 0.0594759 & 0.0594759\\
+\cellcolor{gray!6}{15} & \cellcolor{gray!6}{-0.0003046} & \cellcolor{gray!6}{0.4958450} & \cellcolor{gray!6}{99.96929} & \cellcolor{gray!6}{100.08177} & \cellcolor{gray!6}{199.9901} & \cellcolor{gray!6}{200.0511} & \cellcolor{gray!6}{-0.0609298} & \cellcolor{gray!6}{-0.0609298}\\
+\addlinespace
+16 & -0.0005595 & 0.2109395 & 99.95303 & 99.85495 & 199.6962 & 199.8080 & -0.1117842 & -0.1117842\\
+\cellcolor{gray!6}{17} & \cellcolor{gray!6}{0.0000517} & \cellcolor{gray!6}{0.9080509} & \cellcolor{gray!6}{99.94353} & \cellcolor{gray!6}{99.91597} & \cellcolor{gray!6}{199.8698} & \cellcolor{gray!6}{199.8595} & \cellcolor{gray!6}{0.0103231} & \cellcolor{gray!6}{0.0103231}\\
+18 & -0.0005386 & 0.2284480 & 100.10207 & 99.92016 & 199.9145 & 200.0222 & -0.1077337 & -0.1077337\\
+\cellcolor{gray!6}{19} & \cellcolor{gray!6}{0.0003708} & \cellcolor{gray!6}{0.4070281} & \cellcolor{gray!6}{99.99910} & \cellcolor{gray!6}{99.94069} & \cellcolor{gray!6}{200.0139} & \cellcolor{gray!6}{199.9398} & \cellcolor{gray!6}{0.0741378} & \cellcolor{gray!6}{0.0741378}\\
+20 & 0.0002660 & 0.5519554 & 99.97989 & 100.20805 & 200.2412 & 200.1879 & 0.0532534 & 0.0532534\\
+\addlinespace
+\cellcolor{gray!6}{21} & \cellcolor{gray!6}{0.0001940} & \cellcolor{gray!6}{0.6644167} & \cellcolor{gray!6}{99.95954} & \cellcolor{gray!6}{100.07311} & \cellcolor{gray!6}{200.0715} & \cellcolor{gray!6}{200.0326} & \cellcolor{gray!6}{0.0388087} & \cellcolor{gray!6}{0.0388087}\\
+22 & 0.0002388 & 0.5932892 & 99.84908 & 100.09592 & 199.9928 & 199.9450 & 0.0477560 & 0.0477560\\
+\cellcolor{gray!6}{23} & \cellcolor{gray!6}{-0.0000588} & \cellcolor{gray!6}{0.8953510} & \cellcolor{gray!6}{100.04059} & \cellcolor{gray!6}{99.88865} & \cellcolor{gray!6}{199.9175} & \cellcolor{gray!6}{199.9292} & \cellcolor{gray!6}{-0.0117608} & \cellcolor{gray!6}{-0.0117608}\\
+24 & 0.0000362 & 0.9355171 & 100.00611 & 100.06000 & 200.0733 & 200.0661 & 0.0072388 & 0.0072388\\
+\cellcolor{gray!6}{25} & \cellcolor{gray!6}{-0.0001666} & \cellcolor{gray!6}{0.7094174} & \cellcolor{gray!6}{99.86403} & \cellcolor{gray!6}{99.87116} & \cellcolor{gray!6}{199.7019} & \cellcolor{gray!6}{199.7352} & \cellcolor{gray!6}{-0.0332857} & \cellcolor{gray!6}{-0.0332857}\\
+\addlinespace
+26 & -0.0003364 & 0.4519261 & 100.13461 & 100.07880 & 200.1461 & 200.2134 & -0.0673513 & -0.0673513\\
+\cellcolor{gray!6}{27} & \cellcolor{gray!6}{-0.0002519} & \cellcolor{gray!6}{0.5732147} & \cellcolor{gray!6}{99.97644} & \cellcolor{gray!6}{99.88570} & \cellcolor{gray!6}{199.8118} & \cellcolor{gray!6}{199.8621} & \cellcolor{gray!6}{-0.0503505} & \cellcolor{gray!6}{-0.0503505}\\
+28 & -0.0007438 & 0.0962771 & 99.89452 & 99.91890 & 199.6648 & 199.8134 & -0.1486203 & -0.1486203\\
+\cellcolor{gray!6}{29} & \cellcolor{gray!6}{-0.0001734} & \cellcolor{gray!6}{0.6982670} & \cellcolor{gray!6}{99.88154} & \cellcolor{gray!6}{100.02434} & \cellcolor{gray!6}{199.8712} & \cellcolor{gray!6}{199.9059} & \cellcolor{gray!6}{-0.0346571} & \cellcolor{gray!6}{-0.0346571}\\
+30 & -0.0007853 & 0.0790772 & 100.11982 & 100.05634 & 200.0190 & 200.1762 & -0.1572057 & -0.1572057\\
+\addlinespace
+\cellcolor{gray!6}{31} & \cellcolor{gray!6}{-0.0000707} & \cellcolor{gray!6}{0.8743035} & \cellcolor{gray!6}{100.13424} & \cellcolor{gray!6}{99.86444} & \cellcolor{gray!6}{199.9845} & \cellcolor{gray!6}{199.9987} & \cellcolor{gray!6}{-0.0141492} & \cellcolor{gray!6}{-0.0141492}\\
+32 & -0.0001357 & 0.7614988 & 99.77530 & 100.05693 & 199.8051 & 199.8322 & -0.0271243 & -0.0271243\\
+\cellcolor{gray!6}{33} & \cellcolor{gray!6}{-0.0001069} & \cellcolor{gray!6}{0.8111459} & \cellcolor{gray!6}{99.95227} & \cellcolor{gray!6}{99.84470} & \cellcolor{gray!6}{199.7756} & \cellcolor{gray!6}{199.7970} & \cellcolor{gray!6}{-0.0213505} & \cellcolor{gray!6}{-0.0213505}\\
+34 & -0.0000265 & 0.9528319 & 99.96384 & 99.88967 & 199.8482 & 199.8535 & -0.0052867 & -0.0052867\\
+\cellcolor{gray!6}{35} & \cellcolor{gray!6}{-0.0005338} & \cellcolor{gray!6}{0.2326680} & \cellcolor{gray!6}{99.99355} & \cellcolor{gray!6}{100.02165} & \cellcolor{gray!6}{199.9084} & \cellcolor{gray!6}{200.0152} & \cellcolor{gray!6}{-0.1067593} & \cellcolor{gray!6}{-0.1067593}\\
+\addlinespace
+36 & 0.0003994 & 0.3717949 & 100.07313 & 99.97915 & 200.1322 & 200.0523 & 0.0799036 & 0.0799036\\
+\cellcolor{gray!6}{37} & \cellcolor{gray!6}{0.0000662} & \cellcolor{gray!6}{0.8822869} & \cellcolor{gray!6}{100.09695} & \cellcolor{gray!6}{100.02205} & \cellcolor{gray!6}{200.1323} & \cellcolor{gray!6}{200.1190} & \cellcolor{gray!6}{0.0132517} & \cellcolor{gray!6}{0.0132517}\\
+39 & -0.0000754 & 0.8661529 & 99.92744 & 100.01775 & 199.9301 & 199.9452 & -0.0150712 & -0.0150712\\
+\cellcolor{gray!6}{40} & \cellcolor{gray!6}{0.0000553} & \cellcolor{gray!6}{0.9015342} & \cellcolor{gray!6}{100.00996} & \cellcolor{gray!6}{100.08630} & \cellcolor{gray!6}{200.1073} & \cellcolor{gray!6}{200.0963} & \cellcolor{gray!6}{0.0110715} & \cellcolor{gray!6}{0.0110715}\\
+41 & 0.0007117 & 0.1114930 & 99.93513 & 99.98389 & 200.0613 & 199.9190 & 0.1422921 & 0.1422921\\
+\addlinespace
+\cellcolor{gray!6}{42} & \cellcolor{gray!6}{0.0007097} & \cellcolor{gray!6}{0.1125051} & \cellcolor{gray!6}{100.03694} & \cellcolor{gray!6}{100.05762} & \cellcolor{gray!6}{200.2366} & \cellcolor{gray!6}{200.0946} & \cellcolor{gray!6}{0.1420157} & \cellcolor{gray!6}{0.1420157}\\
+43 & -0.0003738 & 0.4031844 & 100.10921 & 100.11551 & 200.1499 & 200.2247 & -0.0748535 & -0.0748535\\
+\cellcolor{gray!6}{44} & \cellcolor{gray!6}{0.0001112} & \cellcolor{gray!6}{0.8035807} & \cellcolor{gray!6}{99.91321} & \cellcolor{gray!6}{99.97610} & \cellcolor{gray!6}{199.9115} & \cellcolor{gray!6}{199.8893} & \cellcolor{gray!6}{0.0222335} & \cellcolor{gray!6}{0.0222335}\\
+45 & 0.0003250 & 0.4673757 & 100.07371 & 99.98714 & 200.1259 & 200.0609 & 0.0650228 & 0.0650228\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-5}ランダムサンプリングしたデータが独立でない場合}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{rrrrrrrrr}
+\toprule
+No & 相関係数 & p値 & 標本x & 標本y & 加法1 & 加法2 & 差異 & cov2\\
+\midrule
+\cellcolor{gray!6}{38} & \cellcolor{gray!6}{0.0009822} & \cellcolor{gray!6}{0.0280692} & \cellcolor{gray!6}{100.1892} & \cellcolor{gray!6}{100.1929} & \cellcolor{gray!6}{200.5789} & \cellcolor{gray!6}{200.3821} & \cellcolor{gray!6}{0.19682} & \cellcolor{gray!6}{0.19682}\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\[\mbox{加法1} = var(x + y),　\mbox{加法2} = var(x) + var(y)\]
+
+\newpage
+
+\hypertarget{ux307eux3068ux3081}{%
+\subsection{まとめ}\label{ux307eux3068ux3081}}
+
+　データが独立であれば分散の加法性が成り立っていることがわかります。データが独立とは言い難い無相関の検定が成功するケース（\(95\%\)信頼区間に\(0\)が入らない）では、分散の差（共分散の2倍数）が一桁大きいので加法性が成り立っているとは言い難いように思えますがこのケースでは数値だけを見ている限り差はよくわかりません。
+
+　
+
+\hypertarget{cor.testux95a2ux6570ux306bux3064ux3044ux3066}{%
+\subsection{\texorpdfstring{\texttt{cor.test()}関数について}{cor.test()関数について}}\label{cor.testux95a2ux6570ux306bux3064ux3044ux3066}}
+
+　\texttt{cor.test()}関数は無相関の検定を行う関数です。対立仮説（\(H_1\)）は下記の出力の通り「true
+correlation is \textbf{not} equal to
+0（相関係数はゼロではない）」ですので、帰無仮説（\(H_0\)）は「相関係数はゼロである（相関はない）」となります。有意水準\(\alpha\)で検定が失敗すれば（帰無仮説が棄却されない、\(p \geqq \alpha\)である）帰無仮説が採択されますので相関係数はゼロ（データ間には相関がない）と考えられます。
+
+\begin{verbatim}
+## 
+##  Pearson's product-moment correlation
+## 
+## data:  rnorm(n) and rnorm(n)
+## t = -0.56198, df = 4999998, p-value = 0.5741
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.0011278474  0.0006251977
+## sample estimates:
+##          cor 
+## -0.000251325
+\end{verbatim}
+
+　
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\hypertarget{about-handout-style}{%
+\subsection{About handout style}\label{about-handout-style}}
+
+The Tufte handout style is a style that Edward Tufte uses in his books
+and handouts. Tufte's style is known for its extensive use of sidenotes,
+tight integration of graphics with text, and well-set typography. This
+style has been implemented in LaTeX and HTML/CSS\footnote{See Github
+  repositories
+  \href{https://github.com/tufte-latex/tufte-latex}{tufte-latex} and
+  \href{https://github.com/edwardtufte/tufte-css}{tufte-css}},
+respectively.
+
+　
+
+\bibliography{bib/references.bib}
+
+
+
+\end{document}

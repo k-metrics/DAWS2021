@@ -39,3 +39,22 @@
 % \usepackage[hiragino-pro]{zxjafont}    % macOS環境用（おそらく、駄目ならNotoで）
 \usepackage{pxrubrica}                 % ルビ用
 \usepackage{hyperref}                  % ハイパーリンク用必要？
+
+% https://teastat.blogspot.com/2019/01/bookdown.html
+\makeatletter
+\def\emptypage@emptypage{%
+    \hbox{}%
+    \thispagestyle{headings}%
+    \newpage%    
+}%
+\def\cleardoublepage{%
+        \clearpage%
+        \if@twoside%
+            \ifodd\c@page%
+                % do nothing
+            \else%
+                \emptypage@emptypage%
+            \fi%
+        \fi%
+    }%
+\makeatother

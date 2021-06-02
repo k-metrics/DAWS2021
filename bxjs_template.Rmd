@@ -10,10 +10,10 @@ output:
     number_sections: true
     fig_caption: yes
     keep_tex: yes
-documentclass: bxjsarticle     # 表紙のないレポート用
-# documentclass: bxjsreport      # 表紙のあるレポート用
+documentclass: bxjsarticle     # 章（chapter）のないレポート用
+# documentclass: bxjsreport      # 章（chapter）のあるレポート用
 # documentclass: bxjsslide       # スライド用
-classoption: a4paper,xelatex,ja=standard
+classoption: [a4paper,xelatex,ja=standard]
 always_allow_html: true        # 一種の呪文
 link-citations: true           # 参考文献一覧へのリンクを有効化
 colorlinks: true               # ハイパーリンクを色分けする
