@@ -151,24 +151,39 @@
 \usepackage{pxrubrica}                 % ルビ用
 \usepackage{hyperref}                  % ハイパーリンク用必要？
 
+
+% --- Page layout -------------------------------------------------------------
+% http://joker.hatenablog.com/entry/2012/07/09/153537
+% \usepackage{layout}
+
+% \setpagelayout*{margin=25truemm}
+% \setpagelayout*{top=20truemm,bottom=20truemm,left=25truemm,right=25truemm}
+
+% --- Page Header -------------------------------------------------------------
+% \usepackage{fancyhdr}
+% \pagestyle{fancy}
+% \lhead{}
+% \rhead{\bf\thepage}
+
+% --- Bookdownによる技術系同人誌執筆 ------------------------------------------
 % https://teastat.blogspot.com/2019/01/bookdown.html
-\makeatletter
-\def\emptypage@emptypage{%
-    \hbox{}%
-    \thispagestyle{headings}%
-    \newpage%    
-}%
-\def\cleardoublepage{%
-        \clearpage%
-        \if@twoside%
-            \ifodd\c@page%
-                % do nothing
-            \else%
-                \emptypage@emptypage%
-            \fi%
-        \fi%
-    }%
-\makeatother
+% \makeatletter
+% \def\emptypage@emptypage{%
+%     \hbox{}%
+%     \thispagestyle{headings}%
+%     \newpage%    
+% }%
+% \def\cleardoublepage{%
+%         \clearpage%
+%         \if@twoside%
+%             \ifodd\c@page%
+%                 % do nothing
+%             \else%
+%                 \emptypage@emptypage%
+%             \fi%
+%         \fi%
+%     }%
+% \makeatother
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -189,10 +204,13 @@
 
 \title{PDF Document Template, BXjs Class}
 \author{Your Name, Licence}
-\date{2021-06-02}
+\date{2021-06-03}
 
 \begin{document}
 \maketitle
+\begin{abstract}
+本ファイルはデフォルトのPDFテンプレートにおいて日本語が使えるような設定を施してあります。必ず同梱の\texttt{latex}フォルダと同じ階層に配置してください。
+\end{abstract}
 
 \setstretch{0.85}
 \hypertarget{ux672cux30c6ux30f3ux30d7ux30ecux30fcux30c8ux306eux4f7fux3044ux65b9}{%

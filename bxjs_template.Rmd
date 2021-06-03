@@ -2,6 +2,7 @@
 title: "PDF Document Template, BXjs Class"
 author: "Your Name, Licence"
 date: "`r Sys.Date()`"
+abstract: "本ファイルはデフォルトのPDFテンプレートにおいて日本語が使えるような設定を施してあります。必ず同梱の`latex`フォルダと同じ階層に配置してください。"
 output:
   pdf_document: 
     include:
@@ -89,7 +90,6 @@ df_print <- function(df = NULL,             # 表示させたいデータをフ�
 }
 
 ```
-
 
 # 本テンプレートの使い方
 
