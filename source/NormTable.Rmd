@@ -242,7 +242,7 @@ data.frame(
   `0.09` = pnorm(0) - round(pnorm(seq(from = 0.09, to = 3.09, by = 0.1), lower.tail = FALSE), 4)
 ) %>% 
   tibble::rowid_to_column() %>% 
-  dplyr::mutate(rowid = round(rowid / 10, 1) %>% as.character()) %>% 
+  dplyr::mutate(rowid = round((rowid - 1) / 10, 1) %>% as.character()) %>% 
   tibble::column_to_rownames(var = "rowid") %>%
   knitr::kable()
   # df_print(scalｋe_down = TRUE)
