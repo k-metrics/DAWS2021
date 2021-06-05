@@ -1,0 +1,275 @@
+---
+title: "分散の加法性を視覚的に理解する（その４）"
+runningheader: "分散の加法性を視覚的に理解する（その４）" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+abstract: "　正規分布とは異なる分布でも分散の加法性が成り立つことを確認します。"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+classoption: a4paper     # 指定しないとデフォルトではUS Letterサイズになる
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.0         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.96"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      rmarkdown::paged_table(df)
+    }
+  }
+}
+
+n <- 5000000    # 5,000,000
+times <- c(1:20)     # 試行回数
+```
+
+# **t分布の場合**
+　自由度$df = 1$と$df = 5$のt分布の分散を以下の関数で計算します。
+
+```{r}
+ft <- function(i = NA, n = 5000000, num = 2) {
+  x <- rt(n = n, df = 1)
+  y <- rt(n = n, df = 5)
+  df <- data.frame(no = i,
+                   var.x = var(x), var.y = var(y),
+                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
+                   cov2 = cov(x / num, y / num) * 2)
+  df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
+  return(df)
+}
+```
+
+$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+
+```{r, echo=FALSE, fig.cap="分散を加算する二種類のt分布", fig.subcap=c('$df = 1$', '$df = 5$'), fig.ncol=2, out.width="40%"}
+x <- seq(from = -4, to = 4, len = 101)
+
+data.frame(x = x, y = dt(x, df = 1)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(title = "", x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+data.frame(x = x, y = dt(x, df = 5)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+```
+
+```{r, echo=FALSE}
+df <- data.frame()
+for (i in times) {
+  df <- dplyr::bind_rows(df, ft(i))
+}
+
+df <- df %>% 
+  dplyr::mutate(var.diff = var.xy - var.sum, var.rate = var.xy / var.sum)
+```
+
+```{r, echo=FALSE}
+df %>% 
+  # dplyr::filter(p.value >= 0.05) %>% 
+  dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
+                `標本x` = var.x, `標本y` = var.y,
+                `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, 
+                `加法1/加法2` = var.rate, cov2) %>% 
+  df_print(caption = "計算結果",
+           scale_down = TRUE, all = TRUE)
+```
+
+\newpage
+
+# **$\chi^2$分布の場合**
+　自由度$df = 1$と$df = 3$の$\chi^2$分布の分散を以下の関数で計算します。
+
+```{r}
+fchisq <- function(i = NA, n = 5000000, num = 2) {
+  x <- rchisq(n = n, df = 1)
+  y <- rchisq(n = n, df = 3)
+  df <- data.frame(no = i,
+                   var.x = var(x), var.y = var(y),
+                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
+                   cov2 = cov(x / num, y / num) * 2)
+  df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
+  return(df)
+}
+```
+
+$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+
+```{r, echo=FALSE, fig.cap="分散を加算する二種類の$\\chi^2$分布", fig.subcap=c('$df = 1$', '$df = 3$'), fig.ncol=2, out.width="40%"}
+x <- seq(from = 0, to = 8, len = 801)
+
+data.frame(x = x, y = dchisq(x, df = 1)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(title = "", x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+data.frame(x = x, y = dchisq(x, df = 3)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+```
+
+```{r, echo=FALSE}
+df %>% 
+  # dplyr::filter(p.value >= 0.05) %>% 
+  dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
+                `標本x` = var.x, `標本y` = var.y,
+                `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, 
+                `加法1/加法2` = var.rate, cov2) %>% 
+  df_print(caption = "計算結果",
+           scale_down = TRUE, all = TRUE)
+```
+
+\newpage
+
+# **F分布の場合**
+　自由度$df_1 = 3, df_2 = 6$と$df_1 = 9, df_2 = 3$のF分布の分散を以下の関数で計算します。
+
+```{r}
+ff <- function(i = NA, n = 5000000, num = 2) {
+  x <- rf(n = n, df1 = 3, df2 = 6)
+  y <- rf(n = n, df1 = 9, df2 = 3)
+  df <- data.frame(no = i,
+                   var.x = var(x), var.y = var(y),
+                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
+                   cov2 = cov(x / num, y / num) * 2)
+  df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
+  return(df)
+}
+```
+
+$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+
+```{r, echo=FALSE, fig.cap="分散を加算する二種類のF分布", fig.subcap=c('$df_1 = 3, df_2 =6$', '$df_1 = 9, df_2 = 3$'), fig.ncol=2, out.width="40%"}
+x <- seq(from = 0, to = 5, len = 501)
+
+data.frame(x = x, y = df(x, df1 = 3, df2 = 6)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(title = "", x = "", y = "") + ggplot2::lims(y = c(0, 1.0)) +
+    ggthemes::theme_tufte()
+
+data.frame(x = x, y = df(x, df1 = 9, df2 = 3)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 1.0)) +
+    ggthemes::theme_tufte()
+
+```
+
+```{r, echo=FALSE}
+df <- data.frame()
+for (i in times) {
+  df <- dplyr::bind_rows(df, ff(i))
+}
+
+df <- df %>% 
+  dplyr::mutate(var.diff = var.xy - var.sum, var.rate = var.xy / var.sum)
+
+# x <- rf(n = n, df1 = 1, df2 = 1)
+# y <- rf(n = n, df1 = 3, df2 = 5)
+# data.frame(x = x, y = y) %>% 
+#   ggplot2::ggplot(ggplot2::aes(x = x, y = y)) +
+#     ggplot2::geom_point()
+```
+
+```{r, echo=FALSE}
+df %>% 
+  # dplyr::filter(p.value >= 0.05) %>% 
+  dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
+                `標本x` = var.x, `標本y` = var.y,
+                `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, 
+                `加法1/加法2` = var.rate, cov2) %>% 
+  df_print(caption = "計算結果",
+           scale_down = TRUE, all = TRUE)
+```
+
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```
