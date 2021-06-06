@@ -96,43 +96,43 @@ df_print <- function(df = NULL,             # 表示させたいデータをフ�
   }
 }
 
-n <- 5000000    # 5,000,000
+# n <- 5000000    # 5,000,000
+n <- 100000
 times <- c(1:20)     # 試行回数
 ```
 
 # **t分布の場合**
-　自由度$df = 1$と$df = 5$のt分布の分散を以下の関数で計算します。
+　自由度$df = $と$df = Inf$のt分布の分散を以下の関数で計算します。
 
 ```{r}
-ft <- function(i = NA, n = 5000000, num = 2) {
-  x <- rt(n = n, df = 1)
-  y <- rt(n = n, df = 5)
+ft <- function(i = NA, n = 5000000) {
+  x <- rt(n = n, df = 5)
+  y <- rt(n = n, df = Inf)
   df <- data.frame(no = i,
                    var.x = var(x), var.y = var(y),
-                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
-                   cov2 = cov(x / num, y / num) * 2)
+                   var.xy = var(x + y), var.sum = var(x) + var(y),
+                   cov2 = cov(x, y) * 2)
   df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
   return(df)
 }
 ```
 
-$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+$$\mbox{加法1：}var.xy = var(x + y),　\mbox{加法2：}var.sum = var(x) + var(y)$$
 
-```{r, echo=FALSE, fig.cap="分散を加算する二種類のt分布", fig.subcap=c('$df = 1$', '$df = 5$'), fig.ncol=2, out.width="40%"}
-x <- seq(from = -4, to = 4, len = 101)
+```{r, echo=FALSE, fig.cap="分散を加算する二種類のt分布", fig.subcap=c('$df = 5$', '$df = \\infty$'), fig.ncol=2, out.width="40%"}
+x <- seq(from = -4, to = 4, len = 401)
 
-data.frame(x = x, y = dt(x, df = 1)) %>% 
+data.frame(x = x, y = dt(x, df = 5)) %>% 
   ggplot2::ggplot() + 
     ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
     ggplot2::labs(title = "", x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
     ggthemes::theme_tufte()
 
-data.frame(x = x, y = dt(x, df = 5)) %>% 
+data.frame(x = x, y = dt(x, df = Inf)) %>% 
   ggplot2::ggplot() + 
     ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
     ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
     ggthemes::theme_tufte()
-
 ```
 
 ```{r, echo=FALSE}
@@ -156,25 +156,31 @@ df %>%
            scale_down = TRUE, all = TRUE)
 ```
 
+```{r, include=FALSE, eval=FALSE}
+data.frame(x = rt(n = 10000, df = 5)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) +
+    ggplot2::geom_histogram()
+```
+
 \newpage
 
 # **$\chi^2$分布の場合**
 　自由度$df = 1$と$df = 3$の$\chi^2$分布の分散を以下の関数で計算します。
 
 ```{r}
-fchisq <- function(i = NA, n = 5000000, num = 2) {
+fchisq <- function(i = NA, n = 5000000) {
   x <- rchisq(n = n, df = 1)
   y <- rchisq(n = n, df = 3)
   df <- data.frame(no = i,
                    var.x = var(x), var.y = var(y),
-                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
-                   cov2 = cov(x / num, y / num) * 2)
+                   var.xy = var(x + y), var.sum = var(x) + var(y),
+                   cov2 = cov(x, y) * 2)
   df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
   return(df)
 }
 ```
 
-$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+$$\mbox{加法1：}var.xy = var(x + y),　\mbox{加法2：}var.sum = var(x) + var(y)$$
 
 ```{r, echo=FALSE, fig.cap="分散を加算する二種類の$\\chi^2$分布", fig.subcap=c('$df = 1$', '$df = 3$'), fig.ncol=2, out.width="40%"}
 x <- seq(from = 0, to = 8, len = 801)
@@ -194,6 +200,16 @@ data.frame(x = x, y = dchisq(x, df = 3)) %>%
 ```
 
 ```{r, echo=FALSE}
+df <- data.frame()
+for (i in times) {
+  df <- dplyr::bind_rows(df, fchisq(i))
+}
+
+df <- df %>% 
+  dplyr::mutate(var.diff = var.xy - var.sum, var.rate = var.xy / var.sum)
+```
+
+```{r, echo=FALSE}
 df %>% 
   # dplyr::filter(p.value >= 0.05) %>% 
   dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
@@ -210,19 +226,19 @@ df %>%
 　自由度$df_1 = 3, df_2 = 6$と$df_1 = 9, df_2 = 3$のF分布の分散を以下の関数で計算します。
 
 ```{r}
-ff <- function(i = NA, n = 5000000, num = 2) {
+ff <- function(i = NA, n = 5000000) {
   x <- rf(n = n, df1 = 3, df2 = 6)
   y <- rf(n = n, df1 = 9, df2 = 3)
   df <- data.frame(no = i,
                    var.x = var(x), var.y = var(y),
-                   var.xy = var((x + y) / num), var.sum = (var(x / num) + var(y / num)),
-                   cov2 = cov(x / num, y / num) * 2)
+                   var.xy = var(x + y), var.sum = var(x) + var(y),
+                   cov2 = cov(x, y) * 2)
   df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
   return(df)
 }
 ```
 
-$$\mbox{加法1：}var.xy = var(\frac{x + y}{2}),　\mbox{加法2：}var.sum = var(\frac{x}{2}) + var(\frac{y}{2})$$
+$$\mbox{加法1：}var.xy = var(x + y),　\mbox{加法2：}var.sum = var(x) + var(y)$$
 
 ```{r, echo=FALSE, fig.cap="分散を加算する二種類のF分布", fig.subcap=c('$df_1 = 3, df_2 =6$', '$df_1 = 9, df_2 = 3$'), fig.ncol=2, out.width="40%"}
 x <- seq(from = 0, to = 5, len = 501)
@@ -249,12 +265,6 @@ for (i in times) {
 
 df <- df %>% 
   dplyr::mutate(var.diff = var.xy - var.sum, var.rate = var.xy / var.sum)
-
-# x <- rf(n = n, df1 = 1, df2 = 1)
-# y <- rf(n = n, df1 = 3, df2 = 5)
-# data.frame(x = x, y = y) %>% 
-#   ggplot2::ggplot(ggplot2::aes(x = x, y = y)) +
-#     ggplot2::geom_point()
 ```
 
 ```{r, echo=FALSE}
@@ -267,6 +277,65 @@ df %>%
   df_print(caption = "計算結果",
            scale_down = TRUE, all = TRUE)
 ```
+
+\newpage
+
+# **t分布と$\chi^2$分布の場合**
+　自由度$df = 5$のt分布と$df = 3$の$\chi^2$分布の分散を以下の関数で計算します。
+
+```{r}
+ftchisq <- function(i = NA, n = 5000000) {
+  x <- rt(n = n, df = 5)
+  y <- rchisq(n = n, df = 3)
+  df <- data.frame(no = i,
+                   var.x = var(x), var.y = var(y),
+                   var.xy = var(x + y), var.sum = var(x) + var(y),
+                   cov2 = cov(x, y) * 2)
+  df <- cor.test(x, y) %>% broom::tidy() %>% dplyr::bind_cols(df)
+  return(df)
+}
+```
+
+$$\mbox{加法1：}var.xy = var(x + y),　\mbox{加法2：}var.sum = var(x) + var(y)$$
+
+```{r, echo=FALSE, fig.cap="分散を加算する二種類の$\\chi^2$分布", fig.subcap=c('$df = 5$', '$df = 3$'), fig.ncol=2, out.width="40%"}
+x <- seq(from = -4, to = 4, len = 801)
+
+data.frame(x = x, y = dt(x, df = 5)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(title = "", x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+data.frame(x = x, y = dchisq(x, df = 3)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+
+```
+
+```{r, echo=FALSE}
+df <- data.frame()
+for (i in times) {
+  df <- dplyr::bind_rows(df, ftchisq(i))
+}
+
+df <- df %>% 
+  dplyr::mutate(var.diff = var.xy - var.sum, var.rate = var.xy / var.sum)
+```
+
+```{r, echo=FALSE}
+df %>% 
+  # dplyr::filter(p.value >= 0.05) %>% 
+  dplyr::select(No = no, `相関係数` = estimate, `p値` = p.value,
+                `標本x` = var.x, `標本y` = var.y,
+                `加法1` = var.xy, `加法2` = var.sum, `差異` = var.diff, 
+                `加法1/加法2` = var.rate, cov2) %>% 
+  df_print(caption = "計算結果",
+           scale_down = TRUE, all = TRUE)
+```
+
 
 
 ```{r bib, include=FALSE}
