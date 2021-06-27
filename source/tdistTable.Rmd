@@ -1,0 +1,188 @@
+---
+title: "正規分布表を求めるには"
+runningheader: "正規分布表を求めるには" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+abstruct: "本資料では、**R**で$Z$スコアと正規分布の面積を求める関数について説明します。"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.1         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      rmarkdown::paged_table()
+    }
+  }
+}
+
+```
+
+# **$t$分布**
+　$t$分布は自由度（$\phi$）により確率密度分布が変わる分布です。自由度が$\phi = \infty$の時は正規分布と等しくなり、自由度が$\phi = 1$の場合はかなり裾野が広がった分布になります。書籍などで見る$t$分布は下図のような範囲になっていることが多いです。
+```{r, echo=FALSE}
+dplyr::data_frame(x = seq(from = -4, to = 4, length.out = 100)) %>% 
+  dplyr::mutate(`自由度 1` = dt(x, df = 1),
+                `自由度 2` = dt(x, df = 2),
+                `自由度 3` = dt(x, df = 3),
+                `自由度 4` = dt(x, df = 4),
+                `自由度 5` = dt(x, df = 5),
+                `自由度 6` = dt(x, df = 6),
+                `自由度 7` = dt(x, df = 7),
+                `自由度 8` = dt(x, df = 8),
+                `自由度 Inf` = dt(x, df = Inf)) %>% 
+  tidyr::pivot_longer(cols = -x, names_to = "自由度") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x, y = value, colour = `自由度`)) + 
+    ggplot2::geom_path() +
+    ggplot2::scale_colour_brewer(palette = "PRGn") +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte() +
+    ggplot2::theme(legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) 
+```
+
+この両側をさらに広げると自由度$\phi = 1$の分布の裾の広がりが分かりやすくなります。
+```{r, echo=FALSE}
+dplyr::data_frame(x = seq(from = -10, to = 10, length.out = 200)) %>% 
+  dplyr::mutate(`自由度 1` = dt(x, df = 1),
+                `自由度 2` = dt(x, df = 2),
+                `自由度 3` = dt(x, df = 3),
+                `自由度 4` = dt(x, df = 4),
+                `自由度 5` = dt(x, df = 5),
+                `自由度 6` = dt(x, df = 6),
+                `自由度 7` = dt(x, df = 7),
+                `自由度 8` = dt(x, df = 8),
+                `自由度 Inf` = dt(x, df = Inf)) %>% 
+  tidyr::pivot_longer(cols = -x, names_to = "自由度") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x, y = value, colour = `自由度`)) + 
+    ggplot2::geom_path() +
+    ggplot2::scale_colour_brewer(palette = "PRGn") +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte() +
+    ggplot2::theme(legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) 
+```
+
+さらに一部を拡大すると自由度が$\phi \neq 1$と比べて格段に裾野が広いことがわかります。
+```{r, echo=FALSE}
+dplyr::data_frame(x = seq(from = 5, to = 10, length.out = 100)) %>% 
+  dplyr::mutate(`自由度 1` = dt(x, df = 1),
+                `自由度 2` = dt(x, df = 2),
+                `自由度 3` = dt(x, df = 3),
+                `自由度 4` = dt(x, df = 4),
+                `自由度 5` = dt(x, df = 5),
+                `自由度 6` = dt(x, df = 6),
+                `自由度 7` = dt(x, df = 7),
+                `自由度 8` = dt(x, df = 8),
+                `自由度 Inf` = dt(x, df = Inf)) %>% 
+  tidyr::pivot_longer(cols = -x, names_to = "自由度") %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x, y = value, colour = `自由度`)) + 
+    ggplot2::geom_path() +
+    ggplot2::scale_colour_brewer(palette = "PRGn") +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.05)) +
+    ggthemes::theme_tufte() +
+    ggplot2::theme(legend.title = ggplot2::element_blank(),
+                   text = ggplot2::element_text(size = 8)) 
+```
+
+
+```{r, fig.margin = TRUE, fig.cap = "正規分布表で求められる面積", fig.width=3.5, fig.height=3.5, echo=FALSE, message=FALSE}
+x <- seq(from = -4, to = 4, len = 101)
+q <- seq(from = qnorm(0.50), to = qnorm(0.975), len = 101)
+
+data.frame(x = x, y = dnorm(x), q = q, r = dnorm(q)) %>% 
+  ggplot2::ggplot() + 
+    ggplot2::geom_ribbon(ggplot2::aes(x = q, y = r, ymin = 0, ymax = r), fill = "gray75") +
+    ggplot2::geom_path(ggplot2::aes(x = x, y = y)) +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(y = c(0, 0.5)) +
+    ggthemes::theme_tufte()
+```
+
+　  
+
+
+enjoy!
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```

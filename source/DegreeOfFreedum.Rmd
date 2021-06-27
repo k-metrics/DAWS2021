@@ -1,0 +1,230 @@
+---
+title: "標本平均を用いた変動は必ず小さくなるか？"
+runningheader: "標本平均を用いた変動は必ず小さくなるのか？" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+abstruct: "本資料では自由度に関わるエトセトラを確認しています。"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.1         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped１")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      rmarkdown::paged_table(df)
+    }
+  }
+}
+
+```
+
+
+# **標本平均を用いた変動は必ず小さくなるのか？**
+　『ソフトウェアメトリクス統計分析入門』[@SoftwareMetrics:jbook]の3.3 ワンポイント講義「不偏分散を算出する際に自由度を用いる理由」には、標本平均（$\bar{x}$）を使って算出した変動（$\sum_{i = 1}^{n}(x_i - \bar{x})^2$、偏差平方和）は母平均（$\mu$）を使って算出した変動（$\sum_{i = 1}^{n}(x_i - \mu)^2$）よりも必ず小さな値になるとあります。実際に小さくなるのかを確認します。
+
+
+## **母集団データの作成**
+　最初に正規分布を持つ母集団のデータ（$x$）を作成します。ここでは母平均と母標準偏差は不明であると仮定します。
+```{r, echo=FALSE, message=FALSE, fig.cap="母集団の分布", out.width="80%"}
+n <- 100000
+x <- rnorm(n, mean = 4, sd = 3)
+mu <- mean(x)
+
+data.frame(x = x) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = x)) +
+    ggplot2::geom_histogram() + 
+    ggplot2::labs(x = "", y = "") +
+    ggthemes::theme_tufte() + 
+    ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                   axis.text.y = ggplot2::element_blank())
+```
+
+\newpage
+
+## **簡単なシミュレーション**
+　上記の母集団（$x$）から以下の手順で二種類の変動（偏差平方和）を求めます。
+
+1. 3つのデータをランダムサンプリングで取り出す（標本 $x_n, n = 1, 2, 3$）
+1. 取り出したデータの平均値（標本平均 $\bar{x}$）を求める
+1. 標本平均（$\bar{x}$）を用いて標本の変動（偏差平方和 $\sum_{i = 1}^{n}(x_i - \bar{x})^2$）を求める
+1. 母平均（$\mu$）を用いて標本の変動（偏差平方和 $\sum_{i = 1}^{n}(x_i - \mu)^2$）を求める
+1. 求めた二つの変動（偏差平方和）を比較する
+
+この計算を任意の回数繰り返して標本平均（$\bar{x}$）を用いた標本の変動（偏差平方和 $\sum_{i = 1}^{n}(x_i - \bar{x})^2$）の方が小さいことを確認します。
+
+```{r}
+df <- data.frame()
+for (i in c(1:30)) {
+  xs <- sample(x, size = 3, replace = FALSE)  # 母集団から3つのデータを取り出す
+  xb <- mean(xs)                  # 標本平均を求める
+  dssxb <- sum((xs - xb)^2)       # 標本平均を用いた変動（偏差平方和）
+  dssmu <- sum((xs - mu)^2)       # 母平均を用いた変動（偏差平方和）
+  # 計算結果をデータフレームにまとめる
+  dftmp <- data.frame(no = i,     # 通し番号
+                      x1 = xs[1], # 標本データ(n = 1)
+                      x2 = xs[2], # 標本データ(n = 2)
+                      x3 = xs[3], # 標本データ(n = 3)
+                      xb,         # 標本平均
+                      mu,         # 母平均
+                      dssxb,      # 標本平均を用いた変動（偏差平方和）
+                      dssmu,      # 母平均を用いた変動（偏差平方和）
+                      diff = dssxb - dssmu  # 負値なら標本平均による変動が小さい
+                      )
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::rename(`標本平均`= xb, `母平均` = mu,
+                `標本平均での変動` = dssxb, `母平均での変動` = dssmu,
+                `変動差（標本-母）` = diff) %>% 
+  df_print(all = TRUE, scale_down = TRUE, caption = "シミュレーション結果")
+```
+
+```{r, fig.cap="標本平均を用いた変動と母平均を用いた変動の差", echo=FALSE, out.width="80%"}
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = no)) +
+    ggplot2::geom_hline(yintercept = 0, color = "magenta", linetype = "dashed") + 
+    ggplot2::geom_line(ggplot2::aes(y = diff), size = 0.25) +
+    ggplot2::labs(x = "index", y = "標本平均での変動と母平均での変動の差") + 
+    ggthemes::theme_tufte()
+```
+
+\newpage
+
+# **標本標準偏差の補正値を確認する**
+　標本平均（$\bar{x}$）を用いた変動（偏差平方和）は母平均（$\mu$）を用いた変動（偏差平方和）よりも小さくなることがわかりました。では、自由度で補正した標準偏差が母標準偏差に本当に近くなるのかを同じ母集団（$x$）を使って確認します。
+```{r}
+df <- data.frame()
+m <- 12
+for (i in c(1:30)) {
+  xs <- sample(x, size = m, replace = FALSE)  # 母集団から3つのデータを取り出す
+  xb <- mean(xs)                              # 標本平均を求める
+  sdxb <- sqrt(sum((xs - xb)^2) / (m - 1))    # 自由度で補正した標本標準偏差
+  sdmu <- sqrt(sum((xs - mu)^2) / m)          # 母標準偏差
+  # 計算結果をデータフレームにまとめる
+  dftmp <- data.frame(no = i,             # 通し番号
+                      x1 = xs[1],         # 標本データ(n = 1)
+                      x2 = xs[2],         # 標本データ(n = 2)
+                      x3 = xs[3],         # 標本データ(n = 3)
+                      xb,                 # 標本平均
+                      mu,                 # 母平均
+                      sdxb,               # 補正した標本標準偏差（不偏推定値）
+                      sdmu,               # 母標準偏差
+                      diff = sdxb - sdmu  # 負値なら標本平均による変動が小さい
+                      )
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::rename(`標本平均`= xb, `母平均` = mu,
+                `補正した標本標準偏差` = sdxb, `母標準偏差` = sdmu,
+                `差（標本-母）` = diff) %>% 
+  df_print(all = TRUE, scale_down = TRUE, caption = "シミュレーション結果")
+
+```
+
+```{r, fig.cap="標本標準偏差の補正値（不偏推定値）と母標準偏差の差", echo=FALSE, out.width="80%"}
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = no)) +
+    ggplot2::geom_hline(yintercept = 0, color = "magenta", linetype = "dashed") + 
+    ggplot2::geom_line(ggplot2::aes(y = diff), size = 0.25) +
+    ggplot2::labs(x = "index", y = "補正標準偏差と母標順偏差の差") + 
+    ggthemes::theme_tufte()
+```
+
+\newpage
+
+# **おわりに**
+　詳細で理論的な説明が必要な場合は『なぜ不偏分散は N-1 で割るのか』[@estpdf82:online]を参照してください。
+
+ちなみに母集団（$x$）の平均値（$mu$）と標準偏差（$s$）は以下の通りでした。
+```{r}
+mean(x)                # 平均値
+(n / (n - 1)) * sd(x)  # 標準偏差
+```
+
+　  
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```

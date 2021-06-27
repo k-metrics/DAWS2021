@@ -1,0 +1,192 @@
+---
+title: "標準偏差の分布を確認する"
+runningheader: "標本標準偏差は正規分布するのか？" # only for pdf output
+# subtitle: "An implementation in R Markdown" # only for html output
+author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
+date: "`r Sys.Date()`"
+abstruct: "本資料では自由度に関わるエトセトラを確認しています。"
+output:
+  tufte::tufte_handout:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+  tufte::tufte_html: default
+  tufte::tufte_book:
+    includes:
+      in_header: latex/tufte_preamble.tex # 必要なパッケージやフォントの設定
+    citation_package: natbib
+    latex_engine: xelatex
+    fig_caption: yes
+    keep_tex: yes
+always_allow_html: true  # 一種の呪文
+bibliography: [bib/references.bib]
+link-citations: true     # 参考文献一覧へのリンクを有効化
+colorlinks: true         # ハイパーリンクを色分けする
+fig_crop: false
+# fontsize: 12pt         # 本文のフォントサイズ（tufteでは変更できない）
+linestretch: 1.1         # 行間の指定
+links-as-notes: true     # ハイパーリンク先を脚注に記載
+mainfontoptions: "Scale=MatchUppercase"
+monofontoptions: "Scale=0.8"      # 0.96がベストらしいが…
+CJKoptions: "Scale=1.0"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tufte)
+
+# invalidate cache when the tufte version changes
+knitr::opts_chunk$set(cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE,                 # Rコードを出力する
+                      warning = FALSE,             # Rの警告を抑止する
+                      fig_caption = TRUE,
+                      fig.align = 'center',        # 図を中央揃えにする
+                      attr.source='.numberLines'   # Rコードに行番号表示
+                      )
+
+# tufte packageでは、余白に図などを表示させる制御があるためfig.posによる
+# 図表位置の固定はできません。また、見出しは節レベル（level 2）までです。
+if (knitr::is_latex_output()) {
+  knitr::opts_chunk$set(dev = "cairo_pdf",       # 図の出力にPDFデバイスを使う
+                        dev.args = list(family = "Source Han Code JP"),
+                                                 # 図のフォントを指定する
+                        tinytex.verbose = TRUE   # デバッグ用メッセージを出力
+                        )
+}
+
+df_print <- function(df = NULL,             # 表示させたいデータをフレームを指定
+                     n = 3L,                # 省略表示時の行数
+                     caption = NULL,        # 表見出しを指定
+                     booktabs = TRUE,       # FALSEで縦罫線を描画
+                     font_size = NULL,      # 表内文字のフォントサイズ
+                     position = "center",   # 表の横位置
+                     full_width = FALSE,    # TRUEで幅いっぱいに拡大表示
+                     scale_down = FALSE,    # TRUEで横幅に収まるよう縮小表示
+                     all = FALSE,           # TRUEですべてのデータを表示
+                     head_tail = FALSE,     # TRUEで先頭・末尾をn行ずつ表示
+                     ...) {                 # kableExtra::kblに渡す引数
+  if (!is.null(df)) {
+    if (knitr::is_latex_output()) {
+      if (scale_down == FALSE) {
+        # latex_option = c("striped", "HOLD_position")
+        latex_option = c("striped１")
+      } else {
+        # latex_option = c("striped", "HOLD_position", "scale_down")
+        latex_option = c("striped", "scale_down")
+      }
+      if (all == FALSE) {
+        df <- df %>% 
+          psych::headTail(top = n,
+                          bottom = dplyr::if_else(head_tail == FALSE, 0L, n))
+      }
+      df %>% 
+        kableExtra::kbl(caption  = caption, booktabs = booktabs, ...) %>%
+        kableExtra::kable_styling(font_size = font_size, position = position,
+                                  full_width = full_width,
+                                  latex_options = latex_option)
+    } else {   # 出力タイプ不明の場合
+      rmarkdown::paged_table(df)
+    }
+  }
+}
+
+```
+
+# 標本標準偏差はどのような分布を取るのか？
+　標本標準偏差（$s$）の分布を以下の手順で求める。
+
+1. 標本数を$n = 2$とする
+1. 母集団から上記の標本を取り出す
+1. 標本から標本標準偏差（$s$）を計算して記録する
+1. 上記を任意の回数繰り返す
+1. 記録した標本標準偏差（$s$）のヒストグラムをプロットする
+
+```{r, fig.cap="母標準偏差=1の場合の標本標準偏差の分布", out.width="80%", echo=FALSE, message=FALSE}
+n <- 2
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(2)
+  dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = s)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "")
+```
+
+母集団の標準偏差（$\sigma$）を変えると分布がどのように変化するか確認する。
+
+```{r, echo=FALSE, fig.cap="母標準偏差の異なる場合の標本標準偏差の分布", fig.subcap=c('母標準偏差=3', '母標準偏差=5'), fig.ncol=2, out.width="40%", message=FALSE}
+n <- 2
+
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(2, sd = 3)
+  dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = s)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(0, 10))
+
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(2, sd = 5)
+  dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = s)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(0, 10))
+```
+
+母標準偏差（$\sigma$）が大きくなると右側に裾野が広がっていくことがわかります。
+
+\newpage
+
+# 偏差平方和の分布
+　次に偏差平方和[^1]の分布をプロットします。偏差平方和は数式を見て分かるように標本標準偏差[^2]と比例関係にありますので、分布形状も比例するはずです。
+```{r, fig.cap="偏差平方和の分布", out.width="80%", echo=FALSE, message=FALSE}
+n <- 2
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(2)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = S)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "")
+```
+
+[^1]: $S = \sum_{i = 1}^{n}{(x_i - \bar{x})^2}$
+[^2]: $s = \sqrt{\frac{\sum_{i = 1}^{n}{(x_i - \bar{x})^2}}{n}}$
+
+# $\chi^2$分布
+　$\chi^2$分布は下式で定義される分布です。
+　
+$$\chi^2 = \frac{S}{\sigma^2} = \frac{\sum_{i = 1}^{n}{(x_i - \bar{x})^2}}{\sigma^2}$$
+
+
+
+```{r bib, include=FALSE}
+# create a bib file for the R packages used in this document
+knitr::write_bib(c('base', 'rmarkdown'), file = './bib/skeleton.bib')
+```
