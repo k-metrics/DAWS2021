@@ -171,15 +171,15 @@ df %>%
 \newpage
 
 # **標本標準偏差の補正値を確認する**
-　標本平均（$\bar{x}$）を用いた変動（偏差平方和）は母平均（$\mu$）を用いた変動（偏差平方和）よりも小さくなることがわかりました。では、自由度で補正した標準偏差が母標準偏差に本当に近くなるのかを同じ母集団（$x$）を使って確認します。
+　標本平均（$\bar{x}$）を用いた変動（偏差平方和）は母平均（$\mu$）を用いた変動（偏差平方和）よりも小さくなることがわかりました。では、自由度で補正した標準偏差が母平均を用いて求めた標準偏差に本当に近くなるのかを同じ母集団（$x$）を使って確認します。
 ```{r}
 df <- data.frame()
 m <- 12
 for (i in c(1:30)) {
-  xs <- sample(x, size = m, replace = FALSE)  # 母集団から3つのデータを取り出す
+  xs <- sample(x, size = m, replace = FALSE)  # 母集団からデータを取り出す
   xb <- mean(xs)                              # 標本平均を求める
   sdxb <- sqrt(sum((xs - xb)^2) / (m - 1))    # 自由度で補正した標本標準偏差
-  sdmu <- sqrt(sum((xs - mu)^2) / m)          # 母標準偏差
+  sdmu <- sqrt(sum((xs - mu)^2) / m)          # 母平均を用いた標本標準偏差
   # 計算結果をデータフレームにまとめる
   dftmp <- data.frame(no = i,             # 通し番号
                       x1 = xs[1],         # 標本データ(n = 1)
@@ -188,7 +188,7 @@ for (i in c(1:30)) {
                       xb,                 # 標本平均
                       mu,                 # 母平均
                       sdxb,               # 補正した標本標準偏差（不偏推定値）
-                      sdmu,               # 母標準偏差
+                      sdmu,               # 母平均を用いた標本標準偏差
                       diff = sdxb - sdmu  # 負値なら標本平均による変動が小さい
                       )
   df <- dplyr::bind_rows(df, dftmp)
@@ -196,18 +196,18 @@ for (i in c(1:30)) {
 
 df %>% 
   dplyr::rename(`標本平均`= xb, `母平均` = mu,
-                `補正した標本標準偏差` = sdxb, `母標準偏差` = sdmu,
+                `補正した標準偏差` = sdxb, `母平均による標準偏差` = sdmu,
                 `差（標本-母）` = diff) %>% 
   df_print(all = TRUE, scale_down = TRUE, caption = "シミュレーション結果")
 
 ```
 
-```{r, fig.cap="標本標準偏差の補正値（不偏推定値）と母標準偏差の差", echo=FALSE, out.width="80%"}
+```{r, fig.cap="標本標準偏差の補正値（不偏推定値）と母平均による標準偏差の差", echo=FALSE, out.width="80%"}
 df %>% 
   ggplot2::ggplot(ggplot2::aes(x = no)) +
     ggplot2::geom_hline(yintercept = 0, color = "magenta", linetype = "dashed") + 
     ggplot2::geom_line(ggplot2::aes(y = diff), size = 0.25) +
-    ggplot2::labs(x = "index", y = "補正標準偏差と母標順偏差の差") + 
+    ggplot2::labs(x = "index", y = "補正値との差") + 
     ggthemes::theme_tufte()
 ```
 
@@ -215,7 +215,7 @@ df %>%
 
 # **おわりに**
 　詳細で理論的な説明が必要な場合は『なぜ不偏分散は N-1 で割るのか』[@estpdf82:online]を参照してください。
-
+　  
 ちなみに母集団（$x$）の平均値（$mu$）と標準偏差（$s$）は以下の通りでした。
 ```{r}
 mean(x)                # 平均値

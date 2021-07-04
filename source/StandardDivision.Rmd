@@ -1,10 +1,10 @@
 ---
-title: "標準偏差の分布を確認する"
-runningheader: "標本標準偏差は正規分布するのか？" # only for pdf output
+title: "様々な分布を確認する"
+runningheader: "様々な分布を確認する" # only for pdf output
 # subtitle: "An implementation in R Markdown" # only for html output
 author: "Sampo Suzuki, CC 4.0 BY-NC-SA"
 date: "`r Sys.Date()`"
-abstruct: "本資料では自由度に関わるエトセトラを確認しています。"
+abstruct: "本資料ではテキストで説明されている様々な分布を実際に可視化して確認します。"
 output:
   tufte::tufte_handout:
     includes:
@@ -98,38 +98,45 @@ df_print <- function(df = NULL,             # 表示させたいデータをフ�
 ```
 
 # 標本標準偏差はどのような分布を取るのか？
-　標本標準偏差（$s$）の分布を以下の手順で求める。
+　『統計解析の話』[@ToukeiKaisekinoHanashi]では母集団のばらつき（母標準偏差 $\sigma$）を推定するために母集団からサンプリングした標本の標準偏差（$s$）の分布を用いようと説明されています^[3. 名探偵ものがたり ばらつきを区間推定するには P56〜]。そこで、標本標準偏差（$s$）をの分布をテキストにあるように以下の手順で求めてみます。
 
 1. 標本数を$n = 2$とする
-1. 母集団から上記の標本を取り出す
+1. 母集団^[建前上は未知の母集団]から上記の標本を取り出す
 1. 標本から標本標準偏差（$s$）を計算して記録する
-1. 上記を任意の回数繰り返す
+1. 上記を任意の回数^[本資料では1万回]繰り返す
 1. 記録した標本標準偏差（$s$）のヒストグラムをプロットする
 
-```{r, fig.cap="母標準偏差=1の場合の標本標準偏差の分布", out.width="80%", echo=FALSE, message=FALSE}
+```{r, echo=TRUE, message=FALSE}
 n <- 2
 df <- data.frame()
 for (i in c(1:10000)) {
-  xs <- rnorm(2)
+  xs <- rnorm(n)
   dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
   df <- dplyr::bind_rows(df, dftmp)
 }
-
+```
+```{r, echo=FALSE, message=FALSE, fig.cap="標本標準偏差の分布", out.width="80%"}
 df %>% 
   ggplot2::ggplot(ggplot2::aes(x = s)) +
     ggplot2::geom_histogram() +
     ggthemes::theme_tufte() +
-    ggplot2::labs(x = "", y = "")
+    # ggplot2::labs(x = "", y = "")
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 10))
 ```
 
-母集団の標準偏差（$\sigma$）を変えると分布がどのように変化するか確認する。
+このように大きく右に歪んだ分布になることがわかります^[次ページと比較しやすいように横軸をそろえてあります。縦軸は異なるので注意してください。]。
 
-```{r, echo=FALSE, fig.cap="母標準偏差の異なる場合の標本標準偏差の分布", fig.subcap=c('母標準偏差=3', '母標準偏差=5'), fig.ncol=2, out.width="40%", message=FALSE}
+\newpage
+
+次に同じ手順で母集団の標準偏差（$\sigma$）が異なると標本標準偏差（$s$）の分布がどのようになるかを確認します。
+
+```{r, echo=FALSE, fig.subcap=c('母標準偏差=3', '母標準偏差=5'), fig.ncol=2, out.width="45%", message=FALSE, fig.fullwidth = TRUE}
+# , fig.cap="母標準偏差の異なる場合の標本標準偏差の分布"
 n <- 2
-
+sd <- 3
 df <- data.frame()
 for (i in c(1:10000)) {
-  xs <- rnorm(2, sd = 3)
+  xs <- rnorm(n, sd = sd)
   dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
   df <- dplyr::bind_rows(df, dftmp)
 }
@@ -138,11 +145,12 @@ df %>%
   ggplot2::ggplot(ggplot2::aes(x = s)) +
     ggplot2::geom_histogram() +
     ggthemes::theme_tufte() +
-    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(0, 10))
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 10), y = c(0, 1500))
 
+sd <- 5
 df <- data.frame()
 for (i in c(1:10000)) {
-  xs <- rnorm(2, sd = 5)
+  xs <- rnorm(n, sd = sd)
   dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
   df <- dplyr::bind_rows(df, dftmp)
 }
@@ -151,24 +159,63 @@ df %>%
   ggplot2::ggplot(ggplot2::aes(x = s)) +
     ggplot2::geom_histogram() +
     ggthemes::theme_tufte() +
-    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(0, 10))
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 10), y = c(0, 1500))
 ```
 
-母標準偏差（$\sigma$）が大きくなると右側に裾野が広がっていくことがわかります。
+母標準偏差（$\sigma$）が大きくなると右側にながらかになることがわかります。
+
+　  
+
+では、母標準偏差を変えずに標本数（サンプリング数）を変えた場合、どのような分布になるでしょうか？
+
+```{r, echo=FALSE, fig.subcap=c('標本数=3', '標本数=10'), fig.ncol=2, out.width="45%", message=FALSE, fig.fullwidth = TRUE}
+# , fig.cap="自由度の異なる場合の標本標準偏差の分布"
+n <- 3
+sd <- 3
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = s)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 10), y = c(0, 2500))
+
+n <- 10
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, s = sqrt(sum((xs - mean(xs))^2) / n))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = s)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 10), y = c(0, 2500))
+```
+
+標本数が大きくなると母標準偏差（$\sigma$）を中心とした正規分布に近づいていくことがわかります。
 
 \newpage
 
 # 偏差平方和の分布
-　次に偏差平方和[^1]の分布をプロットします。偏差平方和は数式を見て分かるように標本標準偏差[^2]と比例関係にありますので、分布形状も比例するはずです。
-```{r, fig.cap="偏差平方和の分布", out.width="80%", echo=FALSE, message=FALSE}
+　テキスト[@ToukeiKaisekinoHanashi]では計算を簡単にするために標本標準偏差ではなく偏差平方和^[3. 名探偵ものがたり ばらつきを区間推定するには P57〜]の分布を求めるようにしています。では、偏差平方和[^1]の分布がどのようになるかプロットしてみます。偏差平方和は数式を見て分かるように標本標準偏差[^2]と比例関係にありますので、分布形状も比例するはずです。
+```{r, echo=TRUE, message=FALSE}
 n <- 2
 df <- data.frame()
 for (i in c(1:10000)) {
-  xs <- rnorm(2)
+  xs <- rnorm(n)
   dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2))
   df <- dplyr::bind_rows(df, dftmp)
 }
-
+```
+```{r, fig.cap="偏差平方和の分布", out.width="80%", echo=FALSE, message=FALSE}
 df %>% 
   ggplot2::ggplot(ggplot2::aes(x = S)) +
     ggplot2::geom_histogram() +
@@ -179,11 +226,141 @@ df %>%
 [^1]: $S = \sum_{i = 1}^{n}{(x_i - \bar{x})^2}$
 [^2]: $s = \sqrt{\frac{\sum_{i = 1}^{n}{(x_i - \bar{x})^2}}{n}}$
 
-# $\chi^2$分布
-　$\chi^2$分布は下式で定義される分布です。
-　
-$$\chi^2 = \frac{S}{\sigma^2} = \frac{\sum_{i = 1}^{n}{(x_i - \bar{x})^2}}{\sigma^2}$$
+また、テキスト^[3. 名探偵ものがたり ばらつきを区間推「定するにはP58]にあるように母標準偏差（$\sigma$）で分布が変わるかどうかを確認します。
 
+```{r, echo=FALSE, fig.subcap=c('母標準偏差=3', '母標準偏差=5'), fig.ncol=2, out.width="45%", message=FALSE, fig.fullwidth = TRUE}
+n <- 2
+sd <- 3
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = S)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-10, 300), y = c(0, 3500))
+
+sd <- 10
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2))
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  ggplot2::ggplot(ggplot2::aes(x = S)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-10, 300), y = c(0, 3500))
+```
+
+\newpage
+
+# $\chi^2$分布
+　$\chi^2$分布[^3]は標本数（自由度）により分布が変わりますが、母集団の標準偏差（$\sigma$）には左右されないという特徴があります。
+
+[^3]: $\chi^2 = \frac{S}{\sigma^2} = \frac{\sum_{i = 1}^{n}{(x_i - \bar{x})^2}}{\sigma^2}$
+
+```{r, echo=TRUE, message=FALSE}
+n <- 2
+sd <- 1
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2), var = sd ^ 2)
+  df <- dplyr::bind_rows(df, dftmp)
+}
+```
+```{r, fig.cap="自由度=1の$\\chi^2$分布", out.width="80%", echo=FALSE, message=FALSE}
+df %>% 
+  dplyr::mutate(chisq = S / var) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = chisq)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 15), y = c(0, 3000))
+```
+
+　  
+自由度を変えた場合。
+
+```{r, fig.cap="自由度が異なる$\\chi^2$分布", echo=FALSE, message=FALSE, fig.subcap=c('自由度=3', '自由度=5'), fig.ncol=2, out.width="40%"}
+n <- 4
+sd <- 1
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2), var = sd ^ 2)
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::mutate(chisq = S / var) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = chisq)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 15), y = c(0, 3000))
+
+n <- 6
+sd <- 1
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2), var = sd ^ 2)
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::mutate(chisq = S / var) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = chisq)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 15), y = c(0, 3000))
+
+```
+
+\newpage
+
+母集団の標準偏差（$\sigma$）を変えた場合。
+
+```{r, fig.cap="自由度=3の$\\chi^2$分布", echo=FALSE, message=FALSE, fig.subcap=c('母標準偏差=3', '母標準偏差=10'), fig.ncol=2, out.width="40%"}
+n <- 4
+sd <- 3
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2), var = sd ^ 2)
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::mutate(chisq = S / var) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = chisq)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 15), y = c(0, 3000))
+
+n <- 4
+sd <- 10
+df <- data.frame()
+for (i in c(1:10000)) {
+  xs <- rnorm(n, sd = sd)
+  dftmp <- data.frame(no = i, S = sum((xs - mean(xs))^2), var = sd ^ 2)
+  df <- dplyr::bind_rows(df, dftmp)
+}
+
+df %>% 
+  dplyr::mutate(chisq = S / var) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = chisq)) +
+    ggplot2::geom_histogram() +
+    ggthemes::theme_tufte() +
+    ggplot2::labs(x = "", y = "") + ggplot2::lims(x = c(-1, 15), y = c(0, 3000))
+
+```
 
 
 ```{r bib, include=FALSE}
